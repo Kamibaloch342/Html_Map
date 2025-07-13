@@ -62,10 +62,10 @@
                         <p class="text-xs text-gray-500">Low: <span id="edu-low"></span></p>
                     </div>
                     <div>
-                         <h4 class="text-md font-semibold flex items-center justify-center" style="color: #b22222;">
-                            <span class="w-3 h-3 rounded-full mr-2" style="background-color: #b22222;"></span>
-                            Health
-                        </h4>
+                           <h4 class="text-md font-semibold flex items-center justify-center" style="color: #b22222;">
+                               <span class="w-3 h-3 rounded-full mr-2" style="background-color: #b22222;"></span>
+                               Health
+                           </h4>
                         <p class="text-xs text-gray-600 mt-2">Average</p>
                         <p class="text-xl font-bold -mt-1" id="health-avg"></p>
                         <p class="text-xs text-gray-500 mt-1">High: <span id="health-high"></span></p>
@@ -122,8 +122,20 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     animation: {
-                        duration: 2000,
-                        delay: (context) => (context.type === 'data' && context.mode === 'default') ? context.dataIndex * 50 + context.datasetIndex * 100 : 0,
+                        duration: 1500, // Duration for each line to draw
+                        delay: (context) => {
+                            const datasetIndex = context.datasetIndex;
+                            const dataIndex = context.dataIndex;
+                            // Stagger delay by dataset index (0, 1, 2)
+                            // Add a slight delay per data point within a dataset for a drawing effect
+                            return datasetIndex * 1000 + dataIndex * 10; // 1000ms (1 second) delay per dataset
+                        },
+                        onComplete: (context) => {
+                            // Optional: If you want to log when animations are complete
+                            if (context.chart.config.options.animation.delay === 0) { // Check for the initial animation
+                                console.log('Chart animation complete!');
+                            }
+                        }
                     },
                     plugins: {
                         legend: {
@@ -135,7 +147,7 @@
                                 boxWidth: 8,
                                 padding: 30,
                                 formatter: (text) => {
-                                    return text + '      ';
+                                    return text + '     ';
                                 }
                             }
                         },
@@ -152,7 +164,6 @@
                                 font: {
                                     size: 14,
                                     weight: '600',
-                                    // ** THIS IS THE FIX **
                                     family: "'Montserrat', sans-serif"
                                 }
                             },
