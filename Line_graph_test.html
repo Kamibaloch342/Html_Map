@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Fareeha Armughan - Optimized Interactive Event Chart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f9fafb;
+            --card-bg-color: #ffffff;
+            --border-color: #e5e7eb;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --font-body: 'Montserrat', sans-serif;
+        }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+        .title-font {
+            font-family: var(--font-body);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        #info-panel {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+            padding: 1rem;
+            transition: all 0.4s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        #info-panel-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 1rem; /* Padding for scrollbar */
+        }
+        .info-section h3 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 0.75rem;
+            margin-top: 1.5rem;
+        }
+        .impact-item {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 0.75rem;
+        }
+        .impact-item .icon {
+            flex-shrink: 0;
+            width: 2.25rem;
+            height: 2.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(var(--accent-rgb), 0.1);
+            color: var(--accent-color);
+        }
+        #connector-svg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        #connector-line {
+            stroke-width: 2px;
+            stroke-dasharray: 6, 6;
+            transition: all 0.2s ease-in-out;
+            opacity: 0;
+        }
+        #connector-line.visible {
+            opacity: 1;
+        }
+        .trigger-list {
+            list-style: none;
+            padding: 0;
+        }
+        .trigger-item {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .trigger-item.highlighted {
+            background-color: #f3f4f6;
+            transform: scale(1.02);
+            border-color: var(--border-color);
+        }
+        .trigger-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="w-full h-screen p-4 md:p-8 flex flex-col">
+        <header class="text-center mb-6">
+            <h1 class="text-3xl md:text-4xl title-font text-gray-800">The Economic Faultline</h1>
+            <p class="text-lg text-gray-500 mt-1">An Interactive Analysis by Dr. Fareeha Armughan</p>
+        </header>
+        
+        <div class="flex-grow grid grid-cols-1 lg:grid-cols-10 gap-8 relative">
+            
+            <div id="connector-svg-container">
+                <svg class="w-full h-full">
+                    <line id="connector-line" x1="0" y1="0" x2="0" y2="0" />
+                </svg>
+            </div>
+            
+            <div class="lg:col-span-6 relative h-[50vh] lg:h-auto">
+                <canvas id="eventChart">
+                     <div role="figure" aria-label="A line chart showing economic impact scores of various geopolitical events from 1979 to 2025.">
+                        This is an interactive chart. Please enable JavaScript to view it.
+                    </div>
+                </canvas>
+            </div>
+            
+            <div class="lg:col-span-4">
+                <div id="info-panel">
+                    <div id="info-panel-content">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    
+    /**
+     * Encapsulates the entire application logic to avoid polluting the global scope.
+     */
+    const interactiveChartApp = {
+        // --- DATA & CONFIG ---
+        eventsData: [
+            { id: 'afghanmigration', year: 1979, category: 'Migration', title: 'Afghan Migration Crisis', actor: 'Afghanistan', impactScore: 7, reason: "Decades of conflict, intensified by the post-2021 Taliban takeover, leading to mass migration into Pakistan.", impacts: [ { text: 'Over 3.7 million Afghans live in Pakistan, straining public services and infrastructure.', icon: 'fa-people-group' }, { text: 'An estimated $2.2 billion cost to host 700,000 new arrivals over three years post-2021.', icon: 'fa-hand-holding-dollar' }, { text: 'Illicit economies, including fuel and currency smuggling, cost Pakistan $3.3 billion annually.', icon: 'fa-gas-pump' }, { text: 'Wage suppression in the informal labor market due to a large migrant workforce.', icon: 'fa-arrow-down-wide-short' } ], comment: { summary: "The continuous influx of refugees strains public services, suppresses local wages, and erodes tax revenue through informal economies.", implications: "Illicit economies thriving in border regions weaken state authority. The large-scale presence creates long-term costs for public finance and social cohesion." } },
+            { id: 'kargil', year: 1999, category: 'Hostilities', title: 'Kargil War', actor: 'India', impactScore: 8, reason: "A covert infiltration of Pakistani soldiers disguised as militants into strategic positions on the Indian side of the Line of Control (LoC).", impacts: [ { text: 'GDP grew only 3.66%, far below the projected 8%.', icon: 'fa-chart-line' }, { text: 'Foreign investment plunged to just $376 million.', icon: 'fa-arrow-trend-down' }, { text: 'A major $5.5 billion IMF bailout was required to stabilize the economy.', icon: 'fa-hand-holding-dollar' } ], comment: { summary: "The conflict placed immense strain on fiscal resources, diverting funds from development and deeply undermining investor confidence.", implications: "It aggravated existing structural weaknesses, increased dependency on external financial support, and left Pakistan more exposed to future shocks." } },
+            { id: 'standoff2001', year: 2001.9, category: 'Hostilities', title: 'Military Standoff', actor: 'India', impactScore: 6, reason: "The 2001 Indian Parliament attack, which was allegedly linked to Pakistan-based terror groups.", impacts: [ { text: 'Incurred approximately $1.2 billion in direct military deployment costs, representing around 1.9% of GDP.', icon: 'fa-people-military' }, { text: 'Trade disruption hurt airlines and exporters, further constraining government revenue.', icon: 'fa-plane-slash' } ], comment: { summary: "Heavy military preparation drained fiscal resources, displacing key development priorities and highlighting Pakistan’s vulnerability to geopolitical tensions.", implications: "The standoff stalled trade and hurt key sectors, constraining government revenue amidst the post-9/11 global uncertainty." } },
+            { id: 'fatf2008', year: 2008, category: 'Sanctions', title: 'FATF Grey Listing (2008-2015)', actor: 'FATF', impactScore: 10, reason: "Weak anti-money laundering (AML) & counter-terror financing (CFT) regulations and lack of compliance in freezing assets of terror outfits.", impacts: [ { text: 'A staggering $38 Billion estimated loss in Real GDP.', icon: 'fa-sack-xmark' }, { text: '$22 Billion loss in Consumption Expenditure.', icon: 'fa-cart-arrow-down' }, { text: '$4.5 Billion loss in Exports and $3.6 Billion in FDI.', icon: 'fa-ship' }, ], comment: { summary: "Reduced consumption, shrinking exports, and collapsed investment erode public welfare and can become security threats.", implications: "Greylisting fuels social unrest, locks in economic vulnerability, and negatively affects long-term developmental priorities." } },
+            { id: 'turkeymigration', year: 2015, category: 'Migration', title: 'Illegal Migration to Europe', actor: 'Turkey (Route)', impactScore: 5, reason: "Thousands of Pakistanis attempting illegal migration to Europe via the Iran-Turkey route, leading to mass deportations.", impacts: [ { text: 'Human trafficking networks generate Rs 40-50 billion annually, bypassing the formal economy.', icon: 'fa-network-wired' }, { text: 'Illicit transfers of over $300 million yearly via the "dunki" route drain foreign exchange.', icon: 'fa-money-bill-wave' }, { text: 'Deprives Pakistan of formal remittance inflows, fueling fiscal instability.', icon: 'fa-arrow-down-to-bracket' } ], comment: { summary: "Irregular migration deprives Pakistan of formal remittance inflows, fuels fiscal instability, and exacerbates poverty for migrants' families.", implications: "The massive scale of trafficking revenue erodes state authority at borders, fosters corruption, and weakens both economic and security structures." } },
+            { id: 'cpecinsurgency', year: 2015, category: 'Internal Security', title: 'CPEC Insurgency', actor: 'Internal Militants', impactScore: 7, reason: "Armed resistance targeting CPEC projects, driven by ethno-nationalist grievances and resource exploitation concerns.", impacts: [ { text: 'Pakistan spent approximately $21.6 billion for CPEC protection via the Special Security Division (SSD).', icon: 'fa-shield-halved' }, { text: 'CPEC power project consumers paid an extra $4.8 million/year via electricity tariffs to fund security.', icon: 'fa-lightbulb' }, { text: 'Pakistan reportedly paid $11.4 million in compensation requests for attacks.', icon: 'fa-building-shield' } ], comment: { summary: "The substantial cost of securing CPEC strains fragile finances, with costs passed to consumers via electricity tariffs.", implications: "Project delays, compensation payouts, and investor flight threaten CPEC's economic objectives and weaken strategic autonomy by redirecting resources from development to defence." } },
+            { id: 'uri2016', year: 2016.7, category: 'Hostilities', title: 'Uri Attack & “Surgical Strikes”', actor: 'India', impactScore: 3, reason: "A terrorist attack on an Indian army base in Uri, followed by a retaliatory cross-LoC response from India.", impacts: [ { text: 'Pakistan’s 5-year sovereign Sukuk yield jumped by ~43 bps, indicating elevated borrowing costs.', icon: 'fa-arrow-up-from-ground-water' }, { text: 'Foreign institutional investors pulled out around PKR 76 million in a single session.', icon: 'fa-money-bill-transfer' }, ], comment: { summary: "While equity markets showed resilience, the fixed-income market reacted sharply, signaling deeper investor caution toward national debt.", implications: "The incident illustrated that even limited military escalations can raise sovereign borrowing costs, complicating access to financing and signaling long-term vulnerability." } },
+            { id: 'pulwama2019', year: 2019.1, category: 'Hostilities', title: 'Pulwama & Balakot Crisis', actor: 'India', impactScore: 4, reason: "A suicide bombing in Pulwama, followed by an Indian airstrike on alleged JeM camps in Balakot.", impacts: [ { text: 'Pakistan suffered a $50 million loss after it closed its airspace for a prolonged period.', icon: 'fa-plane-slash' }, { text: 'India revoked Pakistan’s Most Favored Nation (MFN) status and imposed 200% tariffs on imports.', icon: 'fa-file-invoice-dollar' }, ], comment: { summary: "The crisis severely disrupted the transport sector and constricted access to Indian markets, amplifying export vulnerabilities.", implications: "Geopolitical tensions triggered investor nervousness, potentially derailing financial inflows and adding strain to Pakistan’s IMF-linked fiscal strategies." } },
+            { id: 'russiaukraine', year: 2022, category: 'Geopolitical', title: 'Russia-Ukraine War', actor: 'Global Event', impactScore: 9, reason: "Global conflict leading to a surge in commodity prices and supply chain disruptions.", impacts: [ { text: 'The oil import bill rose by 75% in FY2022, reaching $18.5 billion.', icon: 'fa-oil-well' }, { text: 'The wheat import bill increased by 150%, hitting $3 billion in FY2022.', icon: 'fa-wheat-awn' }, { text: 'An estimated 400,000 jobs were lost due to the economic slowdown.', icon: 'fa-user-minus' }, { text: 'An additional 2.25 million people were pushed below the poverty line.', icon: 'fa-person-falling' } ], comment: { summary: "The war deepened Pakistan’s economic crisis, driving up inflation, weakening the currency, and straining reserves.", implications: "It exposed critical energy and food insecurity, forcing Pakistan to walk a diplomatic tightrope between the West and the Russia-China bloc." } },
+            { id: 'sindoor2025', year: 2025.4, category: 'Hostilities', title: 'Operation Sindoor (Projected)', actor: 'India', impactScore: 9.5, reason: "Projected Indian precision strikes after a terrorist attack in Pahalgam, leading to suspension of the Indus Waters Treaty.", impacts: [ { text: 'Projected GDP decline of 1.5–2% due to water, trade, and energy disruptions.', icon: 'fa-chart-pie' }, { text: 'Cumulative economic impact estimated at $15–20 billion annually.', icon: 'fa-sack-xmark' }, ], comment: { summary: "India's suspension of the Indus Waters Treaty threatens agriculture and hydropower, while market shocks erode investor confidence.", implications: "With shallow reserves, Pakistan is less able to buffer external shocks. Weakened IMF leverage and increased military budget pressure exacerbate economic fragility." } },
+            { id: 'tradewar2025', year: 2025, category: 'Sanctions', title: 'US Global Trade War (Projected)', actor: 'USA', impactScore: 8, reason: "A projected 29% U.S. tariff threat on key Pakistani goods like textiles, leather, and rice.", impacts: [ { text: 'Projected annual export losses of $1.1–1.4 billion.', icon: 'fa-file-export' }, { text: 'Up to half a million jobs at risk in the vital textile sector.', icon: 'fa-user-group' }, { text: 'Risk to remittance growth and investor confidence due to potential global recession.', icon: 'fa-globe' } ], comment: { summary: "Tariff-driven export declines could widen the current account deficit, weaken the rupee, and fuel inflation.", implications: "Economic instability could undermine social cohesion and elevate risks of internal unrest. Diplomatic strain would limit options for economic diversification." } },
+            { id: 'debtimf', year: 2025.5, category: 'Debt', title: 'Debt & IMF Conditionality', actor: 'IMF / Federal Govt.', impactScore: 9, reason: "Public debt reaching PKR 76 trillion, with interest payments consuming a majority of government revenue.", impacts: [ { text: '57% of government revenue is absorbed by interest payments alone.', icon: 'fa-percent' }, { text: 'Defence outlays grew by ~20%, while social and infrastructure spending was curtailed by ~7%.', icon: 'fa-scale-unbalanced-flip' }, { text: 'The government will have to borrow Rs. 6,501 Bn to meet its expenditures.', icon: 'fa-money-bill-trend-up' } ], comment: { summary: "Limited fiscal space and IMF-mandated austerity (subsidy cuts, tax hikes) curb domestic demand, slowing economic recovery and job creation.", implications: "Austerity measures heighten public dissatisfaction and risk of unrest. Compliance with IMF terms reduces policy flexibility, impacting autonomy in critical geopolitical decisions." } }
+        ],
+        categoryStyles: {
+            'Hostilities': { color: '#dc2626' },
+            'Sanctions': { color: '#d97706' },
+            'Geopolitical': { color: '#2563eb' },
+            'Migration': { color: '#059669' },
+            'Internal Security': { color: '#9333ea' },
+            'Debt': { color: '#db2777' }
+        },
+        
+        // --- DOM Elements ---
+        elements: {
+            infoPanelContent: null,
+            connectorLine: null,
+            ctx: null
+        },
+        
+        // --- State ---
+        chartInstance: null,
+        currentView: 'list',
+
+        /**
+         * Initializes the application.
+         */
+        init() {
+            // Register Chart.js plugins
+            Chart.register(ChartDataLabels);
+            Chart.defaults.font.family = "'Montserrat', sans-serif";
+            Chart.defaults.font.weight = '600';
+
+            // Store DOM element references
+            this.elements.infoPanelContent = document.getElementById('info-panel-content');
+            this.elements.connectorLine = document.getElementById('connector-line');
+            this.elements.ctx = document.getElementById('eventChart').getContext('2d');
+            
+            this.addEventListeners();
+            this.renderListView();
+            this.createChart();
+        },
+
+        /**
+         * Centralized event listener setup.
+         * Uses event delegation for the info panel for better performance.
+         */
+        addEventListeners() {
+            this.elements.infoPanelContent.addEventListener('click', (e) => {
+                const triggerItem = e.target.closest('.trigger-item');
+                const backButton = e.target.closest('#back-to-list');
+
+                if (triggerItem) {
+                    const eventData = this.eventsData.find(ev => ev.id === triggerItem.dataset.id);
+                    if (eventData) this.renderDetailView(eventData);
+                } else if (backButton) {
+                    this.renderListView();
+                }
+            });
+        },
+
+        /**
+         * Renders the main list of event triggers in the info panel.
+         */
+        renderListView() {
+            this.currentView = 'list';
+            let listHTML = `
+                <div class="info-section">
+                    <h3>Event Triggers</h3>
+                    <p class="text-xs text-gray-400">Hover over a point to highlight, or click to see full details.</p>
+                </div>
+                <ul class="trigger-list mt-2">
+            `;
+            
+            this.eventsData.sort((a,b) => a.year - b.year).forEach(event => {
+                const style = this.categoryStyles[event.category];
+                listHTML += `
+                    <li class="trigger-item" data-id="${event.id}" role="button" tabindex="0">
+                        <div class="trigger-dot" style="background-color: ${style.color};"></div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-700">${event.title}</p>
+                            <p class="text-xs text-gray-500">${event.reason.substring(0, 70)}...</p>
+                        </div>
+                    </li>
+                `;
+            });
+            
+            listHTML += `</ul>`;
+            this.elements.infoPanelContent.innerHTML = listHTML;
+            this.elements.infoPanelContent.scrollTop = 0; // Scroll to top
+        },
+
+        /**
+         * Renders the detailed view for a specific event.
+         * @param {object} eventData - The data for the event to display.
+         */
+        renderDetailView(eventData) {
+            this.currentView = 'detail';
+            const style = this.categoryStyles[eventData.category];
+            const rgb = this.hexToRgb(style.color);
+
+            let detailHTML = `
+                <button id="back-to-list" class="mb-4 text-sm font-semibold text-blue-600 hover:underline">&larr; Back to Triggers List</button>
+                <div>
+                    <p class="text-sm font-semibold mb-1" style="color: ${style.color};">${eventData.category}</p>
+                    <h2 class="text-2xl font-bold title-font text-gray-800">${eventData.title}</h2>
+                    <p class="text-xs text-gray-500 mb-2">${Math.floor(eventData.year)} / ${eventData.actor}</p>
+                </div>
+                <div class="info-section">
+                    <h3>Trigger</h3>
+                    <p class="text-sm text-gray-600">${eventData.reason}</p>
+                </div>
+                <div class="info-section">
+                    <h3>Economic Impact</h3>
+                    <div class="impact-list">
+                        ${eventData.impacts.map(item => `
+                            <div class="impact-item" style="--accent-color: ${style.color}; --accent-rgb: ${rgb};">
+                                <div class="icon"><i class="fa-solid ${item.icon}"></i></div>
+                                <p class="text-sm text-gray-600">${item.text}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="info-section">
+                    <h3>National Security Implications</h3>
+                    <p class="text-sm text-gray-500 italic">${eventData.comment.summary}</p>
+                    <p class="text-sm text-gray-600 mt-2">${eventData.comment.implications}</p>
+                </div>
+            `;
+            this.elements.infoPanelContent.innerHTML = detailHTML;
+            this.elements.infoPanelContent.scrollTop = 0; // Scroll to top
+        },
+
+        /**
+         * Creates and configures the Chart.js instance.
+         */
+        createChart() {
+            const datasets = Object.keys(this.categoryStyles).map(category => {
+                const style = this.categoryStyles[category];
+                return {
+                    label: category,
+                    data: this.eventsData.filter(e => e.category === category).map(e => ({
+                        x: e.year, 
+                        y: e.impactScore, 
+                        fullData: e
+                    })),
+                    backgroundColor: style.color,
+                    borderColor: style.color,
+                    pointRadius: 8,
+                    pointHoverRadius: 14,
+                    pointBorderWidth: 3,
+                    pointHoverBorderWidth: 4,
+                    pointBorderColor: 'var(--card-bg-color)',
+                    pointHoverBorderColor: '#ffffff',
+                    showLine: true,
+                    tension: 0.4
+                };
+            });
+
+            this.chartInstance = new Chart(this.elements.ctx, {
+                type: 'line',
+                data: { datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    onClick: (event, chartElements) => {
+                        if (chartElements.length > 0) {
+                            const pointData = chartElements[0].element.$context.raw.fullData;
+                            this.renderDetailView(pointData);
+                        }
+                    },
+                    onHover: (event, chartElements) => {
+                        event.native.target.style.cursor = chartElements.length ? 'pointer' : 'default';
+                        
+                        document.querySelectorAll('.trigger-item').forEach(item => item.classList.remove('highlighted'));
+                        this.elements.connectorLine.classList.remove('visible');
+
+                        if (chartElements.length > 0 && this.currentView === 'list') {
+                            const element = chartElements[0];
+                            const pointData = element.element.$context.raw.fullData;
+                            const listItem = document.querySelector(`.trigger-item[data-id="${pointData.id}"]`);
+                            
+                            if (listItem) {
+                                listItem.classList.add('highlighted');
+                                this.drawConnectorLine(element.element, listItem);
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { type: 'linear', min: 1975, max: 2030, title: { display: true, text: 'Year', color: 'var(--text-secondary)', font: { size: 14 } }, ticks: { color: 'var(--text-secondary)', font: { size: 12 } }, grid: { color: 'rgba(0,0,0,0.05)' } },
+                        y: { min: 0, max: 11, title: { display: true, text: 'Economic Impact Score', color: 'var(--text-secondary)', font: { size: 14, weight: '600' } }, ticks: { display: false }, grid: { color: 'rgba(0,0,0,0.05)' } }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: 'var(--text-secondary)', boxWidth: 12, padding: 25, font: { size: 12 } } },
+                        tooltip: { enabled: false },
+                        datalabels: {
+                            display: true, align: 'top', offset: 16,
+                            font: { size: 12, weight: '700' },
+                            color: (context) => context.dataset.backgroundColor,
+                            backgroundColor: 'rgba(249, 250, 251, 0.8)',
+                            borderRadius: 6,
+                            padding: { top: 6, bottom: 6, left: 8, right: 8 },
+                            formatter: (value) => {
+                                let title = value.fullData.title;
+                                return title.length > 20 ? title.substring(0, 18) + '...' : title;
+                            }
+                        }
+                    }
+                }
+            });
+        },
+        
+        /**
+         * Draws the dashed line connecting a chart point to its list item.
+         * @param {object} chartPoint - The chart.js element for the data point.
+         * @param {HTMLElement} listItem - The corresponding HTML list item element.
+         */
+        drawConnectorLine(chartPoint, listItem) {
+            const chartRect = this.chartInstance.canvas.getBoundingClientRect();
+            const listItemRect = listItem.getBoundingClientRect();
+            const pointData = this.eventsData.find(e => e.id === listItem.dataset.id);
+
+            const x1 = chartPoint.x;
+            const y1 = chartPoint.y;
+            const x2 = listItemRect.left - chartRect.left;
+            const y2 = listItemRect.top - chartRect.top + (listItemRect.height / 2);
+
+            this.elements.connectorLine.setAttribute('x1', x1);
+            this.elements.connectorLine.setAttribute('y1', y1);
+            this.elements.connectorLine.setAttribute('x2', x2);
+            this.elements.connectorLine.setAttribute('y2', y2);
+            this.elements.connectorLine.style.stroke = this.categoryStyles[pointData.category].color;
+            this.elements.connectorLine.classList.add('visible');
+        },
+
+        /**
+         * Utility function to convert a hex color string to an RGB string "R, G, B".
+         * @param {string} hex - The hex color code (e.g., "#dc2626").
+         * @returns {string} The RGB values as a string (e.g., "220, 38, 38").
+         */
+        hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : null;
+        }
+    };
+
+    // --- Initial Call ---
+    interactiveChartApp.init();
+});
+</script>
+</body>
+</html>
