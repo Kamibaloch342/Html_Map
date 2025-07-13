@@ -26,32 +26,47 @@
         /* Left Panel: Timeline */
         .timeline-panel {
             background-color: #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Ensure panel takes full height */
+        }
+        .timeline-header {
             padding: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+            background-color: #f1f5f9; /* Ensure header has a solid background */
+        }
+        .timeline-scroll-area {
             overflow-y: auto;
+            flex-grow: 1; /* Allows this area to fill remaining space */
             position: relative;
+            padding: 0 2rem;
         }
         .timeline-line {
             position: absolute;
             left: 2.75rem;
-            top: 4rem;
-            bottom: 4rem;
+            top: 2rem;
+            bottom: 2rem;
             width: 4px;
             background-color: #cbd5e1;
             z-index: 1;
         }
         .timeline-event {
             position: relative;
-            padding-left: 3rem;
+            padding-left: 3.5rem;
             padding-bottom: 2.5rem;
+            padding-top: 1.5rem; /* Adjusted for better spacing */
             cursor: pointer;
+        }
+        .timeline-event:first-child {
+             padding-top: 2rem; /* Add padding to the very first event */
         }
         .timeline-event::before {
             content: '';
             position: absolute;
-            left: 1.8rem;
-            top: 0.5rem;
-            width: 20px;
-            height: 20px;
+            left: 1.95rem;
+            top: 2rem;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background-color: #cbd5e1;
             border: 4px solid #f1f5f9;
@@ -61,11 +76,14 @@
         .timeline-event.active::before {
             background-color: #dc2626;
             transform: scale(1.2);
+            box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
         }
-        .event-year { font-weight: 800; font-size: 1.25rem; color: #475569; }
-        .event-title { font-weight: 600; font-size: 1rem; color: #1e293b; transition: color 0.3s ease; }
-        .timeline-event.active .event-title { color: #dc2626; }
-        
+        .event-year { font-weight: 700; font-size: 1.1rem; color: #475569; }
+        .event-title { font-weight: 500; font-size: 1rem; color: #1e293b; transition: color 0.3s ease; }
+        .timeline-event:hover .event-title { color: #dc2626; }
+        .timeline-event.active .event-year { color: #dc2626; font-weight: 800; }
+        .timeline-event.active .event-title { color: #dc2626; font-weight: 700; }
+
         /* Right Panel: Dossier */
         .dossier-panel {
             padding: 3rem;
@@ -81,9 +99,10 @@
             opacity: 1;
             transform: translateY(0);
         }
+        .chapter-header { font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.9rem; color: #64748b; }
         .dossier-header { font-weight: 900; font-size: 3.5rem; line-height: 1.1; color: #1e293b; }
         .dossier-year { font-size: 1.5rem; font-weight: 700; color: #94a3b8; }
-        .prose-section h4 { font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1rem; color: #475569; margin-top: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e2e8f0; }
+        .prose-section h4 { font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1rem; color: #475569; margin-top: 2rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e2e8f0; }
         .prose-section h5 { font-weight: 700; font-size: 1.1rem; color: #334155; margin-top: 1rem; }
         .prose-section p, .prose-section ul { font-size: 1.1rem; line-height: 1.7; color: #334155; }
         .prose-section li { margin-left: 1.5rem; margin-bottom: 0.5rem; list-style-type: disc; }
@@ -97,11 +116,11 @@
 
     <div class="main-container">
         <div class="timeline-panel">
-            <header class="mb-8">
+            <header class="timeline-header">
                 <h1 class="text-3xl font-black text-slate-800">The Economic Faultline</h1>
                 <p class="text-slate-600">Click an event to view its dossier.</p>
             </header>
-            <div class="relative">
+            <div class="timeline-scroll-area">
                 <div class="timeline-line"></div>
                 <div id="timeline-events-container">
                     </div>
@@ -140,21 +159,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const dossierArea = document.getElementById('dossier-content-area');
     let map;
 
-    // Sort events chronologically
     events.sort((a, b) => a.year - b.year);
 
-    // Populate timeline events
     events.forEach(event => {
         const eventEl = document.createElement('div');
         eventEl.className = 'timeline-event';
         eventEl.dataset.eventId = event.id;
-        let yearText = Math.floor(event.year);
-        if (event.year > 2024 && event.year < 2026) {
+        let yearText = String(Math.floor(event.year));
+        if (event.title.includes('(Proj.)')) {
              yearText = 'Projected 2025';
-        } else if (event.year === 2001.5) {
-             yearText = '2001-2002';
-        } else if (event.year === 2015.5) {
-             yearText = '2015'; // Grouping for display
         }
         eventEl.innerHTML = `<p class="event-year">${yearText}</p><p class="event-title">${event.title}</p>`;
         timelineContainer.appendChild(eventEl);
@@ -167,15 +180,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const eventId = el.dataset.eventId;
             const event = events.find(e => e.id === eventId);
             
-            // Update active state
             timelineEvents.forEach(e => e.classList.remove('active'));
             el.classList.add('active');
 
-            // Populate dossier
             dossierArea.innerHTML = `
                 <div class="dossier-content">
                     <header class="mb-8 border-b-2 pb-4 border-slate-200">
-                        <p class="chapter-header flex items-center gap-3"><i class="fas ${event.icon}"></i>${event.category}</p>
+                        <p class="chapter-header flex items-center gap-3"><i class="fas ${event.icon} fa-fw"></i>${event.category}</p>
                         <h2 class="dossier-header">${event.title} <span class="dossier-year">(${el.querySelector('.event-year').textContent})</span></h2>
                     </header>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -188,28 +199,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             `;
             
-            // Animate content in
             setTimeout(() => {
                 dossierArea.querySelector('.dossier-content').classList.add('visible');
             }, 50);
 
-            // Initialize map
             if(map) map.remove();
-            map = L.map(`dossier-map-${event.id}`, { center: [event.lat, event.lng], zoom: event.zoom });
+            map = L.map(`dossier-map-${event.id}`, { center: [event.lat, event.lng], zoom: event.zoom, attributionControl: false }).addControl(L.control.attribution({position:'bottomright'}));
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: 'CARTO' }).addTo(map);
             L.marker([event.lat, event.lng]).addTo(map);
             
-            // Re-initialize charts
             const textAndGridColor = '#64748b';
             if (event.id === 'kargil') new Chart(document.getElementById('kargilChart'), { type: 'bar', data: { labels: ['GDP Growth'], datasets: [{ label: 'Projected', data: [8], backgroundColor: '#d1d5db' }, { label: 'Actual', data: [3.66], backgroundColor: '#dc2626' }] }, options: { scales: { y: { beginAtZero: true, ticks: { color: textAndGridColor, callback: v => `${v}%` } }, x: { ticks: { color: textAndGridColor } } }, plugins: { legend: { position: 'bottom', labels: { color: textAndGridColor } } } } });
             if (event.id === 'fatf') new Chart(document.getElementById('fatfChart'), { type: 'bar', data: { labels: ['Consumption', 'Exports', 'FDI'], datasets: [{ label: 'Damage in $ Billions', data: [22, 4.5, 3.6], backgroundColor: ['#f97316', '#eab308', '#84cc16'] }] }, options: { indexAxis: 'y', scales: { x: { beginAtZero: true, ticks: { color: textAndGridColor, callback: v => `$${v}B` } }, y: { ticks: { color: textAndGridColor } } }, plugins: { legend: { display: false } } } });
             if (event.id === 'debt') new Chart(document.getElementById('debtChart'), { type: 'doughnut', data: { labels: ['Interest Payments', 'Other Expenditures'], datasets: [{ data: [57, 43], backgroundColor: ['#dc2626', '#e2e8f0'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: textAndGridColor } }, tooltip: { bodyFont: { size: 14 } } } } });
-
         });
     });
 
-    // Automatically click the first event on load
-    timelineEvents[0].click();
+    if (timelineEvents.length > 0) {
+       timelineEvents[0].click();
+    }
 });
 </script>
 </body>
