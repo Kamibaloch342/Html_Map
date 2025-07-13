@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Economic Faultline: The Definitive Briefing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f1f5f9; /* Light mode background */
+            color: #334155; /* Dark text for light mode */
+        }
+        #map {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100vh;
+            z-index: 1;
+        }
+        .leaflet-container {
+            background: #e2e8f0 !important; /* Light map background */
+        }
+        #story {
+            position: relative;
+            width: 50%;
+            margin-left: 50%;
+            z-index: 10;
+            background-color: #ffffff;
+        }
+        .chapter {
+            min-height: 100vh;
+            padding: 10vh 4rem 10vh 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 1px solid #e2e8f0;
+            opacity: 0.4;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .chapter.active {
+            opacity: 1;
+        }
+        .chapter-header {
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #64748b;
+        }
+        .chapter-title {
+            font-weight: 900;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            color: #1e293b;
+        }
+        .chapter-year {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #94a3b8;
+        }
+        .prose-section h4 {
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 1rem;
+            color: #475569;
+            margin-top: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .prose-section p, .prose-section ul {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #334155;
+        }
+        .prose-section li { margin-bottom: 0.5rem; }
+        .kpi {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        .kpi-value {
+            font-weight: 800;
+            font-size: 2.5rem;
+            line-height: 1;
+            color: #1e293b;
+        }
+        .kpi-label { font-size: 1rem; color: #64748b; }
+    </style>
+</head>
+<body>
+    
+    <div id="map"></div>
+
+    <div id="story">
+        <section id="intro" class="chapter active">
+            <h1 class="text-6xl font-black text-slate-900">The Economic Faultline</h1>
+            <p class="text-2xl text-slate-600 mt-4">A Comprehensive Intelligence Briefing on the Relationship Between Economics & National Security.</p>
+            <p class="text-lg text-slate-500 mt-8">Based on the work of Dr. Fareeha Armughan, Naval War College</p>
+            <p class="mt-12 text-center text-slate-500 animate-pulse">Scroll down to begin the analysis</p>
+        </section>
+
+        <section id="afghan-migration" class="chapter">
+            <header><p class="chapter-header flex items-center gap-3"><i class="fas fa-people-arrows"></i>Migration & Border Strain</p><h2 class="chapter-title">Afghan Migration <span class="chapter-year">(1979-Present)</span></h2></header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="prose-section">
+                    <h4>Reason</h4><p>Over 3.7 million Afghans live in Pakistan, including 1.4 million registered refugees and over 1.3 million undocumented migrants. Post-August 2021 Taliban takeover led to a surge in illegal crossings.</p>
+                    <h4>Economic Impact</h4><ul><li><strong>Strain on Public Services:</strong> Afghan refugees overcrowd healthcare and education systems: hospitals in urban centres operate at 175% capacity, and classroom congestion has worsened. Hosting 700,000 new arrivals is estimated to cost $2.2 billion over three years.</li><li><strong>Labor Market Impact & Wage Suppression:</strong> Afghan migrants fill the informal labor market, often accepting wages lower than local workers—this suppresses local wages and increases unemployment among Pakistanis.</li><li><strong>Revenue Loss & Smuggling-Linked Costs:</strong> Many Afghan traders operate unofficially, eroding tax revenue. Illicit economies thrive in border regions; fuel and currency smuggling cost Pakistan $3.3 billion annually.</li></ul>
+                </div>
+                <div class="space-y-4">
+                    <div class="kpi"><div class="kpi-value">3.7+ Million</div><div class="kpi-label">Afghans in Pakistan</div></div>
+                    <div class="kpi"><div class="kpi-value">$2.2 Billion</div><div class="kpi-label">Cost of New Arrivals (3 Yrs)</div></div>
+                    <div class="kpi"><div class="kpi-value">$3.3 Billion</div><div class="kpi-label">Annual Loss from Smuggling</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kargil" class="chapter">
+            <header><p class="chapter-header flex items-center gap-3"><i class="fas fa-crosshairs"></i>Hostilities with India</p><h2 class="chapter-title">Kargil War <span class="chapter-year">(1999)</span></h2></header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="prose-section">
+                    <h4>Reason</h4><p>A covert infiltration of Pakistani soldiers and paramilitary forces—disguised as Kashmiri militants—into strategic positions on the Indian side of the Line of Control (LoC).</p>
+                    <h4>Comment & Implications</h4><p>The conflict placed immense strain on Pakistan’s fiscal resources, diverting public funds from development to defence and causing a noticeable slowdown in economic activity. The war deeply undermined investor confidence, leading to a decline in investment and weakening prospects for long-term economic growth and private sector development. It aggravated existing structural weaknesses in the economy, leaving Pakistan more exposed to future shocks.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-lg border"><canvas id="kargilChart"></canvas></div>
+                    <div class="kpi"><div class="kpi-value">$376 Million</div><div class="kpi-label">Foreign Investment Inflow (FY99)</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="standoff" class="chapter">
+            <header><p class="chapter-header flex items-center gap-3"><i class="fas fa-burst"></i>Hostilities with India</p><h2 class="chapter-title">Military Standoff <span class="chapter-year">(2001-2002)</span></h2></header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="prose-section">
+                    <h4>Reason</h4><p>Alleged Pakistan-based terror involvement in the 2001 Indian Parliament attack.</p>
+                    <h4>Comment & Implications</h4><p>Heavy military preparation drained fiscal resources, displacing key development and stabilization priorities. Financial market reactions highlighted Pakistan’s vulnerability to geopolitical tensions. Trade disruption hurt airlines and exporters, further constraining government revenue in a period of global uncertainty post-9/11.</p>
+                </div>
+                <div class="flex flex-col justify-center items-center h-full space-y-4">
+                    <div class="kpi w-full"><div class="kpi-value">$1.2 Billion</div><div class="kpi-label">Direct Military Deployment Costs</div></div>
+                    <div class="text-slate-500">(Representing ~1.9% of GDP)</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fatf" class="chapter">
+            <header><p class="chapter-header flex items-center gap-3"><i class="fas fa-gavel"></i>Financial & Regulatory Pressure</p><h2 class="chapter-title">FATF Grey Listing <span class="chapter-year">(2008-2022)</span></h2></header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="prose-section">
+                    <h4>Reason</h4><ul><li>Weak anti-money laundering (AML) & counter-terror financing (CFT) regulations.</li><li>Lack of compliance in freezing assets of terror outfits and regulating charities.</li><li>Inadequate actions against terror financing, especially linked to LeT, JeM, and others.</li></ul>
+                    <h4>Comment & Implications</h4><p>This isn't just economic loss—reduced consumption, shrinking exports, and collapsed investment erode public welfare and can become security threats, fueling social unrest or extremist narratives. Greylisting also puts Pakistan in a tough position geopolitically, locking in economic vulnerability and affecting long-term developmental priorities.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="kpi w-full"><div class="kpi-value">$38 Billion</div><div class="kpi-label">Total Estimated Real GDP Loss</div></div>
+                    <div class="bg-slate-50 p-4 rounded-lg border"><canvas id="fatfChart"></canvas></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="turkey-migration" class="chapter">
+            <header><p class="chapter-header flex items-center gap-3"><i class="fas fa-person-walking-arrow-right"></i>Migration & Border Strain</p><h2 class="chapter-title">Illegal Migration via Turkey <span class="chapter-year">(2015-Present)</span></h2></header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="prose-section">
+                    <h4>Reason</h4><p>Thousands of Pakistanis attempting illegal migration to Europe via Turkey, who began mass deportations since 2018. In 2022 alone, over 13,000 Pakistanis were deported, many returning with no reintegration plan.</p>
+                    <h4>Economic Impact</h4><ul><li><strong>High Smuggling Revenue:</strong> Human trafficking networks generate about Rs 40–50 billion annually for criminal syndicates.</li><li><strong>Large-Scale Illicit Transfers:</strong> The "dunki" route costs around $11,926 per person, implying total illicit transfers of over US$300 million yearly.</li><li><strong>Remittance Leakage:</strong> Irregular migration deprives Pakistan of formal remittance inflows, fueling fiscal instability.</li></ul>
+                    <h4>Comment & Implications</h4><p>The large-scale movement of migrants, coupled with trafficking revenue, erodes state authority at borders and fosters corruption, weakening economic and security structures.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="kpi"><div class="kpi-value">>$300 Million</div><div class="kpi-label">Annual Illicit Transfers</div></div>
+                    <div class="kpi"><div class="kpi-value">~Rs 50 Billion</div><div class="kpi-label">Generated by Trafficking Networks</div></div>
+                    <div class="kpi"><div class="kpi-value">13,000+</div><div class="kpi-label">Deported from Turkey (2022)</div></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="cpec" class="chapter">
+            <header><p class="chapter-header flex items-center gap-3"><i class="fa-solid fa-shield-halved"></i>Internal Security</p><h2 class="chapter-title">CPEC Insurgency <span class="chapter-year">(2015-2025)</span></h2></header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="prose-section">
+                    <h4>Reason</h4><p>A growing wave of armed resistance and militant attacks targeting the China–Pakistan Economic Corridor (CPEC), particularly in Balochistan and parts of Khyber Pakhtunkhwa. It’s driven by a mix of ethno-nationalist grievances, resource exploitation concerns, and geopolitical tensions.</p>
+                    <h4>Comment & Implications</h4><p>The cost of securing CPEC is substantial. Already fragile finances are strained by direct security spending, consumer impacts via electricity tariff surcharges, and project delays. These pressures threaten Pakistan’s economic objectives under CPEC and weaken strategic autonomy, as resources are redirected from development to defence.</p>
+                </div>
+                 <div class="space-y-4">
+                    <div class="kpi"><div class="kpi-value">$21.6 Billion</div><div class="kpi-label">Approx. Cost for CPEC Protection (SSD)</div></div>
+                    <div class="kpi"><div class="kpi-value">$4.8 Million / Year</div><div class="kpi-label">Paid by Consumers via Electricity Tariffs</div></div>
+                    <div class="kpi"><div class="kpi-value">$11.4 Million</div><div class="kpi-label">Reportedly Paid in Compensation</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="uri" class="chapter">
+            <header><p class="chapter-header flex items-center gap-3"><i class="fas fa-burst"></i>Hostilities with India</p><h2 class="chapter-title">Uri Attack & “Surgical Strikes” <span class="chapter-year">(2016)</span></h2></header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="prose-section">
+                    <h4>Reason</h4><p>Terrorist attack on an Indian army base in Uri; followed by a retaliatory cross-LoC response from India.</p>
+                    <h4>Comment & Implications</h4><p>While equity markets showed resilience, the fixed-income market responded sharply, indicating deeper investor caution toward national debt. Even limited military escalations can raise sovereign borrowing costs, complicating Pakistan's access to financing and signaling long-term vulnerability.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="kpi"><div class="kpi-value text-red-600">+43 bps</div><div class="kpi-label">Jump in 5-Year Sovereign Sukuk Yield</div></div>
+                    <div class="kpi"><div class="kpi-value text-red-600">-PKR 76 Million</div><div class="kpi-label">Foreign Investor Outflow (Single Session)</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pulwama" class="chapter">
+            <header><p class="chapter-header flex items-center gap-3"><i class="fas fa-crosshairs"></i>Hostilities with India</p><h2 class="chapter-title">Pulwama & Balakot <span class="chapter-year">(2019)</span></h2></header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="prose-section">
+                    <h4>Reason</h4><p>Suicide bombing in Pulwama, followed by an Indian airstrike on alleged JeM camps in Balakot.</p>
+                    <h4>Comment & Implications</h4><p>The prolonged airspace closure severely disrupted aviation revenues and logistics. The withdrawal of MFN status and trade barriers constricted Pakistan’s access to Indian markets, amplifying export vulnerabilities and triggering caution in financial markets.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="kpi"><div class="kpi-value">$50 Million</div><div class="kpi-label">Loss from Airspace Closure</div></div>
+                    <div class="kpi"><div class="kpi-value text-red-600">200%</div><div class="kpi-label">Tariffs Imposed by India</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ukraine-war" class="chapter">
+             <header><p class="chapter-header flex items-center gap-3"><i class="fas fa-globe"></i>Geopolitical & External Shocks</p><h2 class="chapter-title">Russia-Ukraine War <span class="chapter-year">(2022)</span></h2></header>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="prose-section">
+                    <h4>Comment & Implications</h4><p>The war indirectly deepened Pakistan’s economic crisis, driving up inflation, weakening the currency, and straining reserves. It exposed Pakistan’s energy dependency, food insecurity, and vulnerability to global shocks. Strategically, the conflict forced Pakistan to walk a diplomatic tightrope between the West and the Russia–China bloc.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="kpi"><div class="kpi-value text-red-600">+75%</div><div class="kpi-label">Oil Import Bill</div></div>
+                        <div class="kpi"><div class="kpi-value text-red-600">+150%</div><div class="kpi-label">Wheat Import Bill</div></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                         <div class="kpi"><div class="kpi-value">400,000</div><div class="kpi-label">Jobs Lost</div></div>
+                         <div class="kpi"><div class="kpi-value">2.25 M</div><div class="kpi-label">Pushed into Poverty</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="debt" class="chapter">
+             <header><p class="chapter-header flex items-center gap-3"><i class="fas fa-building-columns"></i>Internal Economic Stress</p><h2 class="chapter-title">Debt & IMF Conditionality <span class="chapter-year">(FY 2025-26)</span></h2></header>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="prose-section">
+                    <h4>Economic Impact</h4><p>Pakistan’s public debt stands at approximately PKR 76 trillion. A large portion of government revenue is tied up in debt servicing, leaving insufficient funds for essential sectors. IMF-mandated reforms curb domestic demand, slowing down recovery and job creation.</p>
+                    <h4>Implications for National Security</h4><p>Austerity measures heighten public dissatisfaction, creating conditions for unrest. IMF conditionalities narrow Pakistan’s policy choices, impacting autonomy in critical geopolitical decisions.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-slate-50 p-4 rounded-lg border h-48 w-48 mx-auto"><canvas id="debtChart"></canvas></div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="kpi"><div class="kpi-value text-green-600">+20%</div><div class="kpi-label">Defence Outlays</div></div>
+                        <div class="kpi"><div class="kpi-value text-red-600">-7%</div><div class="kpi-label">Social Spending</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="trade-war" class="chapter">
+            <header><p class="chapter-header flex items-center gap-3"><i class="fas fa-globe"></i>Geopolitical & External Shocks</p><h2 class="chapter-title">US Global Trade War <span class="chapter-year">(Projected 2025)</span></h2></header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="prose-section">
+                    <h4>Economic Impact on Pakistan</h4><ul><li><strong>Projected Export Losses:</strong> A 29% U.S. tariff threat could slash exports by 20–25%, amounting to annual losses of $1.1–1.4 billion. Textiles are most vulnerable, risking half a million jobs.</li><li><strong>Trade Deficit & Currency Pressures:</strong> Export declines may widen the current account deficit, weaken the rupee, and fuel inflation.</li></ul>
+                    <h4>National Security Implications</h4><p>Economic instability could undermine social cohesion and elevate risks of internal unrest. Diplomatic strain would limit options for economic diversification.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="kpi"><div class="kpi-value">$1.4 Billion</div><div class="kpi-label">Projected Annual Export Loss</div></div>
+                    <div class="kpi"><div class="kpi-value">500,000</div><div class="kpi-label">Jobs at Risk (Textile Sector)</div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sindoor" class="chapter">
+            <header><p class="chapter-header flex items-center gap-3"><i class="fas fa-crosshairs"></i>Hostilities with India</p><h2 class="chapter-title">Operation Sindoor <span class="chapter-year">(Projected 2025)</span></h2></header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                <div class="prose-section">
+                    <h4>Reason</h4><p>Projected Indian precision strikes after a terrorist attack in Pahalgam, leading to suspension of the Indus Waters Treaty.</p>
+                    <h4>Comment & Implications</h4><p>India's suspension of the Indus Waters Treaty threatens agriculture and hydropower. With shallow foreign exchange reserves, Pakistan is less able to buffer external shocks. Weakened IMF leverage and increased military budget pressure from India’s diplomatic push would exacerbate Pakistan's economic fragility.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="kpi"><div class="kpi-value text-red-600">1.5 - 2%</div><div class="kpi-label">Projected GDP Decline</div></div>
+                    <div class="kpi"><div class="kpi-value">$15-20 Billion</div><div class="kpi-label">Estimated Annual Economic Impact</div></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="outro" class="chapter">
+            <h2 class="chapter-title">Briefing Complete</h2>
+            <p class="text-2xl text-slate-500 mt-4">This analysis has presented a chronological deep-dive into the critical events shaping Pakistan's economic and national security landscape. Each event demonstrates a complex interplay of internal vulnerabilities and external pressures.</p>
+        </section>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const map = L.map('map', { center: [28, 60], zoom: 4.5, zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false, doubleClickZoom: false });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', { attribution: 'CARTO' }).addTo(map);
+
+    const eventData = {
+        'intro': { lat: 28, lng: 60, zoom: 4.5 },
+        'afghan-migration': { lat: 32.5, lng: 68.0, zoom: 6, marker: [32.5, 68.0], label: "Pak-Afghan Border Region" },
+        'kargil': { lat: 34.55, lng: 76.08, zoom: 8, marker: [34.55, 76.08], label: "Kargil, Line of Control" },
+        'standoff': { lat: 30.0, lng: 73.0, zoom: 6, marker: [30.0, 73.0], label: "Pak-India Border" },
+        'fatf': { lat: 48.85, lng: 2.35, zoom: 5, marker: [48.85, 2.35], label: "FATF HQ, Paris" },
+        'turkey-migration': { lat: 39, lng: 35, zoom: 5, marker: [39, 35], label: "Migration Route via Turkey" },
+        'cpec': { lat: 27, lng: 65, zoom: 6, marker: [27, 65], label: "CPEC Route / Balochistan" },
+        'uri': { lat: 34.08, lng: 74.04, zoom: 9, marker: [34.08, 74.04], label: "Uri, Kashmir" },
+        'pulwama': { lat: 33.87, lng: 74.92, zoom: 9, marker: [33.87, 74.92], label: "Pulwama District" },
+        'ukraine-war': { lat: 48.3, lng: 31.1, zoom: 5, marker: [48.3, 31.1], label: "Ukraine" },
+        'debt': { lat: 30.37, lng: 69.34, zoom: 5.5, marker: [33.68, 73.04], label: "Islamabad" },
+        'trade-war': { lat: 38, lng: -97, zoom: 3, marker: [38.9, -77.03], label: "Washington D.C., USA" },
+        'sindoor': { lat: 31, lng: 73, zoom: 6, marker: [31.52, 74.35], label: "Indus River Basin" },
+        'outro': { lat: 28, lng: 60, zoom: 4.5 }
+    };
+    let currentMarker = null;
+
+    const textAndGridColor = '#64748b';
+    new Chart(document.getElementById('kargilChart'), { type: 'bar', data: { labels: ['GDP Growth'], datasets: [{ label: 'Projected', data: [8], backgroundColor: '#d1d5db' }, { label: 'Actual', data: [3.66], backgroundColor: '#dc2626' }] }, options: { scales: { y: { beginAtZero: true, ticks: { color: textAndGridColor, callback: v => `${v}%` } }, x: { ticks: { color: textAndGridColor } } }, plugins: { legend: { position: 'bottom', labels: { color: textAndGridColor } } } } });
+    new Chart(document.getElementById('fatfChart'), { type: 'bar', data: { labels: ['Consumption', 'Exports', 'FDI'], datasets: [{ label: 'Damage in $ Billions', data: [22, 4.5, 3.6], backgroundColor: ['#f97316', '#eab308', '#84cc16'] }] }, options: { indexAxis: 'y', scales: { x: { beginAtZero: true, ticks: { color: textAndGridColor, callback: v => `$${v}B` } }, y: { ticks: { color: textAndGridColor } } }, plugins: { legend: { display: false } } } });
+    new Chart(document.getElementById('debtChart'), { type: 'doughnut', data: { labels: ['Interest Payments', 'Other Expenditures'], datasets: [{ data: [57, 43], backgroundColor: ['#dc2626', '#e2e8f0'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { bodyFont: { size: 14 } } } } });
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            const id = entry.target.getAttribute('id');
+            const chapterData = eventData[id];
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                if (chapterData) {
+                    map.flyTo([chapterData.lat, chapterData.lng], chapterData.zoom, { animate: true, duration: 1.5 });
+                    if (currentMarker) map.removeLayer(currentMarker);
+                    if (chapterData.marker) { currentMarker = L.marker(chapterData.marker).addTo(map).bindPopup(chapterData.label).openPopup(); }
+                }
+            } else { entry.target.classList.remove('active'); }
+        });
+    }, { threshold: 0.6 });
+    document.querySelectorAll('.chapter').forEach(chapter => observer.observe(chapter));
+});
+</script>
+
+</body>
+</html>
