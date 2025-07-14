@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Comparison Chart</title>
-    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -46,8 +44,7 @@
         </div>
         
         <div id="chart" class="space-y-6">
-            <!-- Chart bars will be dynamically inserted here by JavaScript -->
-        </div>
+            </div>
     </div>
 
     <script>
@@ -59,11 +56,14 @@
                 { name: 'Pakistan', iso: 'pk', rank: 144, score: 2.80, gradient: 'bg-gradient-to-r from-green-500 to-emerald-500' },
                 { name: 'Iran', iso: 'ir', rank: 142, score: 2.75, gradient: 'bg-gradient-to-r from-orange-400 to-amber-500' },
                 { name: 'India', iso: 'in', rank: 115, score: 2.23, gradient: 'bg-gradient-to-r from-blue-500 to-indigo-500' },
-                { name: 'China', iso: 'cn', rank: 98, score: 2.09, gradient: 'bg-gradient-to-r from-purple-500 to-violet-500' }
+                { name: 'China', iso: 'cn', rank: 98, score: 2.09, gradient: 'bg-gradient-to-r from-purple-500 to-violet-500' },
+                // --- Added Countries ---
+                { name: 'Russia', iso: 'ru', rank: 163, score: 3.44, gradient: 'bg-gradient-to-r from-rose-600 to-red-600' },
+                { name: 'Iceland', iso: 'is', rank: 1, score: 1.09, gradient: 'bg-gradient-to-r from-sky-400 to-cyan-400' }
             ];
 
-            // Sort data by score in descending order for a better visual hierarchy.
-            countryData.sort((a, b) => b.score - a.score);
+            // Sort data by rank in ascending order (from 1 downwards).
+            countryData.sort((a, b) => a.rank - b.rank);
 
             // Find the maximum score to scale the bars correctly.
             const maxScore = Math.max(...countryData.map(c => c.score));
@@ -104,8 +104,9 @@
             // Use a timeout to ensure the elements are in the DOM before changing their width.
             setTimeout(() => {
                 const bars = document.querySelectorAll('.chart-bar-inner');
-                bars.forEach((bar, index) => {
-                    const country = countryData[index];
+                // The countryData array is already sorted, so we can use its order to set the width.
+                countryData.forEach((country, index) => {
+                    const bar = bars[index];
                     const barWidthPercentage = (country.score / maxScore) * 100;
                     bar.style.width = `${barWidthPercentage}%`;
                 });
