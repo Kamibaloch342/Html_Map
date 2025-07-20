@@ -18,17 +18,16 @@
             --text-color: #1F2937;
             --text-muted: #6B7280;
             --accent-color: #4F46E5;
-            --danger-color: #EF4444;
             --sidebar-bg: rgba(255, 255, 255, 0.55);
-            --tooltip-bg: rgba(255, 255, 255, 0.8);
+            --tooltip-bg: rgba(255, 255, 255, 0.85);
             --item-bg: rgba(255, 255, 255, 0.3);
             --item-hover-bg: rgba(255, 255, 255, 0.7);
             --border-color: rgba(229, 231, 235, 1);
             --shadow-color: rgba(0, 0, 0, 0.08);
             --blur-intensity: 15px;
-            --color-balanced: #22c55e; /* Green */
-            --color-mostly: #3b82f6;   /* Blue */
-            --color-skewed: #f97316;   /* Orange */
+            --color-all-top: #22c55e;    /* Green */
+            --color-mixed: #f97316;     /* Orange */
+            --color-none-top: #ef4444; /* Red */
         }
 
         body.dark-mode {
@@ -37,14 +36,14 @@
             --text-muted: #9CA3AF;
             --accent-color: #6366F1;
             --sidebar-bg: rgba(29, 41, 59, 0.5);
-            --tooltip-bg: rgba(29, 41, 59, 0.75);
+            --tooltip-bg: rgba(29, 41, 59, 0.8);
             --item-bg: rgba(55, 65, 81, 0.4);
             --item-hover-bg: rgba(55, 65, 81, 0.8);
             --border-color: rgba(255, 255, 255, 0.08);
             --shadow-color: rgba(0, 0, 0, 0.25);
-            --color-balanced: #4ade80;
-            --color-mostly: #60a5fa;
-            --color-skewed: #fb923c;
+            --color-all-top: #4ade80;
+            --color-mixed: #fb923c;
+            --color-none-top: #f87171;
         }
 
         html, body {
@@ -57,11 +56,11 @@
         body::before {
             content: ''; position: absolute; width: 200%; height: 200%;
             top: -50%; left: -50%; z-index: -1;
-            background: linear-gradient(45deg, rgba(79, 70, 229, 0.15), rgba(99, 102, 241, 0.1), rgba(34, 197, 94, 0.15), rgba(59, 130, 246, 0.15));
+            background: linear-gradient(45deg, rgba(79, 70, 229, 0.15), rgba(99, 102, 241, 0.1), rgba(34, 197, 94, 0.15), rgba(239, 68, 68, 0.1));
             animation: gradient-pan 25s ease infinite;
         }
         body.dark-mode::before {
-            background: linear-gradient(45deg, rgba(79, 70, 229, 0.2), rgba(99, 102, 241, 0.15), rgba(74, 222, 128, 0.1), rgba(96, 165, 250, 0.15));
+            background: linear-gradient(45deg, rgba(79, 70, 229, 0.2), rgba(99, 102, 241, 0.15), rgba(74, 222, 128, 0.1), rgba(248, 113, 113, 0.1));
         }
 
         .dashboard-container { position: relative; height: 100vh; width: 100vw; animation: fade-in 0.8s ease; }
@@ -73,7 +72,6 @@
         #sidebar {
             position: absolute; top: 20px; left: 20px; bottom: 20px; width: 380px; z-index: 1001;
             background: var(--sidebar-bg); backdrop-filter: blur(var(--blur-intensity));
-            -webkit-backdrop-filter: blur(var(--blur-intensity));
             border: 1px solid var(--border-color); border-radius: 24px;
             box-shadow: 0 8px 32px 0 var(--shadow-color);
             padding: 25px; display: flex; flex-direction: column; transition: all 0.3s ease;
@@ -96,63 +94,61 @@
         .filter-group { flex: 1; }
         .filter-group label { font-weight: 600; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; display: block; text-transform: uppercase;}
         .filter-group select {
-            width: 100%; padding: 10px; border-radius: 10px;
-            border: 1px solid var(--border-color);
-            background: var(--item-bg); color: var(--text-color);
-            font-family: var(--font-family); font-size: 14px;
+            width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color);
+            background: var(--item-bg); color: var(--text-color); font-family: var(--font-family); font-size: 14px;
             -webkit-appearance: none; appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2' stroke='%239ca3af' class='w-6 h-6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' /%3E%3C/svg%3E");
             background-repeat: no-repeat; background-position: right 10px center; background-size: 16px;
             cursor: pointer;
         }
 
-        #trainer-list-container { flex-grow: 1; overflow: hidden; display: flex; flex-direction: column; }
-        .control-group h3 { font-size: 16px; font-weight: 600; margin: 0 0 15px 0; }
-        #trainer-list { flex-grow: 1; overflow-y: auto; padding-right: 10px; margin-right: -10px; }
-        #trainer-list::-webkit-scrollbar { width: 5px; }
-        #trainer-list::-webkit-scrollbar-track { background: transparent; }
-        #trainer-list::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 10px; }
+        #district-list-container { flex-grow: 1; overflow: hidden; display: flex; flex-direction: column; }
+        .control-group h3 { font-size: 16px; font-weight: 600; margin: 15px 0 15px 0; border-top: 1px solid var(--border-color); padding-top: 20px;}
+        #district-list { flex-grow: 1; overflow-y: auto; padding-right: 10px; margin-right: -10px; }
+        #district-list::-webkit-scrollbar { width: 5px; }
+        #district-list::-webkit-scrollbar-track { background: transparent; }
+        #district-list::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 10px; }
 
-        .trainer-item {
-            display: flex; align-items: center; justify-content: space-between;
+        .district-item {
             padding: 12px 15px; border-radius: 14px; cursor: pointer;
             margin-bottom: 10px; border: 1px solid transparent; background-color: var(--item-bg);
             transition: all 0.25s ease; opacity: 0;
         }
-        .trainer-item:hover { background-color: var(--item-hover-bg); transform: scale(1.03); border-color: var(--border-color); }
-        .trainer-item.active { background-color: var(--accent-color); color: white; transform: scale(1.04); box-shadow: 0 4px 15px -2px var(--accent-color); }
-        .trainer-item.active .trainer-sub, .trainer-item.active .trainer-meta-item, .trainer-item.active .value { color: rgba(255, 255, 255, 0.9); }
-
-        .trainer-icon { margin-right: 15px; flex-shrink: 0; font-size: 20px; text-align: center; width: 20px; }
-        .trainer-name { font-weight: 700; font-size: 15px; }
-        .trainer-sub { font-size: 12px; color: var(--text-muted); transition: color 0.25s ease; }
-        .trainer-meta { text-align: right; }
-        .trainer-meta-item { font-size: 12px; font-weight: 500; color: var(--text-muted); transition: color 0.25s ease; }
-        .trainer-meta-item .value { font-weight: 800; color: var(--text-color); transition: color 0.25s ease; }
-
-        #stats-display { padding: 15px; background: var(--item-bg); border-radius: 14px; margin-top: 15px; }
-        .stat-item-main { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
-        .stat-item-main .label { color: var(--text-muted); font-weight: 500; }
-        .stat-item-main .value { font-weight: 700; font-size: 22px; color: var(--accent-color); }
+        .district-item:hover { background-color: var(--item-hover-bg); transform: scale(1.03); border-color: var(--border-color); }
+        .district-item.active { background-color: var(--accent-color); color: white; transform: scale(1.04); box-shadow: 0 4px 15px -2px var(--accent-color); }
+        .district-item.active .district-sub, .district-item.active .district-meta .value { color: rgba(255, 255, 255, 0.9); }
+        .district-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .district-name { font-weight: 700; font-size: 16px; }
+        .district-sub { font-size: 12px; color: var(--text-muted); transition: color 0.25s ease; }
+        .district-meta { display: flex; gap: 15px; margin-top: 10px; font-size: 12px; text-align: right;}
+        .district-meta .label { color: var(--text-muted); transition: color 0.25s ease; }
+        .district-meta .value { font-weight: 800; font-size: 18px; color: var(--text-color); transition: color 0.25s ease; display: block; line-height: 1;}
+        .district-item.active .district-meta .label {color: rgba(255,255,255,0.7);}
 
         .custom-tooltip {
             background: var(--tooltip-bg); backdrop-filter: blur(var(--blur-intensity));
             border: 1px solid var(--border-color); box-shadow: 0 8px 32px 0 var(--shadow-color);
-            border-radius: 16px; width: 300px; padding: 0;
-            transform-origin: 0 50%;
+            border-radius: 16px; width: 350px; padding: 0;
             animation: fade-in-slide-up 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         .leaflet-tooltip-content { padding: 0 !important; }
 
         .tooltip-header { padding: 15px 20px; border-bottom: 1px solid var(--border-color); }
         .tooltip-header .sub-text { font-size: 13px; color: var(--text-muted); font-weight: 500; }
-        .tooltip-header .name { font-size: 22px; font-weight: 800; color: var(--accent-color); margin: 2px 0 0 0; }
+        .tooltip-header .name { font-size: 22px; font-weight: 800; margin: 2px 0 0 0; }
         .tooltip-body { padding: 15px 20px; }
-        .tooltip-stat { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px;}
-        .tooltip-stat .label { font-size: 14px; color: var(--text-muted); }
-        .tooltip-stat .value { font-size: 18px; font-weight: 700; }
+        .tooltip-body h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin: 0 0 10px 0; }
+        .tooltip-trainer-list { list-style: none; padding: 0; margin: 0; }
+        .tooltip-trainer-list li { background: rgba(0,0,0,0.03); padding: 8px 12px; border-radius: 8px; margin-bottom: 6px; }
+        .dark-mode .tooltip-trainer-list li { background: rgba(255,255,255,0.06); }
+        .trainer-info { display: flex; justify-content: space-between; align-items: center; }
+        .trainer-info .name { font-weight: 600; font-size: 15px;}
+        .trainer-info .status { font-size: 12px; padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+        .trainer-info .status.top { background-color: var(--color-all-top); color: white; }
+        .trainer-info .status.not-top { background-color: var(--color-none-top); color: white; opacity: 0.8; }
+        .trainer-cnic { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
-        .leaflet-marker-icon i { transition: transform 0.2s ease-in-out; }
+        .leaflet-marker-icon i { font-size: 32px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); transition: transform 0.2s ease-in-out; }
         .leaflet-marker-icon:hover i { transform: scale(1.2); }
 
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
@@ -177,23 +173,18 @@
 
             <div class="sidebar-filters">
                 <div class="filter-group">
-                    <label for="district-filter">District</label>
+                    <label for="district-filter">Filter by District</label>
                     <select id="district-filter"></select>
                 </div>
                 <div class="filter-group">
-                    <label for="rural-urban-filter">Rural/Urban</label>
+                    <label for="rural-urban-filter">Filter by Type</label>
                     <select id="rural-urban-filter"></select>
                 </div>
             </div>
 
-            <div class="control-group">
-                <h3 id="stats-title"><i class="fa-solid fa-chart-pie" style="margin-right:8px;"></i>Overview</h3>
-                <div id="stats-display"></div>
-            </div>
-
-            <div id="trainer-list-container">
-                <h3 id="trainer-list-title"><i class="fa-solid fa-users" style="margin-right:8px;"></i>Considered Trainers</h3>
-                <div id="trainer-list"></div>
+            <div id="district-list-container">
+                <h3 id="district-list-title"><i class="fa-solid fa-map-location-dot" style="margin-right:8px;"></i>Districts</h3>
+                <div id="district-list"></div>
             </div>
 
         </div>
@@ -208,26 +199,21 @@ document.addEventListener('DOMContentLoaded', async function () {
         attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a>'
     }).addTo(map);
 
-    // --- GOOGLE SHEET CONFIGURATION ---
     const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTmUXvPBNh567hVlZ_Ji7GzX4NQ4PXckWm5OJENJB6G_6zLxllNftJ-VEifKBESPlp6u0Uvw-xdLysh/pub?output=csv';
 
-    // --- DOM ELEMENT REFERENCES ---
     const districtFilter = document.getElementById('district-filter');
     const ruralUrbanFilter = document.getElementById('rural-urban-filter');
-    const trainerListContainer = document.getElementById('trainer-list');
-    const statsDisplay = document.getElementById('stats-display');
-    const trainerMarkersLayer = L.layerGroup().addTo(map);
+    const districtListContainer = document.getElementById('district-list');
+    const tehsilMarkersLayer = L.layerGroup().addTo(map);
     
-    // This will hold the processed data from the Google Sheet
-    let consideredTrainers = [];
+    let allTehsils = {}; // Key: Tehsil Name, Value: Tehsil object with trainers
+    let districtSummaries = {}; // Key: District Name, Value: summary object
 
-    // --- DATA FETCHING & PROCESSING ---
     function parseCSV(text) {
         const lines = text.trim().split(/\r?\n/);
         if (lines.length < 2) return [];
         const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
         return lines.slice(1).map(line => {
-            // This regex handles values that might be quoted (e.g., "Bahawalpur, City")
             const values = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g) || [];
             const obj = {};
             headers.forEach((header, i) => {
@@ -240,65 +226,141 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    async function loadData() {
+    async function loadAndProcessData() {
         try {
             const response = await fetch(GOOGLE_SHEET_URL);
-            if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
+            if (!response.ok) throw new Error(`Network response was not ok`);
             const csvText = await response.text();
             
             const allSheetData = parseCSV(csvText);
 
-            // **PRIMARY FILTERING LOGIC**
-            // Filter for trainers under consideration and with valid coordinates
-            consideredTrainers = allSheetData.filter(record => {
+            // 1. Filter for records that are under consideration and have valid data
+            const consideredRecords = allSheetData.filter(record => {
                 const isConsidered = record['Under Consideration?'] === '1';
-                const hasCoords = record.Latitude && record.Longitude && !isNaN(parseFloat(record.Latitude)) && !isNaN(parseFloat(record.Longitude));
-                if (isConsidered && !hasCoords) {
-                     console.warn('Considered trainer skipped due to invalid coordinates:', record.NAME);
+                const hasCoords = record.Latitude && record.Longitude && !isNaN(parseFloat(record.Latitude));
+                const hasTehsil = record['DUTY STATION(TEHSIL)'];
+                return isConsidered && hasCoords && hasTehsil;
+            });
+
+            // 2. Group trainers by Tehsil
+            allTehsils = {};
+            consideredRecords.forEach(record => {
+                const tehsilName = record['DUTY STATION(TEHSIL)'];
+                if (!allTehsils[tehsilName]) {
+                    allTehsils[tehsilName] = {
+                        name: tehsilName,
+                        district: record['DISTRICT'],
+                        type: record['Rural/Urban'],
+                        coords: [parseFloat(record.Latitude), parseFloat(record.Longitude)],
+                        headCount: parseInt(record['Total Head Count']) || 0,
+                        trainers: []
+                    };
                 }
-                return isConsidered && hasCoords;
-            }).map(record => ({ // Clean up the data structure
-                name: record['NAME'],
-                cnic: record['CNIC'],
-                province: record['PROVINCE'],
-                district: record['DISTRICT'],
-                tehsil: record['DUTY STATION(TEHSIL)'],
-                type: record['Rural/Urban'], // 'Rural' or 'Urban'
-                coords: [parseFloat(record.Latitude), parseFloat(record.Longitude)],
-                headCount: parseInt(record['Total Head Count']) || 0,
-            }));
-            
+                allTehsils[tehsilName].trainers.push({
+                    name: record['NAME'],
+                    cnic: record['CNIC'],
+                    isTopPerformer: record['Top_Performer?'] === 'Top_Performer'
+                });
+            });
+
+            // 3. Post-process Tehsils to add performance stats for color coding
+            Object.values(allTehsils).forEach(tehsil => {
+                const topPerformersCount = tehsil.trainers.filter(t => t.isTopPerformer).length;
+                if (topPerformersCount === tehsil.trainers.length) {
+                    tehsil.performanceStatus = 'all_top';
+                } else if (topPerformersCount === 0) {
+                    tehsil.performanceStatus = 'none_top';
+                } else {
+                    tehsil.performanceStatus = 'mixed';
+                }
+            });
+
+            // 4. Create summaries for each district for the sidebar list
+            districtSummaries = {};
+            Object.values(allTehsils).forEach(tehsil => {
+                const districtName = tehsil.district;
+                if (!districtSummaries[districtName]) {
+                    districtSummaries[districtName] = {
+                        name: districtName,
+                        totalTrainers: 0,
+                        uniqueTehsils: new Set()
+                    };
+                }
+                districtSummaries[districtName].totalTrainers += tehsil.trainers.length;
+                districtSummaries[districtName].uniqueTehsils.add(tehsil.name);
+            });
+            // Calculate total head count based on unique tehsils
+            Object.values(districtSummaries).forEach(district => {
+                let totalHeadcount = 0;
+                district.uniqueTehsils.forEach(tehsilName => {
+                    totalHeadcount += allTehsils[tehsilName].headCount;
+                });
+                district.totalHeadcount = totalHeadcount;
+            });
+
             return true;
         } catch (error) {
-            console.error("Failed to load or process data from Google Sheet:", error);
-            document.getElementById('sidebar').innerHTML = `
-                <div style="text-align: center; padding-top: 50px; color: var(--danger-color);">
-                    <h3><i class="fa-solid fa-triangle-exclamation"></i> Data Error</h3>
-                    <p>Could not load data from the source.</p>
-                    <p style="font-size:12px; color:var(--text-muted)">Please check the Google Sheet link, column names, and your internet connection.</p>
-                </div>`;
+            console.error("Failed to load or process data:", error);
+            document.getElementById('sidebar').innerHTML = `<div style="text-align: center; padding-top: 50px; color: var(--color-none-top);"><h3><i class="fa-solid fa-triangle-exclamation"></i> Data Error</h3><p>Could not load or process data. Please check the Google Sheet link, column names, and data format.</p></div>`;
             return false;
         }
     }
 
-    // --- MAIN DASHBOARD LOGIC ---
     function initializeDashboard() {
         populateFilters();
+        populateDistrictList();
         addEventListeners();
         updateMapDisplay();
     }
 
     function populateFilters() {
-        const districts = ['All', ...new Set(consideredTrainers.map(d => d.district).filter(Boolean).sort())];
+        const districts = ['All', ...Object.keys(districtSummaries).sort()];
         const types = ['All', 'Rural', 'Urban'];
         
         districtFilter.innerHTML = districts.map(d => `<option value="${d}">${d}</option>`).join('');
         ruralUrbanFilter.innerHTML = types.map(t => `<option value="${t}">${t}</option>`).join('');
     }
 
+    function populateDistrictList() {
+        districtListContainer.innerHTML = '';
+        const sortedDistricts = Object.values(districtSummaries).sort((a, b) => a.name.localeCompare(b.name));
+
+        sortedDistricts.forEach((district, index) => {
+            const item = document.createElement('div');
+            item.className = 'district-item';
+            item.dataset.districtName = district.name;
+            item.innerHTML = `
+                <div class="district-header">
+                    <div class="district-name">${district.name}</div>
+                </div>
+                <div class="district-meta">
+                    <div class="meta-item">
+                        <span class="value">${district.totalTrainers}</span>
+                        <span class="label">Trainers</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="value">${district.totalHeadcount.toLocaleString()}</span>
+                        <span class="label">Headcount</span>
+                    </div>
+                </div>`;
+            item.style.animation = `fade-in-up 0.5s ${index * 0.03}s ease-out forwards`;
+
+            item.addEventListener('click', () => {
+                districtFilter.value = district.name;
+                ruralUrbanFilter.value = 'All'; // Reset type filter
+                updateMapDisplay();
+                setActiveDistrict(district.name);
+            });
+            districtListContainer.appendChild(item);
+        });
+    }
+
     function addEventListeners() {
         [districtFilter, ruralUrbanFilter].forEach(filter => {
-            filter.addEventListener('change', updateMapDisplay);
+            filter.addEventListener('change', () => {
+                updateMapDisplay();
+                setActiveDistrict(districtFilter.value);
+            });
         });
         document.getElementById('theme-toggle').addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
@@ -308,146 +370,92 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
     
-    function getBalanceColor(ratio) {
-        if (ratio >= 0.4 && ratio <= 0.6) return 'var(--color-balanced)'; // 40-60% is balanced
-        if ((ratio >= 0.2 && ratio < 0.4) || (ratio > 0.6 && ratio <= 0.8)) return 'var(--color-mostly)'; // 20-40% or 60-80%
-        return 'var(--color-skewed)'; // <20% or >80%
-    }
-
     function updateMapDisplay() {
-        trainerMarkersLayer.clearLayers();
+        tehsilMarkersLayer.clearLayers();
         const selectedDistrict = districtFilter.value;
         const selectedType = ruralUrbanFilter.value;
 
-        // Filter based on dropdowns
-        let filteredTrainers = consideredTrainers.filter(trainer => {
-            const districtMatch = selectedDistrict === 'All' || trainer.district === selectedDistrict;
-            const typeMatch = selectedType === 'All' || trainer.type === selectedType;
+        let tehsilsToDisplay = Object.values(allTehsils).filter(tehsil => {
+            const districtMatch = selectedDistrict === 'All' || tehsil.district === selectedDistrict;
+            const typeMatch = selectedType === 'All' || tehsil.type === selectedType;
             return districtMatch && typeMatch;
         });
 
-        if (filteredTrainers.length === 0) {
-            trainerListContainer.innerHTML = '<p style="text-align:center; color: var(--text-muted);">No trainers match the selected filters.</p>';
-            updateStats(0, 0);
+        if (tehsilsToDisplay.length === 0) {
+            // Optional: Show message if no results
             return;
         }
 
-        // --- Calculate Rural/Urban balance for each visible district ---
-        const districtBalances = {};
-        const visibleDistricts = [...new Set(filteredTrainers.map(t => t.district))];
-
-        visibleDistricts.forEach(district => {
-            const trainersInDistrict = consideredTrainers.filter(t => t.district === district);
-            const ruralCount = trainersInDistrict.filter(t => t.type === 'Rural').length;
-            const total = trainersInDistrict.length;
-            districtBalances[district] = (total > 0) ? ruralCount / total : 0;
-        });
-        
-        // --- Draw markers ---
         const bounds = [];
-        filteredTrainers.forEach(trainer => {
-            const balanceRatio = districtBalances[trainer.district];
-            const markerColor = getBalanceColor(balanceRatio);
-            createTrainerMarker(trainer, markerColor);
-            bounds.push(trainer.coords);
+        tehsilsToDisplay.forEach(tehsil => {
+            createTehsilMarker(tehsil);
+            bounds.push(tehsil.coords);
         });
         
-        populateTrainerList(filteredTrainers, districtBalances);
-        updateStats(filteredTrainers.length, visibleDistricts.length);
-
-        if (bounds.length > 1) {
-            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
-        } else if (bounds.length === 1) {
-            map.flyTo(bounds[0], 12);
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14, duration: 1 });
+        } else {
+            map.flyTo([31.5, 71.5], 6); // Fly to default view if no markers
         }
     }
-
-    function updateStats(trainerCount, districtCount) {
-        statsDisplay.innerHTML = `
-            <div class="stat-item-main" style="margin-bottom: 5px;">
-                <span class="label"><i class="fa-solid fa-map-pin" style="margin-right: 8px;"></i>Districts in View:</span>
-                <span class="value" style="color: var(--text-color);">${districtCount}</span>
-            </div>
-            <div class="stat-item-main">
-                <span class="label"><i class="fa-solid fa-users" style="margin-right: 8px;"></i>Total Trainers:</span>
-                <span class="value">${trainerCount}</span>
-            </div>`;
-    }
     
-    function createTrainerMarker(trainer, color) {
-        const trainerIcon = L.divIcon({
+    function createTehsilMarker(tehsil) {
+        let iconHtml, color;
+        const iconClass = tehsil.trainers.length > 1 ? 'fa-users' : 'fa-user'; // Pair vs single
+
+        switch (tehsil.performanceStatus) {
+            case 'all_top': color = 'var(--color-all-top)'; break;
+            case 'none_top': color = 'var(--color-none-top)'; break;
+            case 'mixed': color = 'var(--color-mixed)'; break;
+        }
+
+        const tehsilIcon = L.divIcon({
             className: 'leaflet-marker-icon',
-            html: `<i class="fa-solid fa-user-circle" style="font-size: 28px; color: ${color}; text-shadow: 0 1px 3px rgba(0,0,0,0.4);"></i>`,
-            iconSize: [28, 28],
-            iconAnchor: [14, 28]
+            html: `<i class="fa-solid ${iconClass}" style="color: ${color};"></i>`,
+            iconSize: [32, 32],
+            iconAnchor: [16, 32]
         });
-        const trainerMarker = L.marker(trainer.coords, { icon: trainerIcon, cnic: trainer.cnic }).addTo(trainerMarkersLayer);
+
+        const tehsilMarker = L.marker(tehsil.coords, { icon: tehsilIcon }).addTo(tehsilMarkersLayer);
+
+        // Build trainer list for tooltip
+        const trainerListHtml = tehsil.trainers.map(t => `
+            <li>
+                <div class="trainer-info">
+                    <span class="name">${t.name}</span>
+                    <span class="status ${t.isTopPerformer ? 'top' : 'not-top'}">
+                        ${t.isTopPerformer ? 'Top' : 'Not Top'}
+                    </span>
+                </div>
+                <div class="trainer-cnic">CNIC: ${t.cnic || 'N/A'}</div>
+            </li>
+        `).join('');
 
         const tooltipContent = `
             <div class="tooltip-header">
-                <div class="sub-text">${trainer.district} &middot; ${trainer.type}</div>
-                <h3 class="name" style="color:${color};">${trainer.name}</h3>
+                <div class="sub-text">${tehsil.type} &middot; Headcount: ${tehsil.headCount.toLocaleString()}</div>
+                <h3 class="name" style="color:${color};">${tehsil.name}</h3>
             </div>
             <div class="tooltip-body">
-                <div class="tooltip-stat">
-                    <span class="label"><i class="fa-solid fa-building-columns" style="margin-right: 8px; width: 16px;"></i>Duty Tehsil</span>
-                    <span class="value">${trainer.tehsil}</span>
-                </div>
-                <div class="tooltip-stat">
-                    <span class="label"><i class="fa-solid fa-users-viewfinder" style="margin-right: 8px; width: 16px;"></i>Area Headcount</span>
-                    <span class="value">${trainer.headCount.toLocaleString()}</span>
-                </div>
+                <h4>Assigned Personnel (${tehsil.trainers.length})</h4>
+                <ul class="tooltip-trainer-list">${trainerListHtml}</ul>
             </div>`;
-        trainerMarker.bindTooltip(tooltipContent, { className: 'custom-tooltip', offset: [15, 0], direction: 'right' });
-        trainerMarker.on('click', () => setActiveTrainer(trainer.cnic));
+        tehsilMarker.bindTooltip(tooltipContent, { className: 'custom-tooltip', offset: [20, 0], direction: 'right' });
     }
 
-    function populateTrainerList(trainers, balances) {
-        trainerListContainer.innerHTML = '';
-        const sortedTrainers = [...trainers].sort((a, b) => a.name.localeCompare(b.name));
-
-        sortedTrainers.forEach((trainer, index) => {
-            const color = getBalanceColor(balances[trainer.district]);
-            const item = document.createElement('div');
-            item.className = 'trainer-item';
-            item.dataset.trainerCnic = trainer.cnic;
-            item.innerHTML = `
-                <div style="display:flex; align-items:center;">
-                    <div class="trainer-icon"><i class="fa-solid fa-user-circle" style="color: ${color};"></i></div>
-                    <div>
-                        <div class="trainer-name">${trainer.name}</div>
-                        <div class="trainer-sub">${trainer.tehsil} (${trainer.type})</div>
-                    </div>
-                </div>
-                <div class="trainer-meta">
-                    <div class="trainer-meta-item"><span class="value">${trainer.headCount.toLocaleString()}</span>&nbsp;Count</div>
-                </div>`;
-            item.style.animation = `fade-in-up 0.5s ${index * 0.03}s ease-out forwards`;
-
-            item.addEventListener('click', () => {
-                setActiveTrainer(trainer.cnic);
-                map.flyTo(trainer.coords, 14, { duration: 1 });
-                trainerMarkersLayer.eachLayer(marker => {
-                    if (marker.options.cnic === trainer.cnic) {
-                        setTimeout(() => marker.openTooltip(), 300);
-                    }
-                });
-            });
-            trainerListContainer.appendChild(item);
-        });
-    }
-
-    function setActiveTrainer(cnic) {
-        document.querySelectorAll('.trainer-item').forEach(item => {
-            item.classList.toggle('active', item.dataset.trainerCnic === cnic);
-            if (item.dataset.trainerCnic === cnic) {
-                item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    function setActiveDistrict(districtName) {
+        document.querySelectorAll('.district-item').forEach(item => {
+            const isActive = item.dataset.districtName === districtName || districtName === 'All';
+            item.classList.toggle('active', item.dataset.districtName === districtName);
+            // Scroll into view if a specific district is selected (not 'All')
+            if (item.dataset.districtName === districtName && districtName !== 'All') {
+                item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         });
     }
     
     // --- INITIALIZATION KICK-OFF ---
-    const success = await loadData();
+    const success = await loadAndProcessData();
     if (success) {
         initializeDashboard();
     }
