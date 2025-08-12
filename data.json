@@ -1,6 +1,7 @@
 {
     "ATTOCK": {
         "name": "ATTOCK",
+        "province": "Punjab",
         "tehsils": {
             "FATEH JANG": {
                 "name": "FATEH JANG",
@@ -12,14 +13,15 @@
                 "trainers": [
                     {
                         "name": "SHEHLA AQIL",
-                        "cnic": "3710371372898",
+                        "cnic": "3710371372898.0",
                         "headCount": 1355,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "ATTOCK": {
                 "name": "ATTOCK",
@@ -31,23 +33,25 @@
                 "trainers": [
                     {
                         "name": "NAZIA SAJJAD",
-                        "cnic": "3710173440460",
+                        "cnic": "3710173440460.0",
                         "headCount": 1848,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 2,
         "totalHeadCount": 3203,
+        "totalTrainers": 2,
         "ruralCount": 1,
         "urbanCount": 1
     },
     "BAHAWALNAGAR": {
         "name": "BAHAWALNAGAR",
+        "province": "Punjab",
         "tehsils": {
             "MINCHINABAD": {
                 "name": "MINCHINABAD",
@@ -59,14 +63,15 @@
                 "trainers": [
                     {
                         "name": "HUMAIRA MUSTAFA",
-                        "cnic": "3110595469764",
+                        "cnic": "3110595469764.0",
                         "headCount": 8187,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "BAHAWALNAGAR": {
                 "name": "BAHAWALNAGAR",
@@ -78,30 +83,34 @@
                 "trainers": [
                     {
                         "name": "RABIA AKHTAR",
-                        "cnic": "3650258173414",
+                        "cnic": "3650258173414.0",
                         "headCount": 15064,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "AMNA LIAQAT",
-                        "cnic": "3110107913318",
+                        "cnic": "3110107913318.0",
                         "headCount": 15064,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 38315,
         "totalTrainers": 3,
-        "totalHeadCount": 23251,
         "ruralCount": 1,
         "urbanCount": 2
     },
     "BAHAWALPUR": {
         "name": "BAHAWALPUR",
+        "province": "Punjab",
         "tehsils": {
             "YAZMAN": {
                 "name": "YAZMAN",
@@ -113,21 +122,24 @@
                 "trainers": [
                     {
                         "name": "NAILA JABEEN",
-                        "cnic": "3120505573274",
+                        "cnic": "3120505573274.0",
                         "headCount": 7084,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "KASHMALA LIAQAT",
-                        "cnic": "3120574504844",
+                        "cnic": "3120574504844.0",
                         "headCount": 7084,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             },
             "BAHAWALPUR SADDAR": {
                 "name": "BAHAWALPUR SADDAR",
@@ -139,14 +151,15 @@
                 "trainers": [
                     {
                         "name": "RUKHSANA FAQIR",
-                        "cnic": "3120266412622",
+                        "cnic": "3120266412622.0",
                         "headCount": 10665,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "BAHAWALPUR CITY": {
                 "name": "BAHAWALPUR CITY",
@@ -158,23 +171,25 @@
                 "trainers": [
                     {
                         "name": "SABA RAFIQ",
-                        "cnic": "3120263830934",
+                        "cnic": "3120263830934.0",
                         "headCount": 5294,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
+        "totalHeadCount": 30127,
         "totalTrainers": 4,
-        "totalHeadCount": 23043,
         "ruralCount": 2,
         "urbanCount": 2
     },
     "BHAKKAR": {
         "name": "BHAKKAR",
+        "province": "Punjab",
         "tehsils": {
             "DARYA KHAN": {
                 "name": "DARYA KHAN",
@@ -186,19 +201,22 @@
                 "trainers": [
                     {
                         "name": "AYESHA ISHFAQ",
-                        "cnic": "3810245109458",
+                        "cnic": "3810245109458.0",
                         "headCount": 10263,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "SHAZIA YASEEN",
-                        "cnic": "3810295387162",
+                        "cnic": "3810295387162.0",
                         "headCount": 10263,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
                 "pairStatus": "YELLOW"
             },
@@ -212,30 +230,34 @@
                 "trainers": [
                     {
                         "name": "ANEELA BASHEER",
-                        "cnic": "3810106124226",
+                        "cnic": "3810106124226.0",
                         "headCount": 18814,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "SUNAINA SHEZADI",
-                        "cnic": "3810123939114",
+                        "cnic": "3810123939114.0",
                         "headCount": 18814,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
                 "pairStatus": "YELLOW"
             }
         },
+        "totalHeadCount": 58154,
         "totalTrainers": 4,
-        "totalHeadCount": 29077,
         "ruralCount": 2,
         "urbanCount": 2
     },
     "CHAKWAL": {
         "name": "CHAKWAL",
+        "province": "Punjab",
         "tehsils": {
             "CHOA SAIDAN SHAH": {
                 "name": "CHOA SAIDAN SHAH",
@@ -247,14 +269,15 @@
                 "trainers": [
                     {
                         "name": "ANAM FATIMA",
-                        "cnic": "3720235162260",
+                        "cnic": "3720235162260.0",
                         "headCount": 762,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "CHAKWAL": {
                 "name": "CHAKWAL",
@@ -266,23 +289,25 @@
                 "trainers": [
                     {
                         "name": "SHANZA KOMAL",
-                        "cnic": "3730405800538",
+                        "cnic": "3730405800538.0",
                         "headCount": 1689,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 2,
         "totalHeadCount": 2451,
+        "totalTrainers": 2,
         "ruralCount": 1,
         "urbanCount": 1
     },
     "CHINIOT": {
         "name": "CHINIOT",
+        "province": "Punjab",
         "tehsils": {
             "CHINIOT": {
                 "name": "CHINIOT",
@@ -294,30 +319,34 @@
                 "trainers": [
                     {
                         "name": "SAJIDA PERVEEN",
-                        "cnic": "3340106394188",
+                        "cnic": "3340106394188.0",
                         "headCount": 10633,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "QANDEEL ZAHRA",
-                        "cnic": "3320197933486",
+                        "cnic": "3320197933486.0",
                         "headCount": 10633,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
                 "pairStatus": "YELLOW"
             }
         },
+        "totalHeadCount": 21266,
         "totalTrainers": 2,
-        "totalHeadCount": 10633,
         "ruralCount": 0,
         "urbanCount": 2
     },
     "DERA GHAZI KHAN": {
         "name": "DERA GHAZI KHAN",
+        "province": "Punjab",
         "tehsils": {
             "KOT CHHUTTA": {
                 "name": "KOT CHHUTTA",
@@ -329,21 +358,24 @@
                 "trainers": [
                     {
                         "name": "RIFFAT JABEEN",
-                        "cnic": "3210219347020",
+                        "cnic": "3210219347020.0",
                         "headCount": 12992,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "AYESHA NAZIM",
-                        "cnic": "3210276679638",
+                        "cnic": "3210276679638.0",
                         "headCount": 12992,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             },
             "DERA GHAZI KHAN": {
                 "name": "DERA GHAZI KHAN",
@@ -355,30 +387,34 @@
                 "trainers": [
                     {
                         "name": "SAIRA LATIF",
-                        "cnic": "3210395481406",
+                        "cnic": "3210395481406.0",
                         "headCount": 21123,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "LUBNA RUBAB ABID",
-                        "cnic": "3210215578282",
+                        "cnic": "3210215578282.0",
                         "headCount": 21123,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 68230,
         "totalTrainers": 4,
-        "totalHeadCount": 34115,
         "ruralCount": 2,
         "urbanCount": 2
     },
     "FAISALABAD": {
         "name": "FAISALABAD",
+        "province": "Punjab",
         "tehsils": {
             "SAMMUNDRI": {
                 "name": "SAMMUNDRI",
@@ -390,21 +426,24 @@
                 "trainers": [
                     {
                         "name": "SHAGUFTA NAZ",
-                        "cnic": "3310559860674",
+                        "cnic": "3310559860674.0",
                         "headCount": 3543,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "AYESHA PARVEEN",
-                        "cnic": "3310519008516",
+                        "cnic": "3310519008516.0",
                         "headCount": 3543,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             },
             "FAISALABAD CITY": {
                 "name": "FAISALABAD CITY",
@@ -416,30 +455,34 @@
                 "trainers": [
                     {
                         "name": "NOOR FATIMA",
-                        "cnic": "3310079301436",
+                        "cnic": "3310079301436.0",
                         "headCount": 12355,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "SYED HASSAN RAZA",
-                        "cnic": "3310260261695",
+                        "cnic": "3310260261695.0",
                         "headCount": 12355,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 31796,
         "totalTrainers": 4,
-        "totalHeadCount": 15898,
         "ruralCount": 2,
         "urbanCount": 2
     },
     "GUJRANWALA": {
         "name": "GUJRANWALA",
+        "province": "Punjab",
         "tehsils": {
             "KAMOKE": {
                 "name": "KAMOKE",
@@ -451,21 +494,24 @@
                 "trainers": [
                     {
                         "name": "ANSA QAISAR MEHMOOD",
-                        "cnic": "3410205914912",
+                        "cnic": "3410205914912.0",
                         "headCount": 3206,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "HANIYA AFZAL",
-                        "cnic": "3520214011084",
+                        "cnic": "3520214011084.0",
                         "headCount": 3206,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             },
             "GUJRANWALA CITY": {
                 "name": "GUJRANWALA CITY",
@@ -477,30 +523,34 @@
                 "trainers": [
                     {
                         "name": "SABA HANIF",
-                        "cnic": "3410454628636",
+                        "cnic": "3410454628636.0",
                         "headCount": 5617,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "MAIRA ABBAS",
-                        "cnic": "3410198789496",
+                        "cnic": "3410198789496.0",
                         "headCount": 5617,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 17646,
         "totalTrainers": 4,
-        "totalHeadCount": 8823,
         "ruralCount": 2,
         "urbanCount": 2
     },
     "GUJRAT": {
         "name": "GUJRAT",
+        "province": "Punjab",
         "tehsils": {
             "GUJRAT": {
                 "name": "GUJRAT",
@@ -512,30 +562,34 @@
                 "trainers": [
                     {
                         "name": "BUSHRA ASHRAF",
-                        "cnic": "3420179280314",
+                        "cnic": "3420179280314.0",
                         "headCount": 3714,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "AMBREEN RAQEEB",
-                        "cnic": "3420122489672",
+                        "cnic": "3420122489672.0",
                         "headCount": 3714,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 7428,
         "totalTrainers": 2,
-        "totalHeadCount": 3714,
         "ruralCount": 0,
         "urbanCount": 2
     },
     "HAFIZABAD": {
         "name": "HAFIZABAD",
+        "province": "Punjab",
         "tehsils": {
             "PINDI BHATTIAN": {
                 "name": "PINDI BHATTIAN",
@@ -547,23 +601,25 @@
                 "trainers": [
                     {
                         "name": "IQRA ASAD",
-                        "cnic": "3430262668722",
+                        "cnic": "3430262668722.0",
                         "headCount": 4451,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 1,
         "totalHeadCount": 4451,
+        "totalTrainers": 1,
         "ruralCount": 0,
         "urbanCount": 1
     },
     "JAMPUR": {
         "name": "JAMPUR",
+        "province": "Punjab",
         "tehsils": {
             "JAMPUR": {
                 "name": "JAMPUR",
@@ -575,30 +631,34 @@
                 "trainers": [
                     {
                         "name": "RUKHSANA BIBI",
-                        "cnic": "3240275368552",
+                        "cnic": "3240275368552.0",
                         "headCount": 11411,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "SAADIA BIBI",
-                        "cnic": "3240296476274",
+                        "cnic": "3240296476274.0",
                         "headCount": 11411,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 22822,
         "totalTrainers": 2,
-        "totalHeadCount": 11411,
         "ruralCount": 0,
         "urbanCount": 2
     },
     "JHANG": {
         "name": "JHANG",
+        "province": "Punjab",
         "tehsils": {
             "AHMADPUR SIAL": {
                 "name": "AHMADPUR SIAL",
@@ -610,19 +670,22 @@
                 "trainers": [
                     {
                         "name": "IRAM SHAHEEN",
-                        "cnic": "3320406670522",
+                        "cnic": "3320406670522.0",
                         "headCount": 15569,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "RUBAB BIBI",
-                        "cnic": "3320406380102",
+                        "cnic": "3320406380102.0",
                         "headCount": 15569,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
                 "pairStatus": "YELLOW"
             },
@@ -636,30 +699,34 @@
                 "trainers": [
                     {
                         "name": "Safia Mai",
-                        "cnic": "3320304821494",
+                        "cnic": "3320304821494.0",
                         "headCount": 24126,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "TANIA SHAHEEN",
-                        "cnic": "3320202376534",
+                        "cnic": "3320202376534.0",
                         "headCount": 24126,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
                 "pairStatus": "YELLOW"
             }
         },
+        "totalHeadCount": 79390,
         "totalTrainers": 4,
-        "totalHeadCount": 39695,
         "ruralCount": 2,
         "urbanCount": 2
     },
     "JHELUM": {
         "name": "JHELUM",
+        "province": "Punjab",
         "tehsils": {
             "SOHAWA": {
                 "name": "SOHAWA",
@@ -671,14 +738,15 @@
                 "trainers": [
                     {
                         "name": "NIMRA",
-                        "cnic": "3730406130400",
+                        "cnic": "3730406130400.0",
                         "headCount": 1182,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "JHELUM": {
                 "name": "JHELUM",
@@ -690,23 +758,25 @@
                 "trainers": [
                     {
                         "name": "IQRA FAROOQ",
-                        "cnic": "3730126322056",
+                        "cnic": "3730126322056.0",
                         "headCount": 1124,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 2,
         "totalHeadCount": 2306,
+        "totalTrainers": 2,
         "ruralCount": 1,
         "urbanCount": 1
     },
     "KASUR": {
         "name": "KASUR",
+        "province": "Punjab",
         "tehsils": {
             "PATTOKI": {
                 "name": "PATTOKI",
@@ -718,14 +788,15 @@
                 "trainers": [
                     {
                         "name": "ZUBAIDA AMIN",
-                        "cnic": "3520257947762",
+                        "cnic": "3520257947762.0",
                         "headCount": 9180,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "KASUR": {
                 "name": "KASUR",
@@ -737,23 +808,25 @@
                 "trainers": [
                     {
                         "name": "ASMA RAZAQ",
-                        "cnic": "3240374133764",
+                        "cnic": "3240374133764.0",
                         "headCount": 15091,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 2,
         "totalHeadCount": 24271,
+        "totalTrainers": 2,
         "ruralCount": 1,
         "urbanCount": 1
     },
     "KHANEWAL": {
         "name": "KHANEWAL",
+        "province": "Punjab",
         "tehsils": {
             "KHANEWAL": {
                 "name": "KHANEWAL",
@@ -765,30 +838,34 @@
                 "trainers": [
                     {
                         "name": "SOBIA KANWAL",
-                        "cnic": "3610449595600",
+                        "cnic": "3610449595600.0",
                         "headCount": 8944,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "QANDEEL FATIMA",
-                        "cnic": "3610343800120",
+                        "cnic": "3610343800120.0",
                         "headCount": 8944,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 17888,
         "totalTrainers": 2,
-        "totalHeadCount": 8944,
         "ruralCount": 0,
         "urbanCount": 2
     },
     "KHUSHAB": {
         "name": "KHUSHAB",
+        "province": "Punjab",
         "tehsils": {
             "NOORPUR": {
                 "name": "NOORPUR",
@@ -800,14 +877,15 @@
                 "trainers": [
                     {
                         "name": "NIMRA RAMZAN",
-                        "cnic": "3830391970210",
+                        "cnic": "3830391970210.0",
                         "headCount": 4342,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "KHUSHAB": {
                 "name": "KHUSHAB",
@@ -819,23 +897,25 @@
                 "trainers": [
                     {
                         "name": "SOBIA QADDUS",
-                        "cnic": "3820134817042",
+                        "cnic": "3820134817042.0",
                         "headCount": 6462,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 2,
         "totalHeadCount": 10804,
+        "totalTrainers": 2,
         "ruralCount": 1,
         "urbanCount": 1
     },
     "KOT ADDU": {
         "name": "KOT ADDU",
+        "province": "Punjab",
         "tehsils": {
             "CHOWK SARWAR": {
                 "name": "CHOWK SARWAR",
@@ -847,14 +927,15 @@
                 "trainers": [
                     {
                         "name": "TEHMINA ABBASS",
-                        "cnic": "3230311299438",
+                        "cnic": "3230311299438.0",
                         "headCount": 518,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "KOT ADDU": {
                 "name": "KOT ADDU",
@@ -866,23 +947,25 @@
                 "trainers": [
                     {
                         "name": "SAIRA MUSTAFA",
-                        "cnic": "3230393128012",
+                        "cnic": "3230393128012.0",
                         "headCount": 28168,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 2,
         "totalHeadCount": 28686,
+        "totalTrainers": 2,
         "ruralCount": 1,
         "urbanCount": 1
     },
     "LAHORE": {
         "name": "LAHORE",
+        "province": "Punjab",
         "tehsils": {
             "RAIWIND": {
                 "name": "RAIWIND",
@@ -894,14 +977,15 @@
                 "trainers": [
                     {
                         "name": "TAYBA",
-                        "cnic": "3520289625644",
+                        "cnic": "3520289625644.0",
                         "headCount": 2732,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "LAHORE CITY": {
                 "name": "LAHORE CITY",
@@ -913,30 +997,34 @@
                 "trainers": [
                     {
                         "name": "SUMRA SAMEENA",
-                        "cnic": "3520265661466",
+                        "cnic": "3520265661466.0",
                         "headCount": 6665,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "ALISHA SIKANDAR",
-                        "cnic": "3130106645472",
+                        "cnic": "3130106645472.0",
                         "headCount": 6665,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 16062,
         "totalTrainers": 3,
-        "totalHeadCount": 9397,
         "ruralCount": 1,
         "urbanCount": 2
     },
     "LAYYAH": {
         "name": "LAYYAH",
+        "province": "Punjab",
         "tehsils": {
             "KAROR LAL ESAN": {
                 "name": "KAROR LAL ESAN",
@@ -948,21 +1036,24 @@
                 "trainers": [
                     {
                         "name": "SUMAIRA BATOOL",
-                        "cnic": "3220331947938",
+                        "cnic": "3220331947938.0",
                         "headCount": 11695,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "FARENA BALOCH",
-                        "cnic": "3220366337816",
+                        "cnic": "3220366337816.0",
                         "headCount": 11695,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             },
             "LAYYAH": {
                 "name": "LAYYAH",
@@ -974,30 +1065,34 @@
                 "trainers": [
                     {
                         "name": "TEHREEM GUL",
-                        "cnic": "3220343357546",
+                        "cnic": "3220343357546.0",
                         "headCount": 19460,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "MISBAH FAIZ",
-                        "cnic": "3220359828870",
+                        "cnic": "3220359828870.0",
                         "headCount": 19460,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 62310,
         "totalTrainers": 4,
-        "totalHeadCount": 31155,
         "ruralCount": 2,
         "urbanCount": 2
     },
     "LODHRAN": {
         "name": "LODHRAN",
+        "province": "Punjab",
         "tehsils": {
             "DUNYAPUR": {
                 "name": "DUNYAPUR",
@@ -1009,21 +1104,24 @@
                 "trainers": [
                     {
                         "name": "MISHAL ISMAIL",
-                        "cnic": "3630338543236",
+                        "cnic": "3630338543236.0",
                         "headCount": 7677,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "SAMINA",
-                        "cnic": "3620143088378",
+                        "cnic": "3620143088378.0",
                         "headCount": 7677,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             },
             "LODHRAN": {
                 "name": "LODHRAN",
@@ -1035,30 +1133,34 @@
                 "trainers": [
                     {
                         "name": "SABINA ASIF",
-                        "cnic": "3620138227814",
+                        "cnic": "3620138227814.0",
                         "headCount": 13168,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "AREESHA NAZ",
-                        "cnic": "3620306193660",
+                        "cnic": "3620306193660.0",
                         "headCount": 13168,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 41690,
         "totalTrainers": 4,
-        "totalHeadCount": 20845,
         "ruralCount": 2,
         "urbanCount": 2
     },
     "MANDI BAHAUDDIN": {
         "name": "MANDI BAHAUDDIN",
+        "province": "Punjab",
         "tehsils": {
             "PHALIA": {
                 "name": "PHALIA",
@@ -1070,14 +1172,15 @@
                 "trainers": [
                     {
                         "name": "AQSA AZAM",
-                        "cnic": "3440317393646",
+                        "cnic": "3440317393646.0",
                         "headCount": 2994,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "MANDI BAHAUDDIN": {
                 "name": "MANDI BAHAUDDIN",
@@ -1089,23 +1192,25 @@
                 "trainers": [
                     {
                         "name": "KAYNAT BABAR",
-                        "cnic": "3420186392476",
+                        "cnic": "3420186392476.0",
                         "headCount": 3317,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 2,
         "totalHeadCount": 6311,
+        "totalTrainers": 2,
         "ruralCount": 1,
         "urbanCount": 1
     },
     "MIANWALI": {
         "name": "MIANWALI",
+        "province": "Punjab",
         "tehsils": {
             "PIPLAN": {
                 "name": "PIPLAN",
@@ -1117,21 +1222,24 @@
                 "trainers": [
                     {
                         "name": "REHANA ABBAS",
-                        "cnic": "3830335379012",
+                        "cnic": "3830335379012.0",
                         "headCount": 4448,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "ANA KANWAL",
-                        "cnic": "3830387696432",
+                        "cnic": "3830387696432.0",
                         "headCount": 4448,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             },
             "ISAKHEL": {
                 "name": "ISAKHEL",
@@ -1143,14 +1251,15 @@
                 "trainers": [
                     {
                         "name": "NADIA HAMEED",
-                        "cnic": "3830156877828",
+                        "cnic": "3830156877828.0",
                         "headCount": 4834,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "MIANWALI": {
                 "name": "MIANWALI",
@@ -1162,23 +1271,25 @@
                 "trainers": [
                     {
                         "name": "HAMRAH BIBI",
-                        "cnic": "3830314570714",
+                        "cnic": "3830314570714.0",
                         "headCount": 7256,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
+        "totalHeadCount": 20986,
         "totalTrainers": 4,
-        "totalHeadCount": 16538,
         "ruralCount": 3,
         "urbanCount": 1
     },
     "MULTAN": {
         "name": "MULTAN",
+        "province": "Punjab",
         "tehsils": {
             "JALALPUR PIRWALA": {
                 "name": "JALALPUR PIRWALA",
@@ -1190,28 +1301,32 @@
                 "trainers": [
                     {
                         "name": "SHEHLA HABIB",
-                        "cnic": "3630181327766",
+                        "cnic": "3630181327766.0",
                         "headCount": 9914,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "AJWA ZAFAR",
-                        "cnic": "3630113244064",
+                        "cnic": "3630113244064.0",
                         "headCount": 9914,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "RASHIDA AZAM",
-                        "cnic": "3630150764556",
+                        "cnic": "3630150764556.0",
                         "headCount": 9914,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             },
             "MULTAN CITY": {
                 "name": "MULTAN CITY",
@@ -1223,30 +1338,34 @@
                 "trainers": [
                     {
                         "name": "MEMOONA FATIMA",
-                        "cnic": "3630221480580",
+                        "cnic": "3630221480580.0",
                         "headCount": 19615,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "NIMRA SAJJAD",
-                        "cnic": "3630335671180",
+                        "cnic": "3630335671180.0",
                         "headCount": 19615,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 68972,
         "totalTrainers": 5,
-        "totalHeadCount": 29529,
         "ruralCount": 3,
         "urbanCount": 2
     },
     "MUZAFARGARH": {
         "name": "MUZAFARGARH",
+        "province": "Punjab",
         "tehsils": {
             "ALIPUR": {
                 "name": "ALIPUR",
@@ -1258,21 +1377,24 @@
                 "trainers": [
                     {
                         "name": "HAFIZA BUSHRA",
-                        "cnic": "3230199026558",
+                        "cnic": "3230199026558.0",
                         "headCount": 15912,
-                        "isTopPerformer": true,
-                        "ruralUrban": "rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "rural",
+                        "isVacant": false
                     },
                     {
                         "name": "FOZIA ZAWAR",
-                        "cnic": "3230113833068",
+                        "cnic": "3230113833068.0",
                         "headCount": 15912,
-                        "isTopPerformer": true,
-                        "ruralUrban": "rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             },
             "MUZAFFARGARH": {
                 "name": "MUZAFFARGARH",
@@ -1284,30 +1406,34 @@
                 "trainers": [
                     {
                         "name": "AFEERA AZIZ",
-                        "cnic": "3230499953816",
+                        "cnic": "3230499953816.0",
                         "headCount": 32229,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "SHAHEEN BIBI",
-                        "cnic": "3230488833374",
+                        "cnic": "3230488833374.0",
                         "headCount": 32229,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 96282,
         "totalTrainers": 4,
-        "totalHeadCount": 48141,
         "ruralCount": 0,
         "urbanCount": 2
     },
     "NANKANA SAHIB": {
         "name": "NANKANA SAHIB",
+        "province": "Punjab",
         "tehsils": {
             "SHAH KOT": {
                 "name": "SHAH KOT",
@@ -1319,14 +1445,15 @@
                 "trainers": [
                     {
                         "name": "SIDRA MEHMOOD",
-                        "cnic": "3550201715176",
+                        "cnic": "3550201715176.0",
                         "headCount": 2305,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "NANKANA SAHIB": {
                 "name": "NANKANA SAHIB",
@@ -1338,30 +1465,34 @@
                 "trainers": [
                     {
                         "name": "MUQADAS",
-                        "cnic": "3550104666192",
+                        "cnic": "3550104666192.0",
                         "headCount": 8846,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "ASMAT MUKHTAR",
-                        "cnic": "3550118052050",
+                        "cnic": "3550118052050.0",
                         "headCount": 8846,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 19997,
         "totalTrainers": 3,
-        "totalHeadCount": 11151,
         "ruralCount": 1,
         "urbanCount": 2
     },
     "NAROWAL": {
         "name": "NAROWAL",
+        "province": "Punjab",
         "tehsils": {
             "SHAKARGARH": {
                 "name": "SHAKARGARH",
@@ -1373,14 +1504,15 @@
                 "trainers": [
                     {
                         "name": "ATIKA SIDDIQUE",
-                        "cnic": "3450290282458",
+                        "cnic": "3450290282458.0",
                         "headCount": 2571,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "NAROWAL": {
                 "name": "NAROWAL",
@@ -1392,23 +1524,25 @@
                 "trainers": [
                     {
                         "name": "ASMA PERVEZ",
-                        "cnic": "3450132623640",
+                        "cnic": "3450132623640.0",
                         "headCount": 4345,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 2,
         "totalHeadCount": 6916,
+        "totalTrainers": 2,
         "ruralCount": 1,
         "urbanCount": 1
     },
     "OKARA": {
         "name": "OKARA",
+        "province": "Punjab",
         "tehsils": {
             "OKARA": {
                 "name": "OKARA",
@@ -1420,14 +1554,15 @@
                 "trainers": [
                     {
                         "name": "SUGHRAN AKRAM",
-                        "cnic": "3530264958450",
+                        "cnic": "3530264958450.0",
                         "headCount": 10874,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "RENALA KHURD": {
                 "name": "RENALA KHURD",
@@ -1439,23 +1574,25 @@
                 "trainers": [
                     {
                         "name": "SAMREEN IMRAN",
-                        "cnic": "3530327843122",
+                        "cnic": "3530327843122.0",
                         "headCount": 6163,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 2,
         "totalHeadCount": 17037,
+        "totalTrainers": 2,
         "ruralCount": 0,
         "urbanCount": 2
     },
     "PAKPATAN": {
         "name": "PAKPATAN",
+        "province": "Punjab",
         "tehsils": {
             "ARIF WALA": {
                 "name": "ARIF WALA",
@@ -1467,14 +1604,15 @@
                 "trainers": [
                     {
                         "name": "FOZIA NIAZ",
-                        "cnic": "3640152487532",
+                        "cnic": "3640152487532.0",
                         "headCount": 9858,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "PAKPATTAN": {
                 "name": "PAKPATTAN",
@@ -1486,30 +1624,34 @@
                 "trainers": [
                     {
                         "name": "KASHAF ZAFAR",
-                        "cnic": "3640275238918",
+                        "cnic": "3640275238918.0",
                         "headCount": 12624,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "KAINAT",
-                        "cnic": "3640285643440",
+                        "cnic": "3640285643440.0",
                         "headCount": 12624,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
                 "pairStatus": "YELLOW"
             }
         },
+        "totalHeadCount": 35106,
         "totalTrainers": 3,
-        "totalHeadCount": 22482,
         "ruralCount": 1,
         "urbanCount": 2
     },
     "RAHIM YAR KHAN": {
         "name": "RAHIM YAR KHAN",
+        "province": "Punjab",
         "tehsils": {
             "RAHIM YAR KHAN": {
                 "name": "RAHIM YAR KHAN",
@@ -1521,21 +1663,24 @@
                 "trainers": [
                     {
                         "name": "NAZISH NAWAZ",
-                        "cnic": "3130335447058",
+                        "cnic": "3130335447058.0",
                         "headCount": 20834,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "ROMANA HUSSAIN",
-                        "cnic": "3840351649060",
+                        "cnic": "3840351649060.0",
                         "headCount": 20834,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             },
             "KHANPUR": {
                 "name": "KHANPUR",
@@ -1547,30 +1692,34 @@
                 "trainers": [
                     {
                         "name": "ZAINAB MANZOOR",
-                        "cnic": "3130184101374",
+                        "cnic": "3130184101374.0",
                         "headCount": 15260,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "NADIA BIBI",
-                        "cnic": "3130151715440",
+                        "cnic": "3130151715440.0",
                         "headCount": 15260,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 72188,
         "totalTrainers": 4,
-        "totalHeadCount": 36094,
         "ruralCount": 0,
         "urbanCount": 4
     },
     "RAJANPUR": {
         "name": "RAJANPUR",
+        "province": "Punjab",
         "tehsils": {
             "RAJANPUR": {
                 "name": "RAJANPUR",
@@ -1582,30 +1731,34 @@
                 "trainers": [
                     {
                         "name": "REEHANA GHAFFAR",
-                        "cnic": "3240361443146",
+                        "cnic": "3240361443146.0",
                         "headCount": 19092,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "KHALIDA ASHIQ",
-                        "cnic": "3130139543074",
+                        "cnic": "3130139543074.0",
                         "headCount": 19092,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 38184,
         "totalTrainers": 2,
-        "totalHeadCount": 19092,
         "ruralCount": 2,
         "urbanCount": 0
     },
     "RAWALPINDI": {
         "name": "RAWALPINDI",
+        "province": "Punjab",
         "tehsils": {
             "RAWALPINDI": {
                 "name": "RAWALPINDI",
@@ -1617,30 +1770,34 @@
                 "trainers": [
                     {
                         "name": "NOSHABA JAHANGIR",
-                        "cnic": "3740554362366",
+                        "cnic": "3740554362366.0",
                         "headCount": 3394,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "RUBINA KOUSAR",
-                        "cnic": "8230202367452",
+                        "cnic": "8230202367452.0",
                         "headCount": 3394,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 6788,
         "totalTrainers": 2,
-        "totalHeadCount": 3394,
         "ruralCount": 0,
         "urbanCount": 2
     },
     "SAHIWAL": {
         "name": "SAHIWAL",
+        "province": "Punjab",
         "tehsils": {
             "CHICHAWATNI": {
                 "name": "CHICHAWATNI",
@@ -1652,14 +1809,15 @@
                 "trainers": [
                     {
                         "name": "HANAF SHAHZADI",
-                        "cnic": "3650178462902",
+                        "cnic": "3650178462902.0",
                         "headCount": 7537,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Mixed"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Mixed",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "SAHIWAL": {
                 "name": "SAHIWAL",
@@ -1671,23 +1829,25 @@
                 "trainers": [
                     {
                         "name": "KOUSAR PARVEEN",
-                        "cnic": "3650291553750",
+                        "cnic": "3650291553750.0",
                         "headCount": 15024,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Mixed"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Mixed",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 2,
         "totalHeadCount": 22561,
+        "totalTrainers": 2,
         "ruralCount": 0,
         "urbanCount": 0
     },
     "SARGODHA": {
         "name": "SARGODHA",
+        "province": "Punjab",
         "tehsils": {
             "SILLANWALI": {
                 "name": "SILLANWALI",
@@ -1699,14 +1859,15 @@
                 "trainers": [
                     {
                         "name": "SAMREEN FATIMA",
-                        "cnic": "3840508844310",
+                        "cnic": "3840508844310.0",
                         "headCount": 3830,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "SARGODHA": {
                 "name": "SARGODHA",
@@ -1718,30 +1879,34 @@
                 "trainers": [
                     {
                         "name": "INAAM HUSSAIN",
-                        "cnic": "3840196500509",
+                        "cnic": "3840196500509.0",
                         "headCount": 17108,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "NASREEN FATIMA",
-                        "cnic": "3840355086400",
+                        "cnic": "3840355086400.0",
                         "headCount": 17108,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
                 "pairStatus": "YELLOW"
             }
         },
+        "totalHeadCount": 38046,
         "totalTrainers": 3,
-        "totalHeadCount": 20938,
         "ruralCount": 1,
         "urbanCount": 2
     },
     "SHEIKHUPURA": {
         "name": "SHEIKHUPURA",
+        "province": "Punjab",
         "tehsils": {
             "SHEIKHUPURA": {
                 "name": "SHEIKHUPURA",
@@ -1753,30 +1918,34 @@
                 "trainers": [
                     {
                         "name": "HIRA",
-                        "cnic": "3540453423514",
+                        "cnic": "3540453423514.0",
                         "headCount": 11843,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "RAHEELA KAUSER",
-                        "cnic": "3540199701012",
+                        "cnic": "3540199701012.0",
                         "headCount": 11843,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
                 "pairStatus": "YELLOW"
             }
         },
+        "totalHeadCount": 23686,
         "totalTrainers": 2,
-        "totalHeadCount": 11843,
         "ruralCount": 0,
         "urbanCount": 2
     },
     "SIALKOT": {
         "name": "SIALKOT",
+        "province": "Punjab",
         "tehsils": {
             "PASRUR": {
                 "name": "PASRUR",
@@ -1788,14 +1957,15 @@
                 "trainers": [
                     {
                         "name": "FAZILAT BIBI",
-                        "cnic": "3460249850344",
+                        "cnic": "3460249850344.0",
                         "headCount": 3359,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "SIALKOT": {
                 "name": "SIALKOT",
@@ -1807,23 +1977,25 @@
                 "trainers": [
                     {
                         "name": "IZZA ASLAM",
-                        "cnic": "3460311377430",
+                        "cnic": "3460311377430.0",
                         "headCount": 1672,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 2,
         "totalHeadCount": 5031,
+        "totalTrainers": 2,
         "ruralCount": 1,
         "urbanCount": 1
     },
     "TAUNSA": {
         "name": "TAUNSA",
+        "province": "Punjab",
         "tehsils": {
             "TAUNSA": {
                 "name": "TAUNSA",
@@ -1835,30 +2007,34 @@
                 "trainers": [
                     {
                         "name": "GULL BIBI",
-                        "cnic": "3210197766960",
+                        "cnic": "3210197766960.0",
                         "headCount": 19071,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "SHAHISTA JABIN",
-                        "cnic": "3210377578124",
+                        "cnic": "3210377578124.0",
                         "headCount": 19071,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 38142,
         "totalTrainers": 2,
-        "totalHeadCount": 19071,
         "ruralCount": 2,
         "urbanCount": 0
     },
     "TOBA TEK SINGH": {
         "name": "TOBA TEK SINGH",
+        "province": "Punjab",
         "tehsils": {
             "PIRMAHAL": {
                 "name": "PIRMAHAL",
@@ -1870,14 +2046,15 @@
                 "trainers": [
                     {
                         "name": "SAIMA MUNAWAR",
-                        "cnic": "3330296538876",
+                        "cnic": "3330296538876.0",
                         "headCount": 2517,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             },
             "TOBA TEK SINGH": {
                 "name": "TOBA TEK SINGH",
@@ -1889,23 +2066,25 @@
                 "trainers": [
                     {
                         "name": "TAHIRA YASMEEN",
-                        "cnic": "3330322448716",
+                        "cnic": "3330322448716.0",
                         "headCount": 6581,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 2,
         "totalHeadCount": 9098,
+        "totalTrainers": 2,
         "ruralCount": 0,
         "urbanCount": 2
     },
     "VEHARI": {
         "name": "VEHARI",
+        "province": "Punjab",
         "tehsils": {
             "BUREWALA": {
                 "name": "BUREWALA",
@@ -1917,21 +2096,24 @@
                 "trainers": [
                     {
                         "name": "MAFIA NIAMAT",
-                        "cnic": "3660116622088",
+                        "cnic": "3660116622088.0",
                         "headCount": 7024,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     },
                     {
                         "name": "FARIDA BIBI",
-                        "cnic": "3660176935884",
+                        "cnic": "3660176935884.0",
                         "headCount": 7024,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Rural"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             },
             "MAILSI": {
                 "name": "MAILSI",
@@ -1943,30 +2125,34 @@
                 "trainers": [
                     {
                         "name": "MARYAM AKHTAR",
-                        "cnic": "3660263400152",
+                        "cnic": "3660263400152.0",
                         "headCount": 8616,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     },
                     {
                         "name": "FARZANA PERVEEN",
-                        "cnic": "3620253037722",
+                        "cnic": "3620253037722.0",
                         "headCount": 8616,
-                        "isTopPerformer": true,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
+                "vacancyStatus": "NONE",
                 "isPair": true,
-                "pairStatus": "GREEN"
+                "pairStatus": "RED"
             }
         },
+        "totalHeadCount": 31280,
         "totalTrainers": 4,
-        "totalHeadCount": 15640,
         "ruralCount": 2,
         "urbanCount": 2
     },
     "WAZIRABAD": {
         "name": "WAZIRABAD",
+        "province": "Punjab",
         "tehsils": {
             "WAZIRABAD": {
                 "name": "WAZIRABAD",
@@ -1978,19 +2164,2523 @@
                 "trainers": [
                     {
                         "name": "MINAHIL ASIM",
-                        "cnic": "3410447099918",
+                        "cnic": "3410447099918.0",
                         "headCount": 3263,
-                        "isTopPerformer": false,
-                        "ruralUrban": "Urban"
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
                     }
                 ],
-                "isPair": false,
-                "pairStatus": "NONE"
+                "vacancyStatus": "NONE",
+                "isPair": false
             }
         },
-        "totalTrainers": 1,
         "totalHeadCount": 3263,
+        "totalTrainers": 1,
         "ruralCount": 0,
         "urbanCount": 1
+    },
+    "ABBOTTABAD": {
+        "name": "ABBOTTABAD",
+        "province": "KPK",
+        "tehsils": {
+            "HAVELIAN": {
+                "name": "HAVELIAN",
+                "district": "ABBOTTABAD",
+                "coords": [
+                    34.0536,
+                    73.1594
+                ],
+                "trainers": [
+                    {
+                        "name": "FATIMA NOOR",
+                        "cnic": "1330269379852.0",
+                        "headCount": 1222,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "ABBOTTABAD": {
+                "name": "ABBOTTABAD",
+                "district": "ABBOTTABAD",
+                "coords": [
+                    34.1493,
+                    73.2185
+                ],
+                "trainers": [
+                    {
+                        "name": "DONIA GUL",
+                        "cnic": "1310186624402.0",
+                        "headCount": 5285,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "1310186624402.0",
+                        "headCount": 0,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 6507,
+        "totalTrainers": 2,
+        "ruralCount": 1,
+        "urbanCount": 1
+    },
+    "BUNER": {
+        "name": "BUNER",
+        "province": "KPK",
+        "tehsils": {
+            "GAGRA": {
+                "name": "GAGRA",
+                "district": "BUNER",
+                "coords": [
+                    34.6,
+                    72.5833
+                ],
+                "trainers": [
+                    {
+                        "name": "SHAZIA BIBI",
+                        "cnic": "1510206110534.0",
+                        "headCount": 6855,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "DAGGAR": {
+                "name": "DAGGAR",
+                "district": "BUNER",
+                "coords": [
+                    34.5167,
+                    72.4833
+                ],
+                "trainers": [
+                    {
+                        "name": "AKHTAR BIBI",
+                        "cnic": "1510104740248.0",
+                        "headCount": 8632,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "HANSA",
+                        "cnic": "1510195643838.0",
+                        "headCount": 8632,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": true,
+                "pairStatus": "RED"
+            }
+        },
+        "totalHeadCount": 24119,
+        "totalTrainers": 3,
+        "ruralCount": 1,
+        "urbanCount": 2
+    },
+    "CHARSADDA": {
+        "name": "CHARSADDA",
+        "province": "KPK",
+        "tehsils": {
+            "SHABQADAR": {
+                "name": "SHABQADAR",
+                "district": "CHARSADDA",
+                "coords": [
+                    34.2167,
+                    71.55
+                ],
+                "trainers": [
+                    {
+                        "name": "KAINAT HAYAT",
+                        "cnic": "1710307041820.0",
+                        "headCount": 5780,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "1710307041820.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "CHARSADDA": {
+                "name": "CHARSADDA",
+                "district": "CHARSADDA",
+                "coords": [
+                    34.15,
+                    71.7333
+                ],
+                "trainers": [
+                    {
+                        "name": "NOREEN",
+                        "cnic": "1710107038602.0",
+                        "headCount": 10109,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "SHAYAN AKHTAR",
+                        "cnic": "1710152567655.0",
+                        "headCount": 10109,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": true,
+                "pairStatus": "RED"
+            }
+        },
+        "totalHeadCount": 25998,
+        "totalTrainers": 3,
+        "ruralCount": 1,
+        "urbanCount": 2
+    },
+    "CHITRAL": {
+        "name": "CHITRAL",
+        "province": "KPK",
+        "tehsils": {
+            "CHITRAL": {
+                "name": "CHITRAL",
+                "district": "CHITRAL",
+                "coords": [
+                    35.85,
+                    71.7833
+                ],
+                "trainers": [
+                    {
+                        "name": "KHAIR U SHAHAB",
+                        "cnic": "1520143254436.0",
+                        "headCount": 4801,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 4801,
+        "totalTrainers": 1,
+        "ruralCount": 0,
+        "urbanCount": 1
+    },
+    "D I KHAN": {
+        "name": "D I KHAN",
+        "province": "KPK",
+        "tehsils": {
+            "PAROA": {
+                "name": "PAROA",
+                "district": "D I KHAN",
+                "coords": [
+                    31.8167,
+                    70.9
+                ],
+                "trainers": [
+                    {
+                        "name": "LUBNA MIRAJ",
+                        "cnic": "1210191004752.0",
+                        "headCount": 13550,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "1210191004752.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "PAHARPUR": {
+                "name": "PAHARPUR",
+                "district": "D I KHAN",
+                "coords": [
+                    32.1,
+                    71.0167
+                ],
+                "trainers": [
+                    {
+                        "name": "MEHREEN HUSSAIN",
+                        "cnic": "1210135561804.0",
+                        "headCount": 15585,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "ARSHAD IQBAL",
+                        "cnic": "1210336105613.0",
+                        "headCount": 15585,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": true,
+                "pairStatus": "YELLOW"
+            },
+            "DERA ISMAIL KHAN": {
+                "name": "DERA ISMAIL KHAN",
+                "district": "D I KHAN",
+                "coords": [
+                    31.8333,
+                    70.9
+                ],
+                "trainers": [
+                    {
+                        "name": "NADIA AMBREEN",
+                        "cnic": "1210109084460.0",
+                        "headCount": 21976,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "SHAMIM BIBI",
+                        "cnic": "1210130479400.0",
+                        "headCount": 21976,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": true,
+                "pairStatus": "RED"
+            }
+        },
+        "totalHeadCount": 88672,
+        "totalTrainers": 5,
+        "ruralCount": 3,
+        "urbanCount": 2
+    },
+    "KHYBER": {
+        "name": "KHYBER",
+        "province": "KPK",
+        "tehsils": {
+            "JAMRUD": {
+                "name": "JAMRUD",
+                "district": "KHYBER",
+                "coords": [
+                    34.0,
+                    71.3333
+                ],
+                "trainers": [
+                    {
+                        "name": "ROMINA",
+                        "cnic": "2120284856486.0",
+                        "headCount": 6583,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "LANDI KOTAL": {
+                "name": "LANDI KOTAL",
+                "district": "KHYBER",
+                "coords": [
+                    34.1,
+                    71.15
+                ],
+                "trainers": [
+                    {
+                        "name": "SAMAN RIAZ BUTT",
+                        "cnic": "2120355603332.0",
+                        "headCount": 13785,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "2120355603332.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 20368,
+        "totalTrainers": 2,
+        "ruralCount": 2,
+        "urbanCount": 0
+    },
+    "KURRAM": {
+        "name": "KURRAM",
+        "province": "KPK",
+        "tehsils": {
+            "UPPER KURRAM": {
+                "name": "UPPER KURRAM",
+                "district": "KURRAM",
+                "coords": [
+                    33.9,
+                    70.2
+                ],
+                "trainers": [
+                    {
+                        "name": "SAYED MUJTABA HUSSAIN",
+                        "cnic": "2130398469699.0",
+                        "headCount": 2906,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 2906,
+        "totalTrainers": 1,
+        "ruralCount": 1,
+        "urbanCount": 0
+    },
+    "MANSEHRA": {
+        "name": "MANSEHRA",
+        "province": "KPK",
+        "tehsils": {
+            "MANSEHRA": {
+                "name": "MANSEHRA",
+                "district": "MANSEHRA",
+                "coords": [
+                    34.3333,
+                    73.2
+                ],
+                "trainers": [
+                    {
+                        "name": "IQRA GHUFRAN",
+                        "cnic": "1350313605398.0",
+                        "headCount": 16598,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "NADIA NAWAZ",
+                        "cnic": "1350427809586.0",
+                        "headCount": 16598,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": true,
+                "pairStatus": "YELLOW"
+            },
+            "BALA KOT": {
+                "name": "BALA KOT",
+                "district": "MANSEHRA",
+                "coords": [
+                    34.55,
+                    73.35
+                ],
+                "trainers": [
+                    {
+                        "name": "SADDIQA BIBI",
+                        "cnic": "1350108759008.0",
+                        "headCount": 5967,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 39163,
+        "totalTrainers": 3,
+        "ruralCount": 1,
+        "urbanCount": 2
+    },
+    "MARDAN": {
+        "name": "MARDAN",
+        "province": "KPK",
+        "tehsils": {
+            "KATLANG": {
+                "name": "KATLANG",
+                "district": "MARDAN",
+                "coords": [
+                    34.3667,
+                    72.0833
+                ],
+                "trainers": [
+                    {
+                        "name": "RANA GULL",
+                        "cnic": "1610130157120.0",
+                        "headCount": 3378,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "MARDAN": {
+                "name": "MARDAN",
+                "district": "MARDAN",
+                "coords": [
+                    34.2,
+                    72.05
+                ],
+                "trainers": [
+                    {
+                        "name": "SALMA ISRAR",
+                        "cnic": "1610133218014.0",
+                        "headCount": 24366,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "1610133218014.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    },
+                    {
+                        "name": "NOSHEEN",
+                        "cnic": "1610104915770.0",
+                        "headCount": 24366,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "1610104915770.0",
+                        "headCount": 0,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": true,
+                "pairStatus": "YELLOW"
+            }
+        },
+        "totalHeadCount": 52110,
+        "totalTrainers": 3,
+        "ruralCount": 1,
+        "urbanCount": 2
+    },
+    "MOHMAND": {
+        "name": "MOHMAND",
+        "province": "KPK",
+        "tehsils": {
+            "YAKE GHUND": {
+                "name": "YAKE GHUND",
+                "district": "MOHMAND",
+                "coords": [
+                    34.25,
+                    71.3167
+                ],
+                "trainers": [
+                    {
+                        "name": "SHEHNAZ",
+                        "cnic": "2140760600686.0",
+                        "headCount": 943,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 943,
+        "totalTrainers": 1,
+        "ruralCount": 1,
+        "urbanCount": 0
+    },
+    "NOWSHERA": {
+        "name": "NOWSHERA",
+        "province": "KPK",
+        "tehsils": {
+            "NOWSHERA": {
+                "name": "NOWSHERA",
+                "district": "NOWSHERA",
+                "coords": [
+                    34.0167,
+                    71.9833
+                ],
+                "trainers": [
+                    {
+                        "name": "ASMA SHAKIR",
+                        "cnic": "1720121416874.0",
+                        "headCount": 16084,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "MUSARAT",
+                        "cnic": "1720107739694.0",
+                        "headCount": 16084,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": true,
+                "pairStatus": "YELLOW"
+            },
+            "PABBI": {
+                "name": "PABBI",
+                "district": "NOWSHERA",
+                "coords": [
+                    34.0167,
+                    71.8
+                ],
+                "trainers": [
+                    {
+                        "name": "HAROON AKBAR",
+                        "cnic": "1710151461269.0",
+                        "headCount": 12172,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "SADAF MOMIN",
+                        "cnic": "1720206114336.0",
+                        "headCount": 12172,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": true,
+                "pairStatus": "RED"
+            }
+        },
+        "totalHeadCount": 56512,
+        "totalTrainers": 4,
+        "ruralCount": 0,
+        "urbanCount": 4
+    },
+    "PESHAWAR": {
+        "name": "PESHAWAR",
+        "province": "KPK",
+        "tehsils": {
+            "PESHAWAR": {
+                "name": "PESHAWAR",
+                "district": "PESHAWAR",
+                "coords": [
+                    34.015,
+                    71.5805
+                ],
+                "trainers": [
+                    {
+                        "name": "ZEESHAN GOHAR",
+                        "cnic": "1730145917069.0",
+                        "headCount": 51559,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "MUNIBA",
+                        "cnic": "1710306591486.0",
+                        "headCount": 51559,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "ABDUL BAIS",
+                        "cnic": "1730154545513.0",
+                        "headCount": 51559,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Malaika",
+                        "cnic": "1730124488276.0",
+                        "headCount": 51559,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "NOSHEEN GHANI",
+                        "cnic": "1730177682824.0",
+                        "headCount": 51559,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "AIMAN",
+                        "cnic": "1730120965040.0",
+                        "headCount": 51559,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": true,
+                "pairStatus": "YELLOW"
+            }
+        },
+        "totalHeadCount": 309354,
+        "totalTrainers": 6,
+        "ruralCount": 0,
+        "urbanCount": 6
+    },
+    "SOUTH WAZIRISTAN": {
+        "name": "SOUTH WAZIRISTAN",
+        "province": "KPK",
+        "tehsils": {
+            "WANA": {
+                "name": "WANA",
+                "district": "SOUTH WAZIRISTAN",
+                "coords": [
+                    32.3,
+                    69.5833
+                ],
+                "trainers": [
+                    {
+                        "name": "KALSOOM WAZIR",
+                        "cnic": "2170869458604.0",
+                        "headCount": 2212,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 2212,
+        "totalTrainers": 1,
+        "ruralCount": 1,
+        "urbanCount": 0
+    },
+    "SWAT": {
+        "name": "SWAT",
+        "province": "KPK",
+        "tehsils": {
+            "BAHRAIN": {
+                "name": "BAHRAIN",
+                "district": "SWAT",
+                "coords": [
+                    35.2075,
+                    72.5456
+                ],
+                "trainers": [
+                    {
+                        "name": "NAYAB SIRAJ",
+                        "cnic": "1510305807544.0",
+                        "headCount": 4605,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "MATTA": {
+                "name": "MATTA",
+                "district": "SWAT",
+                "coords": [
+                    34.9,
+                    72.3667
+                ],
+                "trainers": [
+                    {
+                        "name": "LIAQAT BEGUM",
+                        "cnic": "1560120585334.0",
+                        "headCount": 9560,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 14165,
+        "totalTrainers": 2,
+        "ruralCount": 2,
+        "urbanCount": 0
+    },
+    "UPPER DIR": {
+        "name": "UPPER DIR",
+        "province": "KPK",
+        "tehsils": {
+            "DIR": {
+                "name": "DIR",
+                "district": "UPPER DIR",
+                "coords": [
+                    35.2,
+                    71.8833
+                ],
+                "trainers": [
+                    {
+                        "name": "AZRA",
+                        "cnic": "1570162555782.0",
+                        "headCount": 10974,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "FARMAN ULLAH",
+                        "cnic": "1570224922235.0",
+                        "headCount": 10974,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": true,
+                "pairStatus": "YELLOW"
+            }
+        },
+        "totalHeadCount": 21948,
+        "totalTrainers": 2,
+        "ruralCount": 0,
+        "urbanCount": 2
+    },
+    "BAJAUR": {
+        "name": "BAJAUR",
+        "province": "KPK",
+        "tehsils": {
+            "MAMUND": {
+                "name": "MAMUND",
+                "district": "BAJAUR",
+                "coords": [
+                    34.7833,
+                    71.4333
+                ],
+                "trainers": [
+                    {
+                        "name": "HUSNA BIBI",
+                        "cnic": "2110291824382.0",
+                        "headCount": 5813,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "ZUBAIDA PARVEEN",
+                        "cnic": "2110458174770.0",
+                        "headCount": 5813,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": true,
+                "pairStatus": "RED"
+            }
+        },
+        "totalHeadCount": 11626,
+        "totalTrainers": 2,
+        "ruralCount": 2,
+        "urbanCount": 0
+    },
+    "BANNU": {
+        "name": "BANNU",
+        "province": "KPK",
+        "tehsils": {
+            "DOMEL": {
+                "name": "DOMEL",
+                "district": "BANNU",
+                "coords": [
+                    32.8333,
+                    70.7833
+                ],
+                "trainers": [
+                    {
+                        "name": "NAILA BIBI",
+                        "cnic": "1110197008214.0",
+                        "headCount": 4794,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "BANNU": {
+                "name": "BANNU",
+                "district": "BANNU",
+                "coords": [
+                    32.9833,
+                    70.6
+                ],
+                "trainers": [
+                    {
+                        "name": "Mahnoor",
+                        "cnic": "1110120738342.0",
+                        "headCount": 37380,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "1110120738342.0",
+                        "headCount": 0,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 42174,
+        "totalTrainers": 2,
+        "ruralCount": 1,
+        "urbanCount": 1
+    },
+    "BATAGRAM": {
+        "name": "BATAGRAM",
+        "province": "KPK",
+        "tehsils": {
+            "ALLAI": {
+                "name": "ALLAI",
+                "district": "BATAGRAM",
+                "coords": [
+                    34.9,
+                    73.2833
+                ],
+                "trainers": [
+                    {
+                        "name": "SAJIDA",
+                        "cnic": "1320148214124.0",
+                        "headCount": 6702,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "BATAGRAM": {
+                "name": "BATAGRAM",
+                "district": "BATAGRAM",
+                "coords": [
+                    34.6833,
+                    73.0167
+                ],
+                "trainers": [
+                    {
+                        "name": "HAJRA BIBI",
+                        "cnic": "1320201563404.0",
+                        "headCount": 10200,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "1320201563404.0",
+                        "headCount": 0,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 16902,
+        "totalTrainers": 2,
+        "ruralCount": 1,
+        "urbanCount": 1
+    },
+    "HANGU": {
+        "name": "HANGU",
+        "province": "KPK",
+        "tehsils": {
+            "HANGU": {
+                "name": "HANGU",
+                "district": "HANGU",
+                "coords": [
+                    33.5333,
+                    71.05
+                ],
+                "trainers": [
+                    {
+                        "name": "BEENISH MURTAZA",
+                        "cnic": "4220144149338.0",
+                        "headCount": 2494,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 2494,
+        "totalTrainers": 1,
+        "ruralCount": 0,
+        "urbanCount": 1
+    },
+    "HARIPUR": {
+        "name": "HARIPUR",
+        "province": "KPK",
+        "tehsils": {
+            "HARIPUR": {
+                "name": "HARIPUR",
+                "district": "HARIPUR",
+                "coords": [
+                    33.9942,
+                    72.9333
+                ],
+                "trainers": [
+                    {
+                        "name": "ASIMA BIBI",
+                        "cnic": "1330286867502.0",
+                        "headCount": 1667,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 1667,
+        "totalTrainers": 1,
+        "ruralCount": 0,
+        "urbanCount": 1
+    },
+    "KARAK": {
+        "name": "KARAK",
+        "province": "KPK",
+        "tehsils": {
+            "TAKHT-E-NASRATI": {
+                "name": "TAKHT-E-NASRATI",
+                "district": "KARAK",
+                "coords": [
+                    32.4833,
+                    71.1333
+                ],
+                "trainers": [
+                    {
+                        "name": "SABAR TASLEEM",
+                        "cnic": "1420320949756.0",
+                        "headCount": 11278,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "1420320949756.0",
+                        "headCount": 0,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 11278,
+        "totalTrainers": 1,
+        "ruralCount": 1,
+        "urbanCount": 0
+    },
+    "KOHAT": {
+        "name": "KOHAT",
+        "province": "KPK",
+        "tehsils": {
+            "LACHI": {
+                "name": "LACHI",
+                "district": "KOHAT",
+                "coords": [
+                    33.4,
+                    71.4167
+                ],
+                "trainers": [
+                    {
+                        "name": "MAHNOOR BEGUM",
+                        "cnic": "1430174457090.0",
+                        "headCount": 3653,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 3653,
+        "totalTrainers": 1,
+        "ruralCount": 1,
+        "urbanCount": 0
+    },
+    "LAAKI MARWAT": {
+        "name": "LAAKI MARWAT",
+        "province": "KPK",
+        "tehsils": {
+            "SARAI NAURANG": {
+                "name": "SARAI NAURANG",
+                "district": "LAAKI MARWAT",
+                "coords": [
+                    32.6667,
+                    70.9
+                ],
+                "trainers": [
+                    {
+                        "name": "NAZMEEN BIBI",
+                        "cnic": "1120108624176.0",
+                        "headCount": 12802,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "LAKKI MARWAT": {
+                "name": "LAKKI MARWAT",
+                "district": "LAAKI MARWAT",
+                "coords": [
+                    32.6075,
+                    70.9111
+                ],
+                "trainers": [
+                    {
+                        "name": "M. ILYAS",
+                        "cnic": "1120107662737.0",
+                        "headCount": 27146,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "1120107662737.0",
+                        "headCount": 0,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 39948,
+        "totalTrainers": 2,
+        "ruralCount": 1,
+        "urbanCount": 1
+    },
+    "LOWER CHITRAL": {
+        "name": "LOWER CHITRAL",
+        "province": "KPK",
+        "tehsils": {
+            "CHITRAL": {
+                "name": "CHITRAL",
+                "district": "LOWER CHITRAL",
+                "coords": [
+                    35.85,
+                    71.7833
+                ],
+                "trainers": [
+                    {
+                        "name": "NATASHA BATOOL",
+                        "cnic": "1520131356832.0",
+                        "headCount": 4801,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 4801,
+        "totalTrainers": 1,
+        "ruralCount": 0,
+        "urbanCount": 1
+    },
+    "LOWER DIR": {
+        "name": "LOWER DIR",
+        "province": "KPK",
+        "tehsils": {
+            "ADENZAI": {
+                "name": "ADENZAI",
+                "district": "LOWER DIR",
+                "coords": [
+                    34.7,
+                    71.8833
+                ],
+                "trainers": [
+                    {
+                        "name": "REHANA BIBI",
+                        "cnic": "1350450153662.0",
+                        "headCount": 4455,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "TEMERGARA": {
+                "name": "TEMERGARA",
+                "district": "LOWER DIR",
+                "coords": [
+                    34.8333,
+                    71.85
+                ],
+                "trainers": [
+                    {
+                        "name": "SHEEBA TAUSIF",
+                        "cnic": "1730117380930.0",
+                        "headCount": 5579,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "1730117380930.0",
+                        "headCount": 0,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 10034,
+        "totalTrainers": 2,
+        "ruralCount": 1,
+        "urbanCount": 1
+    },
+    "LOWER KOHISTAN": {
+        "name": "LOWER KOHISTAN",
+        "province": "KPK",
+        "tehsils": {
+            "PATTAN": {
+                "name": "PATTAN",
+                "district": "LOWER KOHISTAN",
+                "coords": [
+                    35.1,
+                    73.0167
+                ],
+                "trainers": [
+                    {
+                        "name": "NaSeem",
+                        "cnic": "1350369338020.0",
+                        "headCount": 3946,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 3946,
+        "totalTrainers": 1,
+        "ruralCount": 1,
+        "urbanCount": 0
+    },
+    "SHANGLA": {
+        "name": "SHANGLA",
+        "province": "KPK",
+        "tehsils": {
+            "ALPURI": {
+                "name": "ALPURI",
+                "district": "SHANGLA",
+                "coords": [
+                    34.9,
+                    72.65
+                ],
+                "trainers": [
+                    {
+                        "name": "NAGINA ALTAF",
+                        "cnic": "1550140123144.0",
+                        "headCount": 23808,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "BISHAM": {
+                "name": "BISHAM",
+                "district": "SHANGLA",
+                "coords": [
+                    34.9333,
+                    72.8833
+                ],
+                "trainers": [
+                    {
+                        "name": "TASLIM JEHAN",
+                        "cnic": "1550212403640.0",
+                        "headCount": 2667,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 26475,
+        "totalTrainers": 2,
+        "ruralCount": 2,
+        "urbanCount": 0
+    },
+    "SWABI": {
+        "name": "SWABI",
+        "province": "KPK",
+        "tehsils": {
+            "SWABI": {
+                "name": "SWABI",
+                "district": "SWABI",
+                "coords": [
+                    34.1167,
+                    72.4667
+                ],
+                "trainers": [
+                    {
+                        "name": "MEHWISH IMRAN",
+                        "cnic": "1620298569120.0",
+                        "headCount": 3757,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 3757,
+        "totalTrainers": 1,
+        "ruralCount": 0,
+        "urbanCount": 1
+    },
+    "TORGHAR": {
+        "name": "TORGHAR",
+        "province": "KPK",
+        "tehsils": {
+            "JUDBA": {
+                "name": "JUDBA",
+                "district": "TORGHAR",
+                "coords": [
+                    34.6833,
+                    72.8
+                ],
+                "trainers": [
+                    {
+                        "name": "ATTIA BIBI",
+                        "cnic": "1350467641028.0",
+                        "headCount": 2656,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 2656,
+        "totalTrainers": 1,
+        "ruralCount": 1,
+        "urbanCount": 0
+    },
+    "DADU": {
+        "name": "DADU",
+        "province": "Sindh",
+        "tehsils": {
+            "MEHAR": {
+                "name": "MEHAR",
+                "district": "DADU",
+                "coords": [
+                    27.1785,
+                    67.8226
+                ],
+                "trainers": [
+                    {
+                        "name": "ABIDA PARVEEN",
+                        "cnic": "4120578759412.0",
+                        "headCount": 12641,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "DADU": {
+                "name": "DADU",
+                "district": "DADU",
+                "coords": [
+                    26.7319,
+                    67.7759
+                ],
+                "trainers": [
+                    {
+                        "name": "SAJIDA KALHORO",
+                        "cnic": "4120156290504.0",
+                        "headCount": 8957,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "JOHI": {
+                "name": "JOHI",
+                "district": "DADU",
+                "coords": [
+                    26.6917,
+                    67.6125
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 7086,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            },
+            "KHAIRPUR NATHAN SHAH": {
+                "name": "KHAIRPUR NATHAN SHAH",
+                "district": "DADU",
+                "coords": [
+                    27.0833,
+                    67.7167
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 9070,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 37754,
+        "totalTrainers": 2,
+        "ruralCount": 1,
+        "urbanCount": 1
+    },
+    "KARACHI SOUTH": {
+        "name": "KARACHI SOUTH",
+        "province": "Sindh",
+        "tehsils": {
+            "LYARI": {
+                "name": "LYARI",
+                "district": "KARACHI SOUTH",
+                "coords": [
+                    24.8667,
+                    66.9833
+                ],
+                "trainers": [
+                    {
+                        "name": "FAIZA LARAIB",
+                        "cnic": "4230125159770.0",
+                        "headCount": 1782,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "KARACHI": {
+                "name": "KARACHI",
+                "district": "KARACHI SOUTH",
+                "coords": [
+                    24.8258,
+                    67.0356
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 1700,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 3482,
+        "totalTrainers": 1,
+        "ruralCount": 0,
+        "urbanCount": 1
+    },
+    "KARACHI CENTRAL": {
+        "name": "KARACHI CENTRAL",
+        "province": "Sindh",
+        "tehsils": {
+            "NAZIMABAD": {
+                "name": "NAZIMABAD",
+                "district": "KARACHI CENTRAL",
+                "coords": [
+                    24.9143,
+                    67.0298
+                ],
+                "trainers": [
+                    {
+                        "name": "FAREENA",
+                        "cnic": "4210198292268.0",
+                        "headCount": 3481,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 3481,
+        "totalTrainers": 1,
+        "ruralCount": 0,
+        "urbanCount": 1
+    },
+    "LARKANA": {
+        "name": "LARKANA",
+        "province": "Sindh",
+        "tehsils": {
+            "BAKRANI": {
+                "name": "BAKRANI",
+                "district": "LARKANA",
+                "coords": [
+                    27.4241,
+                    68.1729
+                ],
+                "trainers": [
+                    {
+                        "name": "FOZIA PARVEEN",
+                        "cnic": "4320341621010.0",
+                        "headCount": 5045,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "DOKRI": {
+                "name": "DOKRI",
+                "district": "LARKANA",
+                "coords": [
+                    27.3752,
+                    68.0935
+                ],
+                "trainers": [
+                    {
+                        "name": "NAIMA",
+                        "cnic": "4320136781112.0",
+                        "headCount": 4891,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "LARKANA": {
+                "name": "LARKANA",
+                "district": "LARKANA",
+                "coords": [
+                    27.5583,
+                    68.212
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 11230,
+                        "isTopPerformer": false,
+                        "ruralUrban": "urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            },
+            "RATODERO": {
+                "name": "RATODERO",
+                "district": "LARKANA",
+                "coords": [
+                    27.8021,
+                    68.2874
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 9030,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 30196,
+        "totalTrainers": 2,
+        "ruralCount": 2,
+        "urbanCount": 0
+    },
+    "JAMSHORO": {
+        "name": "JAMSHORO",
+        "province": "Sindh",
+        "tehsils": {
+            "SEHWAN": {
+                "name": "SEHWAN",
+                "district": "JAMSHORO",
+                "coords": [
+                    26.4357,
+                    67.8601
+                ],
+                "trainers": [
+                    {
+                        "name": "GHANWA",
+                        "cnic": "4150606692468.0",
+                        "headCount": 5774,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "KOTRI": {
+                "name": "KOTRI",
+                "district": "JAMSHORO",
+                "coords": [
+                    25.3653,
+                    68.3117
+                ],
+                "trainers": [
+                    {
+                        "name": "ANAM ZAI",
+                        "cnic": "4150407465438.0",
+                        "headCount": 7221,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4150407465438.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "MANJHAND": {
+                "name": "MANJHAND",
+                "district": "JAMSHORO",
+                "coords": [
+                    25.9189,
+                    68.1633
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 3153,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 16148,
+        "totalTrainers": 2,
+        "ruralCount": 0,
+        "urbanCount": 2
+    },
+    "KHAIRPUR": {
+        "name": "KHAIRPUR",
+        "province": "Sindh",
+        "tehsils": {
+            "NARA": {
+                "name": "NARA",
+                "district": "KHAIRPUR",
+                "coords": [
+                    26.6975,
+                    69.1121
+                ],
+                "trainers": [
+                    {
+                        "name": "JAMEELA BEGUM",
+                        "cnic": "4520717748814.0",
+                        "headCount": 11155,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "KINGRI": {
+                "name": "KINGRI",
+                "district": "KHAIRPUR",
+                "coords": [
+                    26.9634,
+                    68.6186
+                ],
+                "trainers": [
+                    {
+                        "name": "GHULAM FATIMA",
+                        "cnic": "4520421209108.0",
+                        "headCount": 21496,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4520421209108.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "GAMBAT": {
+                "name": "GAMBAT",
+                "district": "KHAIRPUR",
+                "coords": [
+                    27.3519,
+                    68.5202
+                ],
+                "trainers": [
+                    {
+                        "name": "NASREEN KHATOON",
+                        "cnic": "4520288749542.0",
+                        "headCount": 12683,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4520288749542.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "MIRWAH": {
+                "name": "MIRWAH",
+                "district": "KHAIRPUR",
+                "coords": [
+                    27.2333,
+                    68.3667
+                ],
+                "trainers": [
+                    {
+                        "name": "SHAHZADI",
+                        "cnic": "4520613092106.0",
+                        "headCount": 17582,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4520613092106.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "KHAIRPUR": {
+                "name": "KHAIRPUR",
+                "district": "KHAIRPUR",
+                "coords": [
+                    27.5303,
+                    68.7592
+                ],
+                "trainers": [
+                    {
+                        "name": "UMBREEN KHADIM",
+                        "cnic": "4520328383006.0",
+                        "headCount": 22477,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4520328383006.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "FAIZ GANJ": {
+                "name": "FAIZ GANJ",
+                "district": "KHAIRPUR",
+                "coords": [
+                    26.8925,
+                    68.4231
+                ],
+                "trainers": [
+                    {
+                        "name": "ZAINAB",
+                        "cnic": "4530203036570.0",
+                        "headCount": 12576,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4530203036570.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "SOBHO DERO": {
+                "name": "SOBHO DERO",
+                "district": "KHAIRPUR",
+                "coords": [
+                    27.3,
+                    68.3833
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 13152,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            },
+            "KOT DIJI": {
+                "name": "KOT DIJI",
+                "district": "KHAIRPUR",
+                "coords": [
+                    27.3402,
+                    68.7077
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 20466,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 131587,
+        "totalTrainers": 6,
+        "ruralCount": 5,
+        "urbanCount": 1
+    },
+    "SUKKUR": {
+        "name": "SUKKUR",
+        "province": "Sindh",
+        "tehsils": {
+            "SALEHPAT": {
+                "name": "SALEHPAT",
+                "district": "SUKKUR",
+                "coords": [
+                    27.7139,
+                    68.8574
+                ],
+                "trainers": [
+                    {
+                        "name": "NAJMA KHATOON",
+                        "cnic": "4550360911902.0",
+                        "headCount": 4293,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "ROHRI": {
+                "name": "ROHRI",
+                "district": "SUKKUR",
+                "coords": [
+                    27.6881,
+                    68.8967
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 7418,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            },
+            "NEW SUKKUR": {
+                "name": "NEW SUKKUR",
+                "district": "SUKKUR",
+                "coords": [
+                    27.6811,
+                    68.8505
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 6948,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            },
+            "PANO AQIL": {
+                "name": "PANO AQIL",
+                "district": "SUKKUR",
+                "coords": [
+                    27.8488,
+                    69.1121
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 10970,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 29629,
+        "totalTrainers": 1,
+        "ruralCount": 1,
+        "urbanCount": 0
+    },
+    "MALIR": {
+        "name": "MALIR",
+        "province": "Sindh",
+        "tehsils": {
+            "BIN QASIM": {
+                "name": "BIN QASIM",
+                "district": "MALIR",
+                "coords": [
+                    24.9083,
+                    67.1895
+                ],
+                "trainers": [
+                    {
+                        "name": "SHAMA",
+                        "cnic": "4240185133936.0",
+                        "headCount": 1498,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "MALIR": {
+                "name": "MALIR",
+                "district": "MALIR",
+                "coords": [
+                    24.8973,
+                    67.2003
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 6263,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 7761,
+        "totalTrainers": 1,
+        "ruralCount": 0,
+        "urbanCount": 1
+    },
+    "NAUSHAHRO FEROZE": {
+        "name": "NAUSHAHRO FEROZE",
+        "province": "Sindh",
+        "tehsils": {
+            "BHIRIA": {
+                "name": "BHIRIA",
+                "district": "NAUSHAHRO FEROZE",
+                "coords": [
+                    26.9086,
+                    68.2045
+                ],
+                "trainers": [
+                    {
+                        "name": "SIDRA LATIF",
+                        "cnic": "4530181132644.0",
+                        "headCount": 8011,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    }
+                ],
+                "vacancyStatus": "NONE",
+                "isPair": false
+            },
+            "MORO": {
+                "name": "MORO",
+                "district": "NAUSHAHRO FEROZE",
+                "coords": [
+                    26.6625,
+                    68.0053
+                ],
+                "trainers": [
+                    {
+                        "name": "MAHNOOR SHAIKH",
+                        "cnic": "4530319680682.0",
+                        "headCount": 10047,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4530319680682.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "KANDIARO": {
+                "name": "KANDIARO",
+                "district": "NAUSHAHRO FEROZE",
+                "coords": [
+                    27.0543,
+                    68.212
+                ],
+                "trainers": [
+                    {
+                        "name": "NAHEED NOOR",
+                        "cnic": "4530276906010.0",
+                        "headCount": 9705,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4530276906010.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "MEHRABPUR": {
+                "name": "MEHRABPUR",
+                "district": "NAUSHAHRO FEROZE",
+                "coords": [
+                    26.9075,
+                    68.3621
+                ],
+                "trainers": [
+                    {
+                        "name": "NASREEN AKHTAR",
+                        "cnic": "4530506180974.0",
+                        "headCount": 8394,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4530506180974.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "NAUSHAHRO FEROZE": {
+                "name": "NAUSHAHRO FEROZE",
+                "district": "NAUSHAHRO FEROZE",
+                "coords": [
+                    26.8427,
+                    68.1228
+                ],
+                "trainers": [
+                    {
+                        "name": "UZMA RAJPER",
+                        "cnic": "4530448327178.0",
+                        "headCount": 8210,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4530448327178.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 44367,
+        "totalTrainers": 5,
+        "ruralCount": 4,
+        "urbanCount": 1
+    },
+    "SHAHEED BENAZIRABAD": {
+        "name": "SHAHEED BENAZIRABAD",
+        "province": "Sindh",
+        "tehsils": {
+            "SAKRAND": {
+                "name": "SAKRAND",
+                "district": "SHAHEED BENAZIRABAD",
+                "coords": [
+                    26.1384,
+                    68.2742
+                ],
+                "trainers": [
+                    {
+                        "name": "RABIA BHATTI",
+                        "cnic": "4540362223700.0",
+                        "headCount": 8274,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4540362223700.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "DAUR": {
+                "name": "DAUR",
+                "district": "SHAHEED BENAZIRABAD",
+                "coords": [
+                    26.3333,
+                    68.3167
+                ],
+                "trainers": [
+                    {
+                        "name": "RAHEELA",
+                        "cnic": "4540271606556.0",
+                        "headCount": 11171,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4540271606556.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "NAWABSHAH": {
+                "name": "NAWABSHAH",
+                "district": "SHAHEED BENAZIRABAD",
+                "coords": [
+                    26.2442,
+                    68.41
+                ],
+                "trainers": [
+                    {
+                        "name": "SHUMAILA KHAN MOHAMMAD",
+                        "cnic": "4540230512322.0",
+                        "headCount": 7373,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": false
+                    },
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "4540230512322.0",
+                        "headCount": 0,
+                        "isTopPerformer": true,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "PARTIAL",
+                "isPair": false
+            },
+            "QAZI AHMED": {
+                "name": "QAZI AHMED",
+                "district": "SHAHEED BENAZIRABAD",
+                "coords": [
+                    26.0,
+                    68.0833
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 8334,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Rural",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 35152,
+        "totalTrainers": 3,
+        "ruralCount": 2,
+        "urbanCount": 1
+    },
+    "HYDERABAD": {
+        "name": "HYDERABAD",
+        "province": "Sindh",
+        "tehsils": {
+            "LATIFABAD": {
+                "name": "LATIFABAD",
+                "district": "HYDERABAD",
+                "coords": [
+                    25.3703,
+                    68.3308
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 2623,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            },
+            "HYDERABAD": {
+                "name": "HYDERABAD",
+                "district": "HYDERABAD",
+                "coords": [
+                    25.396,
+                    68.3578
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 5981,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 8604,
+        "totalTrainers": 0,
+        "ruralCount": 0,
+        "urbanCount": 0
+    },
+    "KARACHI EAST": {
+        "name": "KARACHI EAST",
+        "province": "Sindh",
+        "tehsils": {
+            "FAISAL": {
+                "name": "FAISAL",
+                "district": "KARACHI EAST",
+                "coords": [
+                    24.9262,
+                    67.1084
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 2488,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 2488,
+        "totalTrainers": 0,
+        "ruralCount": 0,
+        "urbanCount": 0
+    },
+    "KARACHI WEST": {
+        "name": "KARACHI WEST",
+        "province": "Sindh",
+        "tehsils": {
+            "ITTEHAD TOWN": {
+                "name": "ITTEHAD TOWN",
+                "district": "KARACHI WEST",
+                "coords": [
+                    24.8762,
+                    66.9175
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 4794,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 4794,
+        "totalTrainers": 0,
+        "ruralCount": 0,
+        "urbanCount": 0
+    },
+    "KEAMARI": {
+        "name": "KEAMARI",
+        "province": "Sindh",
+        "tehsils": {
+            "SITE": {
+                "name": "SITE",
+                "district": "KEAMARI",
+                "coords": [
+                    24.877,
+                    66.949
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 1310,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 1310,
+        "totalTrainers": 0,
+        "ruralCount": 0,
+        "urbanCount": 0
+    },
+    "KORANGI": {
+        "name": "KORANGI",
+        "province": "Sindh",
+        "tehsils": {
+            "KORANGI": {
+                "name": "KORANGI",
+                "district": "KORANGI",
+                "coords": [
+                    24.8468,
+                    67.1238
+                ],
+                "trainers": [
+                    {
+                        "name": "Vacant Position",
+                        "cnic": "nan",
+                        "headCount": 2255,
+                        "isTopPerformer": false,
+                        "ruralUrban": "Urban",
+                        "isVacant": true
+                    }
+                ],
+                "vacancyStatus": "FULL",
+                "isPair": false
+            }
+        },
+        "totalHeadCount": 2255,
+        "totalTrainers": 0,
+        "ruralCount": 0,
+        "urbanCount": 0
     }
 }
