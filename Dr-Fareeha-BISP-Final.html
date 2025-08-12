@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DFLT Phase 2 - Deployment Dashboard</title>
+    <title>DFLT Phase 2 - Deployment Dashboard Developed by Dr Fareeha Armughan</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -99,7 +99,6 @@
 
         .sidebar-section-header { font-size: 16px; font-weight: 600; margin: 0 0 15px 0; color: var(--text-color); }
         .sidebar-section-header i { margin-right: 8px; color: var(--text-muted); }
-        /* This new rule removes the annoying focus outline */
         .sidebar-section-header:focus, .filter-group select:focus, .district-item:focus {
             outline: none;
         }
@@ -115,6 +114,7 @@
 
         .sidebar-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .filter-group { flex: 1; }
+        .filter-group.full-width { grid-column: 1 / -1; } /* New class for full-width filter */
         .filter-group label { font-weight: 600; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; display: block; text-transform: uppercase;}
         .filter-group select {
             width: 100%; padding: 10px; border-radius: 10px;
@@ -241,6 +241,10 @@
             <div id="global-classification-chart"></div>
 
             <div class="sidebar-filters">
+                <div class="filter-group full-width">
+                    <label for="province-filter">Province</label>
+                    <select id="province-filter"></select>
+                </div>
                 <div class="filter-group">
                     <label for="district-filter">District</label>
                     <select id="district-filter"></select>
@@ -273,6 +277,7 @@
         }).addTo(map);
 
         // --- DOM ELEMENT REFERENCES ---
+        const provinceFilter = document.getElementById('province-filter');
         const districtFilter = document.getElementById('district-filter');
         const ruralUrbanFilter = document.getElementById('rural-urban-filter');
         const districtListContainer = document.getElementById('district-list');
@@ -286,9 +291,7 @@
         async function loadData() {
             try {
                 const response = await fetch(`data.json?v=${new Date().getTime()}`);
-                if (!response.ok) {
-                    throw new Error(`Could not load data.json. Make sure the file exists in the same folder.`);
-                }
+                if (!response.ok) throw new Error(`Could not load data.json. Make sure the file exists.`);
                 allProcessedData = await response.json();
                 calculateGrandTotals();
                 console.log("✅ Data successfully loaded from data.json");
@@ -321,13 +324,48 @@
         }
 
         function populateFilters() {
-            const districtNames = ['All', ...Object.keys(allProcessedData).sort()];
-            districtFilter.innerHTML = districtNames.map(d => `<option value="${d}">${d}</option>`).join('');
+            // Populate Province Filter
+            const provinceNames = ['All', ...new Set(Object.values(allProcessedData).map(d => d.province))].sort();
+            provinceFilter.innerHTML = provinceNames.map(p => `<option value="${p}">${p}</option>`).join('');
+            
+            // Populate District filter (initially with all districts)
+            updateDistrictFilter();
+        }
+        
+        // NEW function to dynamically update the district filter based on province selection
+        function updateDistrictFilter(selectedProvince = 'All') {
+            const currentDistrict = districtFilter.value;
+            let eligibleDistricts = [];
+
+            if (selectedProvince === 'All') {
+                eligibleDistricts = Object.keys(allProcessedData).sort();
+            } else {
+                eligibleDistricts = Object.values(allProcessedData)
+                    .filter(d => d.province === selectedProvince)
+                    .map(d => d.name)
+                    .sort();
+            }
+
+            const districtOptions = ['All', ...eligibleDistricts];
+            districtFilter.innerHTML = districtOptions.map(d => `<option value="${d}">${d}</option>`).join('');
+            
+            // Restore previous selection if it's still valid
+            if (districtOptions.includes(currentDistrict)) {
+                districtFilter.value = currentDistrict;
+            } else {
+                districtFilter.value = 'All';
+            }
         }
 
         function addEventListeners() {
+            provinceFilter.addEventListener('change', () => {
+                updateDistrictFilter(provinceFilter.value); // Update district list
+                districtFilter.value = 'All'; // Reset district filter
+                updateDisplay(); // Redraw everything
+            });
             districtFilter.addEventListener('change', updateDisplay);
             ruralUrbanFilter.addEventListener('change', updateDisplay);
+
             document.getElementById('theme-toggle').addEventListener('click', () => {
                 document.body.classList.toggle('dark-mode');
                 const icon = document.querySelector('#theme-toggle i');
@@ -381,55 +419,71 @@
             layers.tehsils.clearLayers();
             districtListContainer.innerHTML = '';
 
+            const selectedProvince = provinceFilter.value;
             const selectedDistrict = districtFilter.value;
             const selectedClassification = ruralUrbanFilter.value;
 
-            const filteredDistricts = Object.values(allProcessedData).filter(d => 
-                selectedDistrict === 'All' || d.name === selectedDistrict
-            );
-            
-            const bounds = [];
-            let currentStats = { districts: 0, tehsils: 0, trainers: 0, headcount: 0 };
+            // 1. Get a list of all districts that match the top-level Province and District filters.
+            let potentialDistricts = Object.values(allProcessedData);
+            if (selectedProvince !== 'All') {
+                potentialDistricts = potentialDistricts.filter(d => d.province === selectedProvince);
+            }
+            if (selectedDistrict !== 'All') {
+                potentialDistricts = potentialDistricts.filter(d => d.name === selectedDistrict);
+            }
 
-            if (selectedDistrict !== 'All' && allProcessedData[selectedDistrict]) {
-                const districtData = allProcessedData[selectedDistrict];
-                currentStats.districts = 1;
-                const tehsilsInView = Object.values(districtData.tehsils).filter(tehsil => 
+            const districtsToDisplay = [];
+            const allVisibleTehsils = [];
+            const bounds = [];
+
+            // 2. Iterate through the potential districts to see which ones have tehsils that match the Classification filter.
+            potentialDistricts.forEach(district => {
+                const tehsilsToDisplay = Object.values(district.tehsils).filter(tehsil =>
                     selectedClassification === 'All' || tehsil.trainers.some(t => t.ruralUrban === selectedClassification)
                 );
-                currentStats.tehsils = tehsilsInView.length;
-                currentStats.trainers = tehsilsInView.reduce((sum, t) => sum + t.trainers.length, 0);
-                currentStats.headcount = tehsilsInView.reduce((sum, t) => sum + (t.trainers[0]?.headCount || 0), 0);
 
-            } else {
-                currentStats = grandTotals;
-            }
-            updateOverviewPanel(currentStats);
-
-            filteredDistricts.forEach((district, index) => {
-                let tehsilsToDisplay = Object.values(district.tehsils);
-
-                if (selectedClassification !== 'All') {
-                    tehsilsToDisplay = tehsilsToDisplay.filter(tehsil => 
-                        tehsil.trainers.some(t => t.ruralUrban === selectedClassification)
-                    );
-                }
-
+                // Only keep districts that have at least one tehsil to show
                 if (tehsilsToDisplay.length > 0) {
-                    populateDistrictList(district, index);
+                    districtsToDisplay.push(district);
                     tehsilsToDisplay.forEach(tehsil => {
+                        allVisibleTehsils.push(tehsil); // Add to a flat list for easier processing
                         if (tehsil.coords && !isNaN(tehsil.coords[0]) && !isNaN(tehsil.coords[1])) {
-                           createTehsilMarker(tehsil);
-                           bounds.push(tehsil.coords);
+                            createTehsilMarker(tehsil);
+                            bounds.push(tehsil.coords);
                         }
                     });
                 }
             });
-            
+
+            // 3. Now, calculate stats based ONLY on the districts and tehsils that are actually visible.
+            const uniqueHeadCounts = new Set();
+            allVisibleTehsils.forEach(tehsil => {
+                if (tehsil.trainers.length > 0) {
+                    // This logic assumes one head count value per duty station/tehsil
+                    uniqueHeadCounts.add(tehsil.trainers[0].headCount);
+                }
+            });
+
+            const currentStats = {
+                districts: districtsToDisplay.length,
+                tehsils: allVisibleTehsils.length,
+                trainers: allVisibleTehsils.reduce((sum, tehsil) => sum + tehsil.trainers.length, 0),
+                headcount: Array.from(uniqueHeadCounts).reduce((sum, hc) => sum + hc, 0)
+            };
+            updateOverviewPanel(currentStats);
+
+            // 4. Render the list of districts that made the cut.
+            districtsToDisplay.forEach((district, index) => {
+                populateDistrictList(district, index);
+            });
+
+            // 5. Adjust the map view.
             if (bounds.length > 1) {
                 map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
             } else if (bounds.length === 1) {
                 map.flyTo(bounds[0], 11);
+            } else if (selectedProvince === 'All' && selectedDistrict === 'All') {
+                map.flyTo([30.3753, 69.3451], 6); // Reset to Pakistan view
             }
         }
 
@@ -439,7 +493,6 @@
             let size = '28px';
             let indicatorIcon = '';
 
-            // Check for single trainers to add a performance indicator
             if (!tehsil.isPair && tehsil.trainers.length > 0) {
                 if (tehsil.trainers[0].isTopPerformer) {
                     indicatorIcon = '<i class="fa-solid fa-star performance-indicator" style="color: #FFD700;"></i>';
@@ -450,7 +503,6 @@
                 }
             }
             
-            // Override for paired trainers
             if (tehsil.isPair) {
                 icon = 'fa-users';
                 size = '32px';
@@ -539,11 +591,9 @@
                 const tehsilsInDistrict = Object.values(district.tehsils);
                 if (tehsilsInDistrict.length > 0) {
                     const bounds = tehsilsInDistrict.map(t => t.coords).filter(Boolean);
-                    if (bounds.length > 0) {
-                       map.fitBounds(bounds, { padding: [50, 50] });
-                    }
+                    if (bounds.length > 0) map.fitBounds(bounds, { padding: [50, 50] });
                 }
-                item.blur(); // Remove focus outline after click
+                item.blur();
             });
 
             districtListContainer.appendChild(item);
@@ -552,9 +602,7 @@
         // --- INITIALIZATION KICK-OFF ---
         (async () => {
             const success = await loadData();
-            if (success) {
-                initializeDashboard();
-            }
+            if (success) initializeDashboard();
         })();
     });
     </script>
