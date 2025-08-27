@@ -128,7 +128,7 @@
         }
 
         #station-list-container { flex-grow: 1; overflow: hidden; display: flex; flex-direction: column; }
-        #station-list { flex-grow: 1; overflow-y: auto; padding-right: 10px; margin-right: -10px; }
+        #station-list { flex-grow: 1; overflow-y: auto; overflow-x: hidden; padding-right: 10px; margin-right: -10px; }
         #station-list::-webkit-scrollbar { width: 5px; }
         #station-list::-webkit-scrollbar-track { background: transparent; }
         #station-list::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 10px; }
@@ -178,7 +178,10 @@
         .tooltip-table td { font-weight: 500; }
         .tooltip-table tr:last-child td { border-bottom: none; }
 
-        .applicant-table-container { max-height: 200px; overflow-y: auto; }
+        .applicant-table-container { 
+            /* max-height: 200px; */
+            /* overflow-y: auto; */
+         }
         .applicant-score { font-weight: 700; padding: 3px 8px; border-radius: 6px; }
         .applicant-score.qualified { color: var(--success-color); background-color: var(--success-bg); }
         .applicant-score.not-qualified { color: var(--danger-color); background-color: var(--danger-bg); }
