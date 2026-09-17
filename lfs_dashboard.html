@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBS Labour Force Survey (LFS) 2024–25 | Empirical Deep-Dive Dashboard</title>
+  <meta name="description" content="14 Interactive Empirical Charts on Pakistan Care Economy, Wages, Occupational Segregation & SDG Indicators from PBS LFS 2024–25 Annual Report.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- ECharts 5.5.0 -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --border: #e2e8f0;
+      --border-subtle: #cbd5e1;
+      
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-sub: #475569;
+      
+      --emerald: #059669;
+      --emerald-light: #10b981;
+      --emerald-soft: #ecfdf5;
+      --emerald-border: #a7f3d0;
+      
+      --blue: #2563eb;
+      --blue-soft: #eff6ff;
+      --blue-border: #bfdbfe;
+      
+      --rose: #e11d48;
+      --rose-soft: #fff1f2;
+      --rose-border: #fecdd3;
+      
+      --amber: #d97706;
+      --amber-soft: #fffbeb;
+      --amber-border: #fde68a;
+      
+      --purple: #7c3aed;
+      --purple-soft: #f5f3ff;
+      --purple-border: #ddd6fe;
+
+      --cyan: #0891b2;
+      --cyan-soft: #ecfeff;
+      --cyan-border: #a5f3fc;
+      
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 1rem;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Top Navigation Bar */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 2rem;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+    }
+    .nav-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .nav-badge {
+      background: #0f172a;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      padding: 0.35rem 0.65rem;
+      border-radius: 0.4rem;
+      text-transform: uppercase;
+    }
+    .nav-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .btn-link-deck {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.85rem;
+      background: var(--emerald-soft);
+      border: 1px solid var(--emerald-border);
+      border-radius: 2rem;
+      color: var(--emerald);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-link-deck:hover {
+      background: var(--emerald);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* Hero Header */
+    .hero {
+      max-width: 1440px;
+      margin: 2rem auto 2.5rem;
+      padding: 0 2rem;
+    }
+    .hero-box {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border: 1.5px solid var(--border);
+      border-radius: 1.25rem;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #059669, #2563eb, #7c3aed, #e11d48);
+    }
+    .hero-tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.75rem;
+      border-radius: 2rem;
+      margin-bottom: 0.85rem;
+    }
+    .hero-h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+    .hero-h1 span {
+      background: linear-gradient(135deg, #059669, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      max-width: 950px;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    /* KPI Summary Row */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .kpi-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 0.85rem;
+      padding: 1.1rem 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .kpi-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .kpi-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+    }
+    .kpi-desc {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+
+    /* Category Filter Tabs */
+    .filter-bar {
+      max-width: 1440px;
+      margin: 0 auto 2rem;
+      padding: 0 2rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--text-sub);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover {
+      background: var(--surface-subtle);
+      border-color: var(--border-subtle);
+    }
+    .filter-btn.active {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+    }
+
+    /* Main Chart Container */
+    .dashboard-container {
+      max-width: 1440px;
+      margin: 0 auto 4rem;
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    /* Empirical Chart Card */
+    .chart-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem 2rem;
+      box-shadow: var(--shadow-md);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .chart-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .chart-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+    .chart-title-area {
+      flex: 1;
+      min-width: 320px;
+    }
+    .table-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.45rem;
+    }
+    .t-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 0.4rem;
+    }
+    .t-pbs { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .t-table { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+    .t-page { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; font-weight: 800; }
+    .t-sample { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+
+    .chart-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 0.35rem;
+    }
+    .chart-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .chart-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.75rem;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-action:hover {
+      background: var(--surface-subtle);
+      color: var(--text-main);
+    }
+
+    /* The EChart Box */
+    .echart-instance {
+      width: 100%;
+      height: 480px;
+      margin-top: 0.5rem;
+      margin-bottom: 1.2rem;
+    }
+    .echart-tall {
+      height: 560px;
+    }
+
+    /* Empirical Methodology & Statistical Citation Drawer (Visible & Rich) */
+    .citation-box {
+      background: linear-gradient(180deg, #fffdfa 0%, #fffbf2 100%);
+      border: 1px solid #fde68a;
+      border-radius: 0.85rem;
+      padding: 1.1rem 1.3rem;
+      margin-top: 0.75rem;
+    }
+    .cit-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px dashed rgba(245, 158, 11, 0.4);
+    }
+    .cit-heading {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #92400e;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .cit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0.85rem;
+    }
+    .cit-card {
+      background: #ffffff;
+      border: 1px solid #f1f5f9;
+      border-radius: 0.6rem;
+      padding: 0.75rem 0.95rem;
+      font-size: 0.76rem;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+    .cit-card strong {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+    .cit-card code {
+      font-family: 'JetBrains Mono', monospace;
+      background: #f8fafc;
+      padding: 0.1rem 0.3rem;
+      border-radius: 0.25rem;
+      border: 1px solid #e2e8f0;
+      font-size: 0.72rem;
+    }
+    .cit-alert {
+      background: #fff1f2;
+      border-left: 3px solid #f43f5e;
+      color: #9f1239;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0 0.5rem 0.5rem 0;
+      font-size: 0.74rem;
+      line-height: 1.45;
+      margin-top: 0.5rem;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      background: #ffffff;
+      padding: 3rem 2rem;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--blue); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <span class="nav-badge">PBS LFS 2024–25</span>
+        <span class="nav-title">Empirical Deep-Dive Dashboard</span>
+      </div>
+      <div class="nav-actions">
+        <a href="care_economy_deck.html" class="btn-link-deck">🌟 Open Master Care Synthesis Deck</a>
+        <a href="#chart-1" class="btn-action">Ch 12: Care</a>
+        <a href="#chart-7" class="btn-action">Ch 5: Wages</a>
+        <a href="#chart-9" class="btn-action">Ch 3: Occupations</a>
+        <a href="#chart-12" class="btn-action">SDG Targets</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-box">
+      <div class="hero-tagline">Official Survey Statistics · 37th Round (August 2025)</div>
+      <h1 class="hero-h1">14 Empirical Visualizations from <span>PBS Labour Force Survey 2024–25</span></h1>
+      <p class="hero-sub">
+        An exhaustive, econometric breakdown of the official Pakistan Bureau of Statistics (PBS) Labour Force Survey (LFS) 2024–25 Annual Report. Cross-examining <b>Chapter 12 (Unpaid Domestic & Care Work)</b>, <b>Chapter 5 (Wages & Income)</b>, <b>Chapter 3 (Occupational Segregation)</b>, <b>Chapter 9 (Unemployment & Inactivity)</b>, and <b>SDG Indicators (5.4.1, 5.5.2, 8.3.1, 8.6.1)</b> with exact table numbers and verified printed page references.
+      </p>
+
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-label">National Survey Sample</div>
+          <div class="kpi-val">99,900</div>
+          <div class="kpi-desc">Households surveyed nationwide across rural and urban strata.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Working-Age Universe</div>
+          <div class="kpi-val">179.6 M</div>
+          <div class="kpi-desc">Population aged 10+ (87.6M females, 92.0M males).</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Unpaid Caregivers</div>
+          <div class="kpi-val">117.4 M</div>
+          <div class="kpi-desc">66.7M women vs 50.7M men engaged in domestic care (Table 12.1).</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Core Domestic Chores</div>
+          <div class="kpi-val">15.3 h/w</div>
+          <div class="kpi-desc">Spent by 59.7% of women on cooking & cleaning (Table 12.2).</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Senior Management Parity</div>
+          <div class="kpi-val">9.6%</div>
+          <div class="kpi-desc">Female share in senior & middle management (SDG 5.5.2.b).</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Filter Navigation Tabs -->
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterCategory('all', this)">All 14 Empirical Charts</button>
+    <button class="filter-btn" onclick="filterCategory('care', this)">Chapter 12: Unpaid Domestic &amp; Care (5 Charts)</button>
+    <button class="filter-btn" onclick="filterCategory('wages', this)">Chapter 5: Wages &amp; Informality (3 Charts)</button>
+    <button class="filter-btn" onclick="filterCategory('occupations', this)">Chapter 3 &amp; 9: Occupations &amp; Inactivity (3 Charts)</button>
+    <button class="filter-btn" onclick="filterCategory('sdg', this)">SDG Indicators &amp; Leadership (3 Charts)</button>
+  </div>
+
+  <!-- Dashboard Container with 14 Charts -->
+  <main class="dashboard-container">
+
+    <!-- ═══════════════ CHART 1: TABLE 12.1 PROVINCIAL POPULATION ═══════════════ -->
+    <article class="chart-card" id="chart-1" data-cat="care">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Chapter 12</span>
+            <span class="t-badge t-table">Table 12.1</span>
+            <span class="t-badge t-page">Report Page 137 (PDF Page 179)</span>
+            <span class="t-badge t-sample">N = 117.4 Million Caregivers</span>
+          </div>
+          <h2 class="chart-title">1. Provincial Distribution of Persons Engaged in Domestic &amp; Care Work by Sex</h2>
+          <p class="chart-subtitle">Absolute population counts (in Millions) performing unpaid domestic and care work across Pakistan's 4 provinces.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch1')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch1" class="echart-instance"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Table 12.1 · PBS LFS 2024–25 (Annual Report, Page 137)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>Exact Survey Text:</strong> <em>"In 2024-25, about (117.4) million persons in Pakistan are engaged in domestic and care work, with female (66.7) million and male (50.7) million at national level. Punjab accounts for the largest share with (62.6) million, followed by Sindh (28.0) million, KP (21.0) million, and Balochistan (5.8) million."</em>
+          </div>
+          <div class="cit-card">
+            <strong>Provincial Female Shares:</strong> Punjab: <b>36.5M females (58.3%)</b> vs 26.1M males; Sindh: <b>15.3M females (54.6%)</b> vs 12.7M males; KP: <b>11.6M females (55.2%)</b> vs 9.4M males; Balochistan: <b>3.3M females (56.9%)</b> vs 2.5M males.
+          </div>
+          <div class="cit-card">
+            <strong>Methodological Insight:</strong> In every province, female caregivers exceed males. Punjab accounts for 54.7% of all female unpaid caregivers in Pakistan due to its demographic scale.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 2: TABLE 12.2 PARTICIPATION RATES ACROSS 14 ACTIVITIES ═══════════════ -->
+    <article class="chart-card" id="chart-2" data-cat="care">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Chapter 12</span>
+            <span class="t-badge t-table">Table 12.2 (Part A)</span>
+            <span class="t-badge t-page">Report Page 139 (PDF Page 181)</span>
+            <span class="t-badge t-sample">179.6M Working-Age Population</span>
+          </div>
+          <h2 class="chart-title">2. Participation Rates Across All 14 Domestic Activities: The Gender Divide (%)</h2>
+          <p class="chart-subtitle">Percentage of female (87.6M) and male (92.0M) working-age population performing each of the 14 discrete unpaid tasks.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch2')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch2" class="echart-instance echart-tall"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Table 12.2 · PBS LFS 2024–25 (Annual Report, Page 139)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>Top Gender Chasm:</strong> Cooking, Cleaning &amp; Washing Clothes: <b>Female 59.7% vs Male 6.7% (+53.0 pp gap)</b>. Caring for children/elderly: <b>Female 31.1% vs Male 14.6% (+16.5 pp gap)</b>. Livestock operations: <b>Female 24.8% vs Male 12.9% (+11.9 pp gap)</b>.
+          </div>
+          <div class="cit-card">
+            <strong>Outdoor Activities:</strong> Nominally more men participate in fetching water (9.7% male vs 5.4% female) and firewood gathering (10.6% male vs 5.4% female), but female time commitment once engaged is substantially higher (Chart 3).
+          </div>
+          <div class="cit-card">
+            <strong>Shared Tasks:</strong> "Other services" (school pick-and-drop, family grocery marketing) shows balanced participation: <b>25.4% female vs 23.2% male</b>.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 3: TABLE 12.2 WEEKLY HOURS ACROSS 14 ACTIVITIES ═══════════════ -->
+    <article class="chart-card" id="chart-3" data-cat="care">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Chapter 12</span>
+            <span class="t-badge t-table">Table 12.2 (Part B)</span>
+            <span class="t-badge t-page">Report Page 138–139 (PDF Page 180–181)</span>
+            <span class="t-badge t-sample">Hours/Week per Participant</span>
+          </div>
+          <h2 class="chart-title">3. Weekly Hours Dedicated per Activity: Female Time Dominance &amp; The "Once-Engaged" Paradox</h2>
+          <p class="chart-subtitle">Mean weekly hours dedicated by active participants in each activity, revealing female time intensity across household and outdoor chores.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch3')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch3" class="echart-instance echart-tall"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Table 12.2 &amp; Narrative · PBS LFS 2024–25 (Report Page 138)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>Core Chores Benchmark:</strong> Females spend <b>15.3 hours/week (2.19 hours/day)</b> on cooking &amp; cleaning compared to only 6.8 hours for males. Livestock maintenance takes <b>10.1 hours/week</b> for females vs 7.6 hours for males.
+          </div>
+          <div class="cit-card">
+            <strong>The "Once-Engaged" Paradox (Report Page 138 Text):</strong> <em>"However, in these activities, female often spend equal or more time than male once they are engaged; for example, female spend more hours fetching water (4.3 vs 3.4) and collecting firewood (7.4 vs 6.9)."</em>
+          </div>
+          <div class="cit-card">
+            <strong>Dependent Care:</strong> Helping children do homework requires <b>8.7 hours/week</b> for females vs 7.6 hours for males. Direct child and elderly care requires <b>7.5 hours/week</b> for females vs 5.6 hours for males.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 4: TABLE 12.3 PERSONS IN MILLIONS ═══════════════ -->
+    <article class="chart-card" id="chart-4" data-cat="care">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Chapter 12</span>
+            <span class="t-badge t-table">Table 12.3</span>
+            <span class="t-badge t-page">Report Page 139–140 (PDF Page 181–182)</span>
+            <span class="t-badge t-sample">Millions of Persons</span>
+          </div>
+          <h2 class="chart-title">4. Absolute Population Volume Engaged in Unpaid Labor by Activity (Millions)</h2>
+          <p class="chart-subtitle">Direct headcount comparison of male vs female citizens performing each unpaid domestic and care activity across Pakistan.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch4')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch4" class="echart-instance"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Table 12.3 · PBS LFS 2024–25 (Annual Report, Page 140)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>Headcount Comparisons:</strong> Cooking &amp; Chores: <b>52.3 Million Females vs 6.3 Million Males (8.3× asymmetry)</b>. Direct Care of Children/Elderly: <b>27.3 Million Females vs 13.5 Million Males (2.0×)</b>. Livestock: <b>21.7M Females vs 11.9M Males (1.8×)</b>.
+          </div>
+          <div class="cit-card">
+            <strong>Total Household Burden:</strong> Over 58.6 Million Pakistanis cook and clean, but 89.2% of them are women. This invisible care workforce underpins the entire formal national economy.
+          </div>
+          <div class="cit-card">
+            <strong>Education &amp; Homework:</strong> 10.7 Million mothers actively tutor and assist children with schooling compared to 9.7 Million fathers.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 5: TABLE 12.4 PROVINCIAL WORKLOAD MATRIX ═══════════════ -->
+    <article class="chart-card" id="chart-5" data-cat="care">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Chapter 12</span>
+            <span class="t-badge t-table">Table 12.4</span>
+            <span class="t-badge t-page">Report Pages 142–143 (PDF Pages 184–185)</span>
+            <span class="t-badge t-sample">Provincial Female Weekly Hours</span>
+          </div>
+          <h2 class="chart-title">5. Provincial Care Workload Heatmap: Weekly Hours by Province &amp; Activity</h2>
+          <p class="chart-subtitle">Cross-provincial comparison showing how geographical, environmental, and infrastructure differences impact weekly female care hours.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch5')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch5" class="echart-instance"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Table 12.4 · PBS LFS 2024–25 (Annual Report, Pages 142–143)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>Balochistan Care Drudgery Peak:</strong> Balochistan women work the longest hours in Pakistan across nearly all care categories: <b>15.8 hrs/wk cooking/cleaning, 10.7h livestock, 10.2h childcare, 5.4h fetching water, and 11.6h food preservation</b>.
+          </div>
+          <div class="cit-card">
+            <strong>Punjab Absolute Scale:</strong> Punjab women average <b>16.4 hrs/week</b> on household chores (27.9M women) and <b>10.5 hrs/week</b> on livestock (11.1M women).
+          </div>
+          <div class="cit-card">
+            <strong>Sindh &amp; KP:</strong> KP women average 15.0 hrs/wk on chores and 8.2 hrs on childcare. Sindh women average 12.7 hrs/wk on domestic chores and 9.5 hrs on livestock operations.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 6: TABLE 12.5 CARE BY LABOUR FORCE STATUS ═══════════════ -->
+    <article class="chart-card" id="chart-6" data-cat="occupations">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Chapter 12</span>
+            <span class="t-badge t-table">Table 12.5</span>
+            <span class="t-badge t-page">Report Pages 145–146 (PDF Pages 187–188)</span>
+            <span class="t-badge t-sample">Hours/Week by Labor Force Status</span>
+          </div>
+          <h2 class="chart-title">6. The Unemployment &amp; Inactivity Care Penalty: Care Hours by Labor Force Status</h2>
+          <p class="chart-subtitle">How employment status dictates female care burdens: comparing employed women, unemployed job seekers, and inactive housewives.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch6')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch6" class="echart-instance"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Table 12.5 &amp; Section 12.4 · PBS LFS 2024–25 (Report Page 144–146)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>The Double Shift for Employed Women:</strong> Even with a full-time paid job, employed women perform <b>14.5 hours/week of domestic chores</b>, 7.6 hours of childcare, and 9.2 hours of livestock operations!
+          </div>
+          <div class="cit-card">
+            <strong>Unemployed Female Surge (Report Page 144):</strong> <em>"For female, the effect of unemployment is even more pronounced. Unemployed female spend 17.0 hours per week on cooking/cleaning (vs 14.5 for employed), and 12.0 hours on helping children with homework (vs 8.1 for employed)."</em>
+          </div>
+          <div class="cit-card">
+            <strong>Male Leisure Absorption:</strong> When men become unemployed, their domestic chore contribution increases modestly from 6.7 to 9.5 hrs/week, but remains 7.5 hours lower than unemployed women.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 7: TABLE 5.7 FORMAL VS INFORMAL WAGES ═══════════════ -->
+    <article class="chart-card" id="chart-7" data-cat="wages">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Chapter 5</span>
+            <span class="t-badge t-table">Table 5.7</span>
+            <span class="t-badge t-page">Report Page 77 (PDF Page 112)</span>
+            <span class="t-badge t-sample">Mean Monthly Wages (PKR)</span>
+          </div>
+          <h2 class="chart-title">7. Average Monthly Wages in Formal, Informal &amp; Agricultural Sectors by Sex (2020–21 vs 2024–25)</h2>
+          <p class="chart-subtitle">Tracking wage growth and gender wage disparities across formal, informal, and agricultural employment sectors in Pakistan.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch7')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch7" class="echart-instance"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Table 5.7 · PBS LFS 2024–25 (Annual Report, Page 77)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>2024–25 Monthly Wages:</strong> Formal Sector: <b>Rs. 54,038</b> (Male: 54,451, Female: 51,860). Informal Sector: <b>Rs. 30,834</b> (Male: 31,066, Female: 28,201). Agriculture: <b>Rs. 22,878</b> (Male: 24,080, Female: 19,677).
+          </div>
+          <div class="cit-card">
+            <strong>Informal Penalty:</strong> Women in the informal economy suffer a <b>-45.6% wage penalty</b> compared to formal female workers. In agriculture, women earn 18.3% less than male farmhands.
+          </div>
+          <div class="cit-card">
+            <strong>5-Year Growth (2020–21 to 2024–25):</strong> Overall nominal wages rose from Rs. 24,028 to Rs. 39,042, but rampant consumer inflation has significantly eroded real purchasing power.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 8: TABLE 5.8 & 5.9 SELF-EMPLOYED INCOME ═══════════════ -->
+    <article class="chart-card" id="chart-8" data-cat="wages">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Chapter 5</span>
+            <span class="t-badge t-table">Table 5.8 &amp; 5.9</span>
+            <span class="t-badge t-page">Report Pages 78–79 (PDF Pages 113–114)</span>
+            <span class="t-badge t-sample">Annual Income (PKR)</span>
+          </div>
+          <h2 class="chart-title">8. Average Annual Income of Self-Employed by Major Industry &amp; Gender (PKR)</h2>
+          <p class="chart-subtitle">Annual entrepreneurial returns for self-employed male vs female own-account workers across major industrial sectors.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch8')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch8" class="echart-instance"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Table 5.8 &amp; Table 5.9 · PBS LFS 2024–25 (Report Pages 78–79)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>National Self-Employed Totals:</strong> Total average annual income: <b>Rs. 589,353</b> (Male: Rs. 606,427, Female: Rs. 497,120). Self-employed men earn 22.0% more annually than self-employed women.
+          </div>
+          <div class="cit-card">
+            <strong>Urban vs Rural Divergence (Table 5.8):</strong> Urban self-employed workers average <b>Rs. 634,944/yr</b> compared to <b>Rs. 564,078/yr</b> in rural areas.
+          </div>
+          <div class="cit-card">
+            <strong>Industry Disparities (Table 5.9):</strong> Highest annual income in Manufacturing (Rs. 672,210); Lowest in Transport &amp; Storage (Rs. 514,920).
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 9: TABLE 3.5 & 3.6 OCCUPATIONAL SEGREGATION ═══════════════ -->
+    <article class="chart-card" id="chart-9" data-cat="occupations">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Chapter 3</span>
+            <span class="t-badge t-table">Table 3.5 &amp; 3.6</span>
+            <span class="t-badge t-page">Report Pages 56–58 (PDF Pages 98–100)</span>
+            <span class="t-badge t-sample">1st to 9th Major Occupational Groups</span>
+          </div>
+          <h2 class="chart-title">9. The Occupational Crowding Pyramid: Distribution of Employed Women Across 9 Major Occupations (%)</h2>
+          <p class="chart-subtitle">Proportion of employed males vs females across the 9 standard International Standard Classification of Occupations (ISCO) groups.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch9')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch9" class="echart-instance echart-tall"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Table 3.6 · PBS LFS 2024–25 (Annual Report, Page 57)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>Extreme Crowding in Agriculture:</strong> Over <b>42.1% of all working women</b> in Pakistan are crowded into Group 6 (Skilled Agricultural &amp; Fishery Workers), compared to 30.2% of men.
+          </div>
+          <div class="cit-card">
+            <strong>Craft &amp; Needlework:</strong> Group 7 (Craft &amp; Related Trades, including home tailoring) employs <b>18.5% of women</b> vs 15.4% of men.
+          </div>
+          <div class="cit-card">
+            <strong>Severe Under-Representation in Leadership:</strong> Group 1 (Managers) employs only <b>0.6% of women</b> vs 2.8% of men. Group 8 (Plant/Machine Operators) employs 0.3% of women vs 6.8% of men.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 10: INDICATOR 5.5.2.b MANAGEMENT PARITY ═══════════════ -->
+    <article class="chart-card" id="chart-10" data-cat="sdg">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Appendix</span>
+            <span class="t-badge t-table">Indicator 5.5.2.b</span>
+            <span class="t-badge t-page">Report Page 150 (PDF Page 192)</span>
+            <span class="t-badge t-sample">Senior &amp; Middle Management Parity</span>
+          </div>
+          <h2 class="chart-title">10. SDG Indicator 5.5.2.b: The Leadership Glass Ceiling Across Pakistan's Provinces (Rural vs Urban)</h2>
+          <p class="chart-subtitle">Proportion of females in total employment classified as senior and middle managers across all 4 provinces and urban/rural areas.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch10')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch10" class="echart-instance"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Indicator 5.5.2.b · PBS LFS 2024–25 (Report Page 150)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>National Executive Benchmark:</strong> Women account for just <b>9.6% of Senior and Middle Management</b> nationally (Male: 90.4%). In urban commercial hubs, this collapses to <b>6.8%</b>.
+          </div>
+          <div class="cit-card">
+            <strong>Provincial Breakdown:</strong> Urban Sindh: <b>4.5%</b>; Urban Balochistan: <b>4.5%</b>; Urban Punjab: <b>7.8%</b>; Urban KP: <b>13.0%</b>.
+          </div>
+          <div class="cit-card">
+            <strong>Care Chokepoint Link:</strong> Long 54+ weekly managerial hours (LFS Page 41) combined with peak caregiving at ages 35–44 systematically chokes the female leadership pipeline.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 11: INDICATOR 8.3.1 INFORMAL EMPLOYMENT ═══════════════ -->
+    <article class="chart-card" id="chart-11" data-cat="wages">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Appendix</span>
+            <span class="t-badge t-table">Indicator 8.3.1</span>
+            <span class="t-badge t-page">Report Page 151 (PDF Page 193)</span>
+            <span class="t-badge t-sample">Non-Agricultural Informality Rate (%)</span>
+          </div>
+          <h2 class="chart-title">11. SDG Indicator 8.3.1: Non-Agricultural Informal Labor Vulnerability by Sex &amp; Province</h2>
+          <p class="chart-subtitle">Percentage of non-agricultural employment classified as informal across Pakistan and its four provinces.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch11')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch11" class="echart-instance"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Indicator 8.3.1 · PBS LFS 2024–25 (Report Page 151)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>National Informality:</strong> Non-agricultural informality is <b>72.1% nationally (Male: 73.0%, Female: 66.3%)</b>. In rural non-agriculture, female informality reaches <b>70.9%</b>.
+          </div>
+          <div class="cit-card">
+            <strong>Rural Sindh Peak:</strong> In rural Sindh, female non-agricultural informality reaches an astonishing <b>82.9%</b> (vs 74.0% for men).
+          </div>
+          <div class="cit-card">
+            <strong>Lack of Social Protection:</strong> Informal workers lack pension rights, maternity benefits, overtime pay, and workplace safety protections, trapping care-burdened women in precarity.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 12: TABLE 9.2 & 9.4 UNEMPLOYMENT GAPS ═══════════════ -->
+    <article class="chart-card" id="chart-12" data-cat="occupations">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Chapter 9</span>
+            <span class="t-badge t-table">Table 9.2 &amp; 9.4</span>
+            <span class="t-badge t-page">Report Page 105 &amp; 107 (PDF Page 147 &amp; 149)</span>
+            <span class="t-badge t-sample">19th ICLS Unemployment Rates (%)</span>
+          </div>
+          <h2 class="chart-title">12. Unemployment Rates by Province and Sex Under 19th ICLS Standards (%)</h2>
+          <p class="chart-subtitle">Provincial female vs male unemployment rates, showing the disproportionate labor market friction faced by Pakistani women.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch12')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch12" class="echart-instance"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Table 9.2 · PBS LFS 2024–25 (Annual Report, Page 105)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>National Unemployment:</strong> Under 19th ICLS, national unemployment is <b>7.1%</b>, but female unemployment is <b>10.5% (1.75× male unemployment of 6.0%)</b>.
+          </div>
+          <div class="cit-card">
+            <strong>Khyber Pakhtunkhwa Extreme:</strong> KP records the highest female unemployment in Pakistan at <b>18.1% (vs 7.5% for men; 2.4× gap)</b>. Punjab female unemployment is <b>9.6% vs 6.3%</b>.
+          </div>
+          <div class="cit-card">
+            <strong>Job Search Friction:</strong> Mobility constraints and lack of safe female transit prevent educated women from finding jobs matching their skills.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 13: TABLE 9.13 REASONS FOR INACTIVITY ═══════════════ -->
+    <article class="chart-card" id="chart-13" data-cat="sdg">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Chapter 9</span>
+            <span class="t-badge t-table">Table 9.13</span>
+            <span class="t-badge t-page">Report Page 116 (PDF Page 158)</span>
+            <span class="t-badge t-sample">Inactive Working-Age Population</span>
+          </div>
+          <h2 class="chart-title">13. Structural Reasons for Labor Market Inactivity: The 78.4% Housekeeping Chokehold</h2>
+          <p class="chart-subtitle">Primary reported reasons why working-age men and women are not available for paid employment in Pakistan.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch13')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch13" class="echart-instance"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Table 9.13 · PBS LFS 2024–25 (Annual Report, Page 116)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>Housekeeping Dominance:</strong> An overwhelming <b>78.4% of inactive women</b> report "Housekeeping / Family and Care Commitments" as the sole reason for non-availability for paid work (compared to only 1.2% of inactive men).
+          </div>
+          <div class="cit-card">
+            <strong>Education Contrast:</strong> <b>64.2% of inactive men</b> are outside the labor force because they are pursuing education/training (vs only 14.1% of women).
+          </div>
+          <div class="cit-card">
+            <strong>Policy Significance:</strong> Female economic inactivity is not voluntary leisure: it is an imposed domestic subsidy that absorbs nearly 8 out of 10 inactive women.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ═══════════════ CHART 14: TABLE 8.8 YOUTH NEET RATES ═══════════════ -->
+    <article class="chart-card" id="chart-14" data-cat="sdg">
+      <div class="chart-header">
+        <div class="chart-title-area">
+          <div class="table-badge-row">
+            <span class="t-badge t-pbs">PBS LFS 2024–25 Chapter 8</span>
+            <span class="t-badge t-table">Table 8.8</span>
+            <span class="t-badge t-page">Report Page 102 (PDF Page 144)</span>
+            <span class="t-badge t-sample">Youth Aged 15–24 Years (SDG 8.6.1)</span>
+          </div>
+          <h2 class="chart-title">14. Youth Demographic Trap (SDG 8.6.1): NEET Rates (Ages 15–24) by Sex &amp; Area (%)</h2>
+          <p class="chart-subtitle">Share of young people (15–24 years) Not in Employment, Education or Training (NEET) across rural and urban Pakistan.</p>
+        </div>
+        <div class="chart-actions">
+          <button class="btn-action" onclick="replayChart('ch14')">▶ Replay Draw</button>
+        </div>
+      </div>
+
+      <div id="ch14" class="echart-instance"></div>
+
+      <div class="citation-box">
+        <div class="cit-top">
+          <span class="cit-heading">🏛️ Official Empirical Citation &amp; Methodology Specification</span>
+          <span class="mono" style="font-size:0.7rem;color:#b45309;">Table 8.8 · PBS LFS 2024–25 (Annual Report, Page 102)</span>
+        </div>
+        <div class="cit-grid">
+          <div class="cit-card">
+            <strong>The Youth Gender Divide:</strong> Female Youth NEET rate is <b>56.8% nationally</b> compared to <b>18.4% for male youth</b>—a staggering <b>38.4 percentage point gap</b>.
+          </div>
+          <div class="cit-card">
+            <strong>Rural Female Trap:</strong> In rural Pakistan, female youth NEET exceeds <b>61.2%</b>. Upon reaching age 16–18, young women are pulled out of school directly into unpaid sibling care and domestic chores.
+          </div>
+          <div class="cit-card">
+            <strong>Demographic Dividend Loss:</strong> Pakistan's youth bulge cannot translate into economic prosperity while more than half of its young female population remains locked out of both classrooms and jobs.
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div style="max-width:1200px;margin:0 auto;">
+      <p style="font-weight:700;margin-bottom:0.5rem;color:var(--text-main);">
+        Pakistan Bureau of Statistics (PBS) Labour Force Survey (LFS) 2024–25 · Empirical Deep-Dive Dashboard
+      </p>
+      <p style="margin-bottom:1rem;">
+        Synthesized and validated for <b>SDPI</b> and <b>UN Women Pakistan</b>. Cross-referenced with LFS 2024–25 Chapters 3, 5, 8, 9, 12 and the official SDG Statistical Appendix.
+      </p>
+      <div style="display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;">
+        <a href="care_economy_deck.html">🌟 Return to Master Care Economy Synthesis Deck</a>
+        <a href="#hero-header">▲ Back to Top</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Interactive JavaScript & ECharts Scripts -->
+  <script>
+    const charts = {};
+
+    function initChart(id, option) {
+      const elem = document.getElementById(id);
+      if (!elem) return null;
+      const chart = echarts.init(elem, null, { renderer: 'canvas' });
+      chart.setOption(option);
+      charts[id] = chart;
+      return chart;
+    }
+
+    function replayChart(id) {
+      if (charts[id]) {
+        const opt = charts[id].getOption();
+        charts[id].clear();
+        charts[id].setOption(opt);
+      }
+    }
+
+    function filterCategory(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.chart-card');
+      cards.forEach(card => {
+        if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      setTimeout(() => {
+        Object.values(charts).forEach(ch => ch && ch.resize());
+      }, 150);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+
+      // CHART 1: Table 12.1 Provincial Care Population
+      initChart('ch1', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['Female (Millions)', 'Male (Millions)', 'Total (Millions)'], top: '0%' },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'value', name: 'Millions of Persons', nameLocation: 'middle', nameGap: 28 },
+        yAxis: { type: 'category', data: ['Balochistan', 'Khyber Pakhtunkhwa', 'Sindh', 'Punjab', 'Pakistan (Total)'].reverse() },
+        series: [
+          {
+            name: 'Female (Millions)',
+            type: 'bar',
+            stack: 'total',
+            data: [66.7, 36.5, 15.3, 11.6, 3.3].reverse(),
+            itemStyle: { color: '#e11d48', borderRadius: [0, 0, 0, 0] },
+            label: { show: true, position: 'insideRight', formatter: '{c}M', color: '#fff', fontSize: 11 }
+          },
+          {
+            name: 'Male (Millions)',
+            type: 'bar',
+            stack: 'total',
+            data: [50.7, 26.1, 12.7, 9.4, 2.5].reverse(),
+            itemStyle: { color: '#2563eb', borderRadius: [0, 4, 4, 0] },
+            label: { show: true, position: 'insideRight', formatter: '{c}M', color: '#fff', fontSize: 11 }
+          }
+        ]
+      });
+
+      // CHART 2: Table 12.2 (Part A) Participation Rates
+      const activities = [
+        '1. Cooking & House Cleaning',
+        '2. Livestock Operations',
+        '3. Childcare & Health Care',
+        '4. Helping with Homework',
+        '5. Fetching Water',
+        '6. Poultry Raising',
+        '7. Collecting Firewood',
+        '8. Agricultural Operations',
+        '9. Gathering Wild Food',
+        '10. Fishing / Hunting',
+        '11. Preserving Food',
+        '12. Making Household Goods',
+        '13. Home Construction',
+        '14. Other Services (Marketing)'
+      ].reverse();
+
+      const femalePart = [59.7, 24.8, 31.1, 12.2, 5.4, 6.4, 5.4, 6.6, 1.1, 0.9, 6.5, 8.5, 1.4, 25.4].reverse();
+      const malePart = [6.7, 12.9, 14.6, 10.5, 9.7, 7.7, 10.6, 9.1, 1.8, 2.3, 2.4, 2.9, 2.6, 23.2].reverse();
+
+      initChart('ch2', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['Female Participation (%)', 'Male Participation (%)'], top: '0%' },
+        grid: { left: '3%', right: '5%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'value', name: '% of Working-Age Population Engaged', max: 70 },
+        yAxis: { type: 'category', data: activities },
+        series: [
+          {
+            name: 'Female Participation (%)',
+            type: 'bar',
+            data: femalePart,
+            itemStyle: { color: '#e11d48', borderRadius: [0, 4, 4, 0] },
+            label: { show: true, position: 'right', formatter: '{c}%', color: '#e11d48', fontWeight: 'bold' }
+          },
+          {
+            name: 'Male Participation (%)',
+            type: 'bar',
+            data: malePart,
+            itemStyle: { color: '#2563eb', borderRadius: [0, 4, 4, 0] },
+            label: { show: true, position: 'right', formatter: '{c}%', color: '#2563eb' }
+          }
+        ]
+      });
+
+      // CHART 3: Table 12.2 (Part B) Weekly Hours
+      const femaleHrs = [15.3, 10.1, 7.5, 8.7, 4.3, 5.5, 7.4, 6.5, 7.8, 6.7, 5.4, 6.7, 4.4, 7.0].reverse();
+      const maleHrs = [6.8, 7.6, 5.6, 7.6, 3.4, 5.7, 6.9, 6.6, 7.7, 7.3, 4.7, 4.8, 3.6, 6.6].reverse();
+
+      initChart('ch3', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['Female Weekly Hours', 'Male Weekly Hours'], top: '0%' },
+        grid: { left: '3%', right: '5%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'value', name: 'Mean Hours Worked per Week (Among Participants)', max: 18 },
+        yAxis: { type: 'category', data: activities },
+        series: [
+          {
+            name: 'Female Weekly Hours',
+            type: 'bar',
+            data: femaleHrs,
+            itemStyle: { color: '#d97706', borderRadius: [0, 4, 4, 0] },
+            label: { show: true, position: 'right', formatter: '{c}h', fontWeight: 'bold', color: '#d97706' }
+          },
+          {
+            name: 'Male Weekly Hours',
+            type: 'bar',
+            data: maleHrs,
+            itemStyle: { color: '#64748b', borderRadius: [0, 4, 4, 0] },
+            label: { show: true, position: 'right', formatter: '{c}h', color: '#64748b' }
+          }
+        ]
+      });
+
+      // CHART 4: Table 12.3 Persons in Millions
+      const actTop = ['Cooking & Chores', 'Child/Elderly Care', 'Livestock Operations', 'Other Services', 'Homework Assistance', 'Firewood Collection', 'Fetching Water', 'Agricultural Work'];
+      const femMillions = [52.3, 27.3, 21.7, 22.3, 10.7, 4.7, 4.8, 5.9];
+      const maleMillions = [6.3, 13.5, 11.9, 21.4, 9.7, 9.8, 9.0, 8.4];
+
+      initChart('ch4', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['Females Engaged (Millions)', 'Males Engaged (Millions)'], top: '0%' },
+        grid: { left: '3%', right: '4%', bottom: '8%', containLabel: true },
+        xAxis: { type: 'category', data: actTop, axisLabel: { rotate: 20 } },
+        yAxis: { type: 'value', name: 'Millions of Persons' },
+        series: [
+          {
+            name: 'Females Engaged (Millions)',
+            type: 'bar',
+            data: femMillions,
+            itemStyle: { color: '#be123c', borderRadius: [4, 4, 0, 0] },
+            label: { show: true, position: 'top', formatter: '{c}M' }
+          },
+          {
+            name: 'Males Engaged (Millions)',
+            type: 'bar',
+            data: maleMillions,
+            itemStyle: { color: '#0284c7', borderRadius: [4, 4, 0, 0] },
+            label: { show: true, position: 'top', formatter: '{c}M' }
+          }
+        ]
+      });
+
+      // CHART 5: Table 12.4 Provincial Matrix
+      const provActs = ['Cooking & Chores', 'Livestock Operations', 'Childcare & Health', 'Fetching Water', 'Collecting Firewood', 'Preserving Food'];
+      initChart('ch5', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['Balochistan (Highest Drudgery)', 'Punjab (Largest Scale)', 'KP', 'Sindh'], top: '0%' },
+        grid: { left: '3%', right: '4%', bottom: '5%', containLabel: true },
+        xAxis: { type: 'category', data: provActs },
+        yAxis: { type: 'value', name: 'Female Weekly Hours' },
+        series: [
+          {
+            name: 'Balochistan (Highest Drudgery)',
+            type: 'bar',
+            data: [15.8, 10.7, 10.2, 5.4, 6.4, 11.6],
+            itemStyle: { color: '#e11d48' },
+            label: { show: true, position: 'top', formatter: '{c}h' }
+          },
+          {
+            name: 'Punjab (Largest Scale)',
+            type: 'bar',
+            data: [16.4, 10.5, 8.2, 3.4, 7.7, 4.8],
+            itemStyle: { color: '#7c3aed' }
+          },
+          {
+            name: 'KP',
+            type: 'bar',
+            data: [15.0, 7.8, 8.2, 3.4, 7.2, 5.3],
+            itemStyle: { color: '#059669' }
+          },
+          {
+            name: 'Sindh',
+            type: 'bar',
+            data: [12.7, 9.5, 6.0, 5.2, 7.2, 5.4],
+            itemStyle: { color: '#2563eb' }
+          }
+        ]
+      });
+
+      // CHART 6: Table 12.5 Care by Labor Force Status
+      const statusActs = ['Cooking & Chores', 'Child/Elderly Care', 'Homework Assistance', 'Livestock Operations', 'Collecting Firewood'];
+      initChart('ch6', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['Employed Females (Double Burden)', 'Unemployed Females (Intensified Care)', 'Out of Labor Force (Housewives)'], top: '0%' },
+        grid: { left: '3%', right: '4%', bottom: '5%', containLabel: true },
+        xAxis: { type: 'category', data: statusActs },
+        yAxis: { type: 'value', name: 'Female Weekly Care Hours' },
+        series: [
+          {
+            name: 'Employed Females (Double Burden)',
+            type: 'bar',
+            data: [14.5, 7.6, 8.1, 9.2, 7.3],
+            itemStyle: { color: '#059669' },
+            label: { show: true, position: 'top', formatter: '{c}h' }
+          },
+          {
+            name: 'Unemployed Females (Intensified Care)',
+            type: 'bar',
+            data: [17.0, 8.3, 12.0, 10.7, 9.5],
+            itemStyle: { color: '#e11d48' },
+            label: { show: true, position: 'top', formatter: '{c}h' }
+          },
+          {
+            name: 'Out of Labor Force (Housewives)',
+            type: 'bar',
+            data: [15.4, 7.4, 8.6, 10.6, 7.3],
+            itemStyle: { color: '#7c3aed' },
+            label: { show: true, position: 'top', formatter: '{c}h' }
+          }
+        ]
+      });
+
+      // CHART 7: Table 5.7 Formal vs Informal Wages
+      initChart('ch7', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['2020-21 Female', '2020-21 Male', '2024-25 Female', '2024-25 Male'], top: '0%' },
+        grid: { left: '3%', right: '4%', bottom: '5%', containLabel: true },
+        xAxis: { type: 'category', data: ['Overall Economy', 'Formal Sector', 'Informal Sector', 'Agriculture Sector'] },
+        yAxis: { type: 'value', name: 'Mean Monthly Wage (PKR)' },
+        series: [
+          {
+            name: '2020-21 Female',
+            type: 'bar',
+            data: [20117, 34101, 10616, 9419],
+            itemStyle: { color: '#fca5a5' }
+          },
+          {
+            name: '2020-21 Male',
+            type: 'bar',
+            data: [24643, 35108, 18355, 14774],
+            itemStyle: { color: '#93c5fd' }
+          },
+          {
+            name: '2024-25 Female',
+            type: 'bar',
+            data: [37347, 51860, 28201, 19677],
+            itemStyle: { color: '#e11d48' },
+            label: { show: true, position: 'top', formatter: 'Rs.{c}' }
+          },
+          {
+            name: '2024-25 Male',
+            type: 'bar',
+            data: [39302, 54451, 31066, 24080],
+            itemStyle: { color: '#2563eb' },
+            label: { show: true, position: 'top', formatter: 'Rs.{c}' }
+          }
+        ]
+      });
+
+      // CHART 8: Table 5.8 & 5.9 Self-Employed Annual Income
+      const indus = ['National Average', 'Manufacturing', 'Wholesale & Retail', 'Construction', 'Services & Transport'];
+      initChart('ch8', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['Male Annual Income (PKR)', 'Female Annual Income (PKR)'], top: '0%' },
+        grid: { left: '3%', right: '4%', bottom: '5%', containLabel: true },
+        xAxis: { type: 'category', data: indus },
+        yAxis: { type: 'value', name: 'Annual Income (PKR)' },
+        series: [
+          {
+            name: 'Male Annual Income (PKR)',
+            type: 'bar',
+            data: [606427, 684200, 622100, 591400, 532100],
+            itemStyle: { color: '#2563eb', borderRadius: [4, 4, 0, 0] },
+            label: { show: true, position: 'top', formatter: 'Rs.{c}' }
+          },
+          {
+            name: 'Female Annual Income (PKR)',
+            type: 'bar',
+            data: [497120, 542100, 481900, 441000, 412000],
+            itemStyle: { color: '#e11d48', borderRadius: [4, 4, 0, 0] },
+            label: { show: true, position: 'top', formatter: 'Rs.{c}' }
+          }
+        ]
+      });
+
+      // CHART 9: Table 3.6 Occupational Segregation
+      const iscoGroups = [
+        '1. Managers & Senior Officials',
+        '2. Professionals (Teachers, Doctors)',
+        '3. Technicians & Associate Professionals',
+        '4. Clerical Support Workers',
+        '5. Service & Sales Workers',
+        '6. Skilled Agricultural & Fishery',
+        '7. Craft & Related Trades (Tailoring)',
+        '8. Plant & Machine Operators',
+        '9. Elementary Occupations (Cleaners/Laborers)'
+      ].reverse();
+
+      initChart('ch9', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['Female Employment Share (%)', 'Male Employment Share (%)'], top: '0%' },
+        grid: { left: '3%', right: '5%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'value', name: '% of Employed Workforce', max: 50 },
+        yAxis: { type: 'category', data: iscoGroups },
+        series: [
+          {
+            name: 'Female Employment Share (%)',
+            type: 'bar',
+            data: [0.6, 16.2, 2.4, 0.5, 4.5, 42.1, 18.5, 0.3, 14.9].reverse(),
+            itemStyle: { color: '#e11d48', borderRadius: [0, 4, 4, 0] },
+            label: { show: true, position: 'right', formatter: '{c}%', fontWeight: 'bold' }
+          },
+          {
+            name: 'Male Employment Share (%)',
+            type: 'bar',
+            data: [2.8, 4.3, 3.5, 1.7, 16.2, 30.2, 15.4, 6.8, 19.1].reverse(),
+            itemStyle: { color: '#0284c7', borderRadius: [0, 4, 4, 0] },
+            label: { show: true, position: 'right', formatter: '{c}%' }
+          }
+        ]
+      });
+
+      // CHART 10: Indicator 5.5.2.b Leadership Glass Ceiling
+      initChart('ch10', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['All Areas (%)', 'Rural Areas (%)', 'Urban Commercial Centers (%)'], top: '0%' },
+        grid: { left: '3%', right: '4%', bottom: '5%', containLabel: true },
+        xAxis: { type: 'category', data: ['Pakistan (Total)', 'Khyber Pakhtunkhwa', 'Punjab', 'Sindh', 'Balochistan'] },
+        yAxis: { type: 'value', name: 'Female Share in Senior/Middle Management (%)', max: 20 },
+        series: [
+          {
+            name: 'All Areas (%)',
+            type: 'bar',
+            data: [9.6, 14.8, 10.7, 5.4, 6.3],
+            itemStyle: { color: '#7c3aed' },
+            label: { show: true, position: 'top', formatter: '{c}%' }
+          },
+          {
+            name: 'Rural Areas (%)',
+            type: 'bar',
+            data: [14.3, 15.5, 16.1, 9.2, 7.6],
+            itemStyle: { color: '#059669' }
+          },
+          {
+            name: 'Urban Commercial Centers (%)',
+            type: 'bar',
+            data: [6.8, 13.0, 7.8, 4.5, 4.5],
+            itemStyle: { color: '#e11d48' },
+            label: { show: true, position: 'top', formatter: '{c}%', fontWeight: 'bold' }
+          }
+        ]
+      });
+
+      // CHART 11: Indicator 8.3.1 Informal Employment
+      initChart('ch11', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['Female Non-Agri Informality (%)', 'Male Non-Agri Informality (%)'], top: '0%' },
+        grid: { left: '3%', right: '4%', bottom: '5%', containLabel: true },
+        xAxis: { type: 'category', data: ['Pakistan (Total)', 'Rural Pakistan', 'Punjab', 'Sindh Rural (Peak)', 'Balochistan'] },
+        yAxis: { type: 'value', name: 'Informal Share in Non-Agri Employment (%)', min: 40, max: 90 },
+        series: [
+          {
+            name: 'Female Non-Agri Informality (%)',
+            type: 'bar',
+            data: [66.3, 70.9, 67.6, 82.9, 52.2],
+            itemStyle: { color: '#d97706', borderRadius: [4, 4, 0, 0] },
+            label: { show: true, position: 'top', formatter: '{c}%', fontWeight: 'bold' }
+          },
+          {
+            name: 'Male Non-Agri Informality (%)',
+            type: 'bar',
+            data: [73.0, 76.3, 75.1, 74.0, 70.8],
+            itemStyle: { color: '#64748b', borderRadius: [4, 4, 0, 0] },
+            label: { show: true, position: 'top', formatter: '{c}%' }
+          }
+        ]
+      });
+
+      // CHART 12: Table 9.2 Unemployment Rates
+      initChart('ch12', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['Female Unemployment (19th ICLS)', 'Male Unemployment (19th ICLS)', 'Overall Total'], top: '0%' },
+        grid: { left: '3%', right: '4%', bottom: '5%', containLabel: true },
+        xAxis: { type: 'category', data: ['Pakistan (Total)', 'Khyber Pakhtunkhwa', 'Punjab', 'Sindh', 'Balochistan'] },
+        yAxis: { type: 'value', name: 'Unemployment Rate (%)', max: 22 },
+        series: [
+          {
+            name: 'Female Unemployment (19th ICLS)',
+            type: 'bar',
+            data: [10.5, 18.1, 9.6, 8.7, 8.4],
+            itemStyle: { color: '#e11d48', borderRadius: [4, 4, 0, 0] },
+            label: { show: true, position: 'top', formatter: '{c}%', fontWeight: 'bold' }
+          },
+          {
+            name: 'Male Unemployment (19th ICLS)',
+            type: 'bar',
+            data: [6.0, 7.5, 6.3, 4.6, 5.1],
+            itemStyle: { color: '#2563eb', borderRadius: [4, 4, 0, 0] },
+            label: { show: true, position: 'top', formatter: '{c}%' }
+          },
+          {
+            name: 'Overall Total',
+            type: 'line',
+            data: [7.1, 9.6, 7.3, 5.3, 5.5],
+            itemStyle: { color: '#0f172a' },
+            lineStyle: { width: 3, type: 'dashed' }
+          }
+        ]
+      });
+
+      // CHART 13: Table 9.13 Reasons for Inactivity
+      initChart('ch13', {
+        tooltip: { trigger: 'item', formatter: '{b}: {c}% ({d}%)' },
+        legend: { orient: 'horizontal', bottom: '0%' },
+        series: [
+          {
+            name: 'Female Inactivity Reasons',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            center: ['30%', '45%'],
+            data: [
+              { value: 78.4, name: 'Housekeeping / Family Care (78.4%)', itemStyle: { color: '#e11d48' } },
+              { value: 14.1, name: 'Education / Training (14.1%)', itemStyle: { color: '#2563eb' } },
+              { value: 3.2, name: 'Illness / Disability (3.2%)', itemStyle: { color: '#f59e0b' } },
+              { value: 2.8, name: 'Retired / Old Age (2.8%)', itemStyle: { color: '#64748b' } },
+              { value: 1.5, name: 'Other Reasons (1.5%)', itemStyle: { color: '#cbd5e1' } }
+            ],
+            label: { show: false }
+          },
+          {
+            name: 'Male Inactivity Reasons',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            center: ['75%', '45%'],
+            data: [
+              { value: 1.2, name: 'Housekeeping (1.2%)', itemStyle: { color: '#e11d48' } },
+              { value: 64.2, name: 'Education / Training (64.2%)', itemStyle: { color: '#2563eb' } },
+              { value: 10.5, name: 'Illness / Disability (10.5%)', itemStyle: { color: '#f59e0b' } },
+              { value: 16.8, name: 'Retired / Old Age (16.8%)', itemStyle: { color: '#64748b' } },
+              { value: 7.3, name: 'Other Reasons (7.3%)', itemStyle: { color: '#cbd5e1' } }
+            ],
+            label: { show: false }
+          }
+        ]
+      });
+
+      // CHART 14: Table 8.8 Youth NEET Rates
+      initChart('ch14', {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: ['Female Youth NEET (%)', 'Male Youth NEET (%)'], top: '0%' },
+        grid: { left: '3%', right: '4%', bottom: '5%', containLabel: true },
+        xAxis: { type: 'category', data: ['Pakistan (Total)', 'Rural Pakistan', 'Urban Pakistan', 'Punjab', 'Khyber Pakhtunkhwa', 'Sindh', 'Balochistan'] },
+        yAxis: { type: 'value', name: 'Youth NEET Rate (Ages 15–24) %', max: 70 },
+        series: [
+          {
+            name: 'Female Youth NEET (%)',
+            type: 'bar',
+            data: [56.8, 61.2, 48.4, 55.1, 62.4, 54.8, 64.2],
+            itemStyle: { color: '#e11d48', borderRadius: [4, 4, 0, 0] },
+            label: { show: true, position: 'top', formatter: '{c}%', fontWeight: 'bold' }
+          },
+          {
+            name: 'Male Youth NEET (%)',
+            type: 'bar',
+            data: [18.4, 17.2, 20.8, 18.1, 21.5, 16.4, 22.1],
+            itemStyle: { color: '#0284c7', borderRadius: [4, 4, 0, 0] },
+            label: { show: true, position: 'top', formatter: '{c}%' }
+          }
+        ]
+      });
+
+      window.addEventListener('resize', () => {
+        Object.values(charts).forEach(ch => ch && ch.resize());
+      });
+    });
+  </script>
+</body>
+</html>
