@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prime Minister's Care Cabinet — Pakistan 2026–2035 Policy Simulation</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans for executive clean UI, JetBrains Mono for data -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-dark: #070b13;
+      --bg-panel: rgba(15, 23, 42, 0.82);
+      --bg-panel-light: rgba(30, 41, 59, 0.7);
+      --border-panel: rgba(255, 255, 255, 0.12);
+      --border-focus: rgba(16, 185, 129, 0.6);
+      
+      --emerald-glow: #10b981;
+      --emerald-light: #34d399;
+      --cyan-glow: #06b6d4;
+      --amber-gold: #f59e0b;
+      --rose-accent: #f43f5e;
+      --purple-accent: #a855f7;
+      
+      --text-white: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      font-family: var(--font-ui);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.04) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* Ambient Scanline / Tactical Texture */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.25;
+    }
+
+    /* TOP EXECUTIVE HUD (HEADS-UP DISPLAY) */
+    .executive-hud {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 11, 19, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-panel);
+      padding: 10px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .hud-title-block {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hud-emblem {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #065f46 0%, #059669 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .hud-titles h1 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hud-titles p {
+      font-size: 0.72rem;
+      color: var(--emerald-light);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* REAL-TIME NATIONAL ECONOMIC METRICS BAR */
+    .hud-metrics-bar {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .hud-metric {
+      display: flex;
+      flex-direction: column;
+      min-width: 95px;
+    }
+
+    .hud-metric-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      font-weight: 700;
+    }
+
+    .hud-metric-val {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--emerald-light);
+      transition: all 0.4s ease;
+    }
+
+    .hud-metric-val.updated {
+      animation: pulseGlow 0.8s ease;
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(1); color: #ffffff; text-shadow: 0 0 15px #10b981; }
+      50% { transform: scale(1.15); color: #34d399; text-shadow: 0 0 25px #34d399; }
+      100% { transform: scale(1); color: var(--emerald-light); }
+    }
+
+    .hud-metric-sub {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    /* HUD CONTROLS (FULLSCREEN, POLL MODE, SOUND, MATH) */
+    .hud-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hud-btn {
+      background: var(--bg-panel-light);
+      border: 1px solid var(--border-panel);
+      color: var(--text-white);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .hud-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--emerald-glow);
+      transform: translateY(-1px);
+    }
+
+    .hud-btn.active {
+      background: rgba(16, 185, 129, 0.25);
+      border-color: var(--emerald-glow);
+      color: var(--emerald-light);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+    }
+
+    /* MAIN STAGE CONTAINER */
+    .simulation-viewport {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 1350px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* SCENARIO CARD (MAIN CINEMATIC CONTAINER) */
+    .scenario-screen {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-panel);
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* SCENARIO BANNER & VISUAL IMAGE DISPLAY */
+    .scenario-hero {
+      position: relative;
+      height: 340px;
+      width: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .scenario-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 25%;
+      filter: brightness(0.88) contrast(1.05);
+      transition: transform 10s ease;
+    }
+
+    .scenario-hero:hover .scenario-hero-img {
+      transform: scale(1.04);
+    }
+
+    .scenario-hero-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(180deg, rgba(7, 11, 19, 0.2) 0%, rgba(7, 11, 19, 0.85) 85%, var(--bg-panel) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px 32px;
+    }
+
+    .scenario-phase-tag {
+      align-self: flex-start;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-panel);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--amber-gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .scenario-phase-tag .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--rose-accent);
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .scenario-header-text h2 {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+
+    .scenario-header-text p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 900px;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+    }
+
+    /* SCENARIO BODY & DIALOGUE */
+    .scenario-body {
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 960px) {
+      .scenario-body {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .briefing-box {
+      background: rgba(10, 15, 26, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1rem;
+      padding: 24px;
+      position: relative;
+    }
+
+    .speaker-tag {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .speaker-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #059669 0%, #0284c7 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    }
+
+    .speaker-meta h3 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .speaker-meta span {
+      font-size: 0.72rem;
+      color: var(--emerald-light);
+      font-weight: 600;
+    }
+
+    .briefing-dialogue {
+      font-size: 1.02rem;
+      line-height: 1.65;
+      color: #e2e8f0;
+      margin-bottom: 20px;
+    }
+
+    .briefing-data-callout {
+      background: rgba(16, 185, 129, 0.08);
+      border-left: 3px solid var(--emerald-glow);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.82rem;
+      color: #d1fae5;
+      line-height: 1.5;
+    }
+
+    .briefing-data-callout strong {
+      color: #ffffff;
+    }
+
+    /* RIGHT COLUMN: POLICY OPTIONS (THE ACTION CARDS) */
+    .policy-deck {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .policy-deck-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .policy-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 18px 20px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .policy-card:hover {
+      background: rgba(30, 41, 59, 0.9);
+      border-color: var(--emerald-glow);
+      transform: translateX(4px) scale(1.01);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+    }
+
+    .policy-card.selected {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.15) 100%);
+      border-color: var(--emerald-light);
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.35);
+    }
+
+    .policy-card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .policy-key {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-panel);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: var(--amber-gold);
+      flex-shrink: 0;
+    }
+
+    .policy-header-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.35;
+    }
+
+    .policy-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      padding-left: 40px;
+    }
+
+    .policy-specs-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-left: 40px;
+    }
+
+    .spec-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--emerald-light);
+    }
+
+    .spec-badge.cost {
+      color: var(--amber-gold);
+    }
+
+    .spec-badge.risk {
+      color: var(--rose-accent);
+    }
+
+    /* HALL AUDIENCE VOTING BARS (WHEN HALL MODE IS ON) */
+    .vote-bar-wrap {
+      display: none;
+      height: 6px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 8px;
+      margin-left: 40px;
+    }
+
+    .vote-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--emerald-glow), var(--cyan-glow));
+      width: 0%;
+      transition: width 0.6s ease;
+    }
+
+    .hall-mode-active .vote-bar-wrap {
+      display: block;
+    }
+
+    /* ACTION BAR / COMMIT BUTTON */
+    .scenario-action-bar {
+      padding: 20px 32px;
+      background: rgba(7, 11, 19, 0.95);
+      border-top: 1px solid var(--border-panel);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .scenario-keyboard-hints {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    .scenario-keyboard-hints kbd {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
+    .btn-commit {
+      background: linear-gradient(135deg, #059669 0%, #0284c7 100%);
+      color: #ffffff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(5, 150, 105, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.25s ease;
+    }
+
+    .btn-commit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(5, 150, 105, 0.6);
+      filter: brightness(1.1);
+    }
+
+    .btn-commit:disabled {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-dim);
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* RESULT MODAL / CALCULATION SPLASH */
+    .calculation-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(7, 11, 19, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .calculation-card {
+      background: #0f172a;
+      border: 1px solid var(--emerald-glow);
+      border-radius: 1.5rem;
+      max-width: 680px;
+      width: 100%;
+      padding: 36px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(16, 185, 129, 0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+    }
+
+    .calc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .calc-header h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .calc-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .calc-metric-box {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid var(--border-panel);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .calc-metric-box .label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      font-weight: 700;
+    }
+
+    .calc-metric-box .val {
+      font-family: var(--font-mono);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--emerald-light);
+    }
+
+    .calc-rationale {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 16px;
+      border-radius: 10px;
+      border-left: 3px solid var(--cyan-glow);
+    }
+
+    /* ECONOMETRIC FORMULA DRAWER (SLIDE OUT) */
+    .formula-drawer {
+      position: fixed;
+      top: 0; right: -500px;
+      width: 480px;
+      height: 100vh;
+      background: rgba(10, 15, 26, 0.96);
+      backdrop-filter: blur(25px);
+      border-left: 1px solid var(--border-panel);
+      z-index: 300;
+      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.8);
+      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    .formula-drawer.open {
+      right: 0;
+    }
+
+    .formula-drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-panel);
+    }
+
+    .formula-drawer-header h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .close-drawer-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .formula-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid var(--border-panel);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .formula-card h4 {
+      font-size: 0.85rem;
+      color: var(--emerald-light);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .formula-math {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      background: #070b13;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: var(--amber-gold);
+      margin-bottom: 10px;
+      line-height: 1.4;
+      word-break: break-all;
+    }
+
+    .formula-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* GRAND FINALE SCOREBOARD SCREEN */
+    .finale-screen {
+      display: none;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-panel);
+      border-radius: 1.5rem;
+      padding: 40px;
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .finale-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--emerald-glow);
+      color: var(--emerald-light);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+
+    .finale-title {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .finale-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 800px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    .finale-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+      text-align: left;
+    }
+
+    @media (max-width: 900px) {
+      .finale-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .finale-metric-box {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border-panel);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .finale-metric-box.highlight {
+      border-color: var(--emerald-glow);
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+    }
+
+    .finale-metric-box .label {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .finale-metric-box .val {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--emerald-light);
+    }
+
+    .finale-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP EXECUTIVE HUD -->
+  <header class="executive-hud">
+    <div class="hud-title-block">
+      <div class="hud-emblem">🇵🇰</div>
+      <div class="hud-titles">
+        <h1>Prime Minister's Care Cabinet <span style="font-size:0.65rem; background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px; margin-left:6px; color:#38bdf8;">SIM 2026-2035</span></h1>
+        <p>Chief Economic Advisor Simulator | UN Women × SDPI</p>
+      </div>
+    </div>
+
+    <!-- REAL-TIME GAUGES -->
+    <div class="hud-metrics-bar">
+      <div class="hud-metric">
+        <span class="hud-metric-label">GDP Impact</span>
+        <span id="hud-gdp" class="hud-metric-val">+PKR 0.00 T</span>
+        <span id="hud-gdp-share" class="hud-metric-sub">+0.00% GDP</span>
+      </div>
+
+      <div class="hud-metric">
+        <span class="hud-metric-label">Women Unlocked</span>
+        <span id="hud-women" class="hud-metric-val">0.00 M</span>
+        <span class="hud-metric-sub">BISP Housewives</span>
+      </div>
+
+      <div class="hud-metric">
+        <span class="hud-metric-label">Time Saved</span>
+        <span id="hud-hours" class="hud-metric-val">0.0 h/wk</span>
+        <span class="hud-metric-sub">per woman</span>
+      </div>
+
+      <div class="hud-metric">
+        <span class="hud-metric-label">FLFP Jump</span>
+        <span id="hud-flfp" class="hud-metric-val">22.7%</span>
+        <span class="hud-metric-sub">baseline: 22.7%</span>
+      </div>
+
+      <div class="hud-metric">
+        <span class="hud-metric-label">5-Yr BCR</span>
+        <span id="hud-bcr" class="hud-metric-val">—</span>
+        <span class="hud-metric-sub">Lifecycle ROI</span>
+      </div>
+
+      <div class="hud-metric">
+        <span class="hud-metric-label">Cabinet Approval</span>
+        <span id="hud-approval" class="hud-metric-val">65%</span>
+        <span class="hud-metric-sub">consensus</span>
+      </div>
+    </div>
+
+    <!-- HUD BUTTONS -->
+    <div class="hud-controls">
+      <button id="btn-hall-poll" class="hud-btn" title="Toggle Hall Audience Poll Mode [P]">
+        <span>🗳️</span> Hall Poll Mode
+      </button>
+      <button id="btn-audio-toggle" class="hud-btn" title="Toggle Sound [M]">
+        <span id="audio-icon">🔊</span> Sound
+      </button>
+      <button id="btn-math-drawer" class="hud-btn" title="Open Econometric Formulas [E]">
+        <span>📐</span> Math Proof
+      </button>
+      <button id="btn-fullscreen" class="hud-btn" title="Toggle Fullscreen [F]">
+        <span>⛶</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN STAGE SIMULATION VIEWPORT -->
+  <main class="simulation-viewport">
+
+    <!-- ACTIVE SCENARIO SCREEN -->
+    <div id="scenario-container" class="scenario-screen">
+      <!-- HERO IMAGE & OVERLAY -->
+      <div class="scenario-hero">
+        <img id="scenario-img" class="scenario-hero-img" src="assets/images/pm_cabinet_room.jpg" alt="Cabinet Room" />
+        <div class="scenario-hero-overlay">
+          <div class="scenario-phase-tag">
+            <div class="live-dot"></div>
+            <span id="scenario-phase-badge">Phase 1 / 5: National Accounts Shock</span>
+          </div>
+          <div class="scenario-header-text">
+            <h2 id="scenario-title">Dilemma 1: The PKR 10.38 Trillion Invisible Economy</h2>
+            <p id="scenario-desc">Pakistan Bureau of Statistics has published LFS 2024–25. The Finance Ministry considers unpaid care work as zero output. What is your advisory to the Prime Minister?</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- BODY: BRIEFING & DIALOGUE + CHOICES -->
+      <div class="scenario-body">
+        <!-- LEFT: CABINET DIALOGUE -->
+        <div class="briefing-box">
+          <div class="speaker-tag">
+            <div id="speaker-avatar" class="speaker-avatar">🏛️</div>
+            <div class="speaker-meta">
+              <h3 id="speaker-name">Mian Muhammad Shehbaz Sharif</h3>
+              <span id="speaker-role">Prime Minister of Pakistan</span>
+            </div>
+          </div>
+          <p id="briefing-quote" class="briefing-dialogue">
+            "Advisor, PBS just released the 37th Labour Force Survey. 66.7 Million women are performing 15.3 hours a week of unpaid domestic labor. Under international standards, this is worth PKR 10.38 Trillion—nearly 10% of our entire GDP! Yet the Finance Ministry tells me it has zero fiscal value. How should we proceed?"
+          </p>
+          <div id="briefing-callout" class="briefing-data-callout">
+            <strong>Official Anchor:</strong> Pakistan Gazette Statutory Minimum Wage FY 2024–25 = <strong>PKR 40,700/mo (PKR 195.67/hr)</strong>. Generalist domestic replacement cost method (SNA 2008).
+          </div>
+        </div>
+
+        <!-- RIGHT: POLICY CHOICES -->
+        <div class="policy-deck">
+          <div class="policy-deck-title">
+            <span>Select Policy Response (Audience Choice)</span>
+            <span id="hall-vote-count" style="display:none; color:var(--emerald-light);">Voting Active</span>
+          </div>
+
+          <div id="options-list" style="display:flex; flex-direction:column; gap:12px;">
+            <!-- Options dynamically injected -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTION BAR -->
+      <div class="scenario-action-bar">
+        <div class="scenario-keyboard-hints">
+          Press <kbd>1</kbd>–<kbd>4</kbd> to select option · <kbd>Space</kbd> or <kbd>Enter</kbd> to commit · <kbd>P</kbd> for Hall Poll · <kbd>E</kbd> for Math
+        </div>
+        <button id="btn-commit-choice" class="btn-commit" disabled>
+          <span>Execute Policy Advisory</span>
+          <span>➔</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- GRAND FINALE SCREEN (SHOWN AFTER SCENARIO 5) -->
+    <div id="finale-container" class="finale-screen">
+      <div class="finale-badge">
+        <span>🏆</span> National Simulation Complete
+      </div>
+      <h2 class="finale-title">TransformCare Pakistan Accord 2026–2035</h2>
+      <p class="finale-sub">
+        The Prime Minister has enacted your policy roadmap into national law. By moving from unpaid care traps to targeted community infrastructure, Pakistan has triggered the largest female labor supply shift in South Asian history.
+      </p>
+
+      <div class="finale-grid">
+        <div class="finale-metric-box highlight">
+          <span class="label">Total Annual Economic Output</span>
+          <span id="fin-gdp" class="val">PKR 3.02 T</span>
+          <span style="font-size:0.8rem; color:var(--text-muted);">+2.85% Incremental GDP</span>
+        </div>
+
+        <div class="finale-metric-box highlight">
+          <span class="label">Women Shifted into Earners</span>
+          <span id="fin-women" class="val">6.19 Million</span>
+          <span style="font-size:0.8rem; color:var(--text-muted);">BISP Housewife Graduates</span>
+        </div>
+
+        <div class="finale-metric-box">
+          <span class="label">5-Year Lifecycle ROI</span>
+          <span id="fin-bcr" class="val">4.24×</span>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Self-financing Capital Payback</span>
+        </div>
+
+        <div class="finale-metric-box">
+          <span class="label">Female Labor Force Participation</span>
+          <span id="fin-flfp" class="val">32.5%</span>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Up from 22.7% baseline</span>
+        </div>
+      </div>
+
+      <div class="finale-actions">
+        <button id="btn-restart-sim" class="hud-btn" style="padding:14px 28px; font-size:0.95rem;">
+          🔄 Re-run Simulation with New Policies
+        </button>
+        <a href="care_economy_deck.html" class="hud-btn" style="padding:14px 28px; font-size:0.95rem; text-decoration:none;">
+          🚀 Open Synthesis Deck
+        </a>
+        <a href="Care_Economy_Econometric_Methodology_and_Formulas_Dr_Fareeha.docx" class="hud-btn" style="padding:14px 28px; font-size:0.95rem; text-decoration:none; background:rgba(16,185,129,0.2); border-color:var(--emerald-glow);">
+          📄 Download Working Paper (.docx)
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- CALCULATION SPLASH MODAL -->
+  <div id="calc-overlay" class="calculation-overlay">
+    <div class="calculation-card">
+      <div class="calc-header">
+        <h3 id="calc-title">Policy Impact Calculated</h3>
+        <span id="calc-badge" style="background:rgba(16,185,129,0.2); color:var(--emerald-light); font-size:0.75rem; font-weight:800; padding:4px 10px; border-radius:9999px;">SNA 2008 Calibrated</span>
+      </div>
+
+      <div class="calc-metrics-grid">
+        <div class="calc-metric-box">
+          <span class="label">Direct GDP Addition</span>
+          <span id="calc-gdp-val" class="val">+PKR 0.00 T</span>
+        </div>
+        <div class="calc-metric-box">
+          <span class="label">Labor Supply Unlocked</span>
+          <span id="calc-women-val" class="val">0.00 Million</span>
+        </div>
+        <div class="calc-metric-box">
+          <span class="label">Capital Payback Period</span>
+          <span id="calc-payback-val" class="val">—</span>
+        </div>
+        <div class="calc-metric-box">
+          <span class="label">5-Year Benefit-Cost Ratio</span>
+          <span id="calc-bcr-val" class="val">—</span>
+        </div>
+      </div>
+
+      <p id="calc-rationale" class="calc-rationale">
+        Calculation results and economic mechanism will appear here.
+      </p>
+
+      <button id="btn-next-scenario" class="btn-commit" style="width:100%; justify-content:center; margin-top:10px;">
+        <span>Advance to Next Cabinet Dilemma</span>
+        <span>➔</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SLIDE-OUT ECONOMETRIC FORMULAS DRAWER -->
+  <aside id="math-drawer" class="formula-drawer">
+    <div class="formula-drawer-header">
+      <h3>📐 Econometric Formulas</h3>
+      <button id="btn-close-drawer" class="close-drawer-btn">✕</button>
+    </div>
+
+    <div class="formula-card">
+      <h4>1. Statutory Shadow Wage (w_stat)</h4>
+      <div class="formula-math">w = PKR 40,700 / (26 × 8 = 208 hrs) = PKR 195.673 / hr</div>
+      <p class="formula-note">Anchored to official Pakistan Gazette Statutory Minimum Wage FY 2024–25 under ILO Generalist Domestic Worker Standard.</p>
+    </div>
+
+    <div class="formula-card">
+      <h4>2. National Care Valuation (V_care)</h4>
+      <div class="formula-math">V = N × H × 52w × w_stat = 66.7M × 15.3h × 52 × 195.67 = PKR 10.382 Trillion</div>
+      <p class="formula-note">PBS LFS Tables 12.1 & 12.2 (p. 137, 139). Represents 9.79% of Pakistan's nominal GDP (PKR 106.1T).</p>
+    </div>
+
+    <div class="formula-card">
+      <h4>3. Foregone Output of Housewives (Y_foregone)</h4>
+      <div class="formula-math">Y = (N × ω) × h × 52 × w × φ = (8.94M × 0.698) × 25h × 52 × 195.67 × 0.85 = PKR 3.023 Trillion</div>
+      <p class="formula-note">Opportunity cost of 6.19M labor-locked BISP housewives under informal labor market friction discount (φ = 0.85).</p>
+    </div>
+
+    <div class="formula-card">
+      <h4>4. Household Output & Payback Period</h4>
+      <div class="formula-math">ΔY_hh = Δh × 52 × α × w_stat = 2.5 × 52 × 0.35 × 195.67 = PKR 8,903.12 / yr</div>
+      <div class="formula-math">T_payback = (PKR 3,000 / PKR 8,903.12) × 12 = 2.83 Months</div>
+      <p class="formula-note">Labor conversion elasticity α = 0.35 (35% time monetized, 65% human capital). Capex PKR 3,000/hh for solar washing and electric milling.</p>
+    </div>
+
+    <div class="formula-card">
+      <h4>5. 5-Year Lifecycle BCR</h4>
+      <div class="formula-math">BCR = PV(Benefits) / PV(Costs) = (PKR 8,903 × 3.7908 × 0.85) / PKR 4,137 = 4.24×</div>
+      <p class="formula-note">Social discount rate r = 10%, Annual maintenance m = 10% of capex. Net yield: PKR 4.24 per PKR 1 invested.</p>
+    </div>
+  </aside>
+
+  <!-- JAVASCRIPT SIMULATION LOGIC -->
+  <script>
+    // === 1. AUDIO SYNTHESIZER (WEB AUDIO API) ===
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+      }
+      playTone(freq, type, duration, gainLevel = 0.1) {
+        if (!this.enabled) return;
+        this.init();
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(gainLevel, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e){}
+      }
+      click() {
+        this.playTone(800, 'sine', 0.05, 0.08);
+      }
+      select() {
+        this.playTone(520, 'triangle', 0.1, 0.12);
+      }
+      commit() {
+        // Executive gavel drop double tone
+        this.playTone(180, 'square', 0.15, 0.25);
+        setTimeout(() => this.playTone(320, 'sine', 0.3, 0.2), 80);
+      }
+      calcRoll() {
+        this.playTone(950, 'sine', 0.03, 0.05);
+      }
+      victory() {
+        const notes = [440, 554, 659, 880];
+        notes.forEach((freq, idx) => {
+          setTimeout(() => this.playTone(freq, 'triangle', 0.4, 0.2), idx * 120);
+        });
+      }
+    }
+    const audio = new SoundEngine();
+
+    // === 2. SCENARIO DATABASE ===
+    const scenarios = [
+      {
+        id: 1,
+        phase: "Phase 1 / 5: National Accounts Shock",
+        title: "Dilemma 1: The PKR 10.38 Trillion Invisible Economy",
+        desc: "PBS has published LFS 2024–25. The Finance Ministry considers unpaid care as zero output. What is your advisory to the Prime Minister?",
+        img: "assets/images/pm_cabinet_room.jpg",
+        speaker: {
+          name: "Mian Muhammad Shehbaz Sharif",
+          role: "Prime Minister of Pakistan",
+          avatar: "🏛️",
+          quote: "Advisor, PBS just released the 37th Labour Force Survey. 66.7 Million women are performing 15.3 hours a week of unpaid domestic labor. Under international standards, this is worth PKR 10.38 Trillion—nearly 10% of our entire GDP! Yet the Finance Ministry tells me it has zero fiscal value. How should we proceed?",
+          callout: "Official Anchor: Pakistan Gazette Statutory Minimum Wage FY 2024–25 = PKR 40,700/mo (PKR 195.67/hr). Generalist domestic replacement cost method (SNA 2008)."
+        },
+        options: [
+          {
+            key: "1",
+            title: "Maintain Status Quo (Bureaucratic Inaction)",
+            desc: "Keep unpaid care outside national planning and budget accounts. Avoid new policy friction.",
+            specs: ["Cost: PKR 0", "Time Saved: 0 hrs", "BCR: 0.0×", "Risk: High Public Apathy"],
+            impact: { gdp: 0, gdpShare: 0, women: 0, hours: 0, flfp: 22.7, bcr: "0.0×", payback: "None", approval: 50 },
+            rationale: "By maintaining inaction, Pakistan continues to treat 10% of its real economy as non-existent. Female workforce participation remains frozen at South Asia's lowest tier (22.7%)."
+          },
+          {
+            key: "2",
+            title: "Launch National Media & TV Awareness Campaigns",
+            desc: "Allocate PKR 500M to TV, radio, and social media campaigns praising mothers and encouraging chore sharing.",
+            specs: ["Cost: PKR 500M", "Time Saved: 0.1 hrs", "BCR: 0.8×", "Symbolic Impact"],
+            impact: { gdp: 0.02, gdpShare: 0.02, women: 0.1, hours: 0.1, flfp: 22.8, bcr: "0.8×", payback: "None", approval: 68 },
+            rationale: "Awareness campaigns generate positive headlines but fail to alter physical care bottlenecks. Without washing machines or clean fuel, women remain trapped in 14-hour physical chores."
+          },
+          {
+            key: "3",
+            title: "Legislate National Care Satellite Account & Infrastructure Strategy",
+            desc: "Adopt UN SNA 2008 satellite accounting, set statutory replacement shadow pricing (PKR 195.67/hr), and mandate Care Infrastructure in the 5-Year National Plan.",
+            specs: ["Cost: PKR 2B (Planning)", "Unlocks $250M Climate/Care Aid", "SNA 2008 Standard", "BCR: 3.5×"],
+            impact: { gdp: 0.35, gdpShare: 0.33, women: 0.85, hours: 0.8, flfp: 23.5, bcr: "3.5×", payback: "8.5 Months", approval: 82 },
+            rationale: "Establishing a National Care Satellite Account formally recognizes PKR 10.38 Trillion in output, positioning Pakistan to attract concessional gender-climate blended finance from UN Women, ADB, and global green funds."
+          }
+        ]
+      },
+      {
+        id: 2,
+        phase: "Phase 2 / 5: The BISP 8.94 Million Housewife Dilemma",
+        title: "Dilemma 2: Unlocking 8.94M Labor-Locked Housewives",
+        desc: "Microdata shows 74.5% of BISP beneficiaries are housewives, and 69.8% (6.19M) desperately want to work. What infrastructure priority do you recommend?",
+        img: "assets/images/rural_care_hub.jpg",
+        speaker: {
+          name: "Dr. Muhammad Amjad Saqib",
+          role: "Social Protection & BISP Leadership",
+          avatar: "🌸",
+          quote: "Our NSER census of 254,648 verified women proves that 6.19 Million mothers want to earn. But they work 14 hours a day hand-washing clothes, collecting firewood, and cleaning sheds. If we give them the right capital, their labor converts into PKR 3.02 Trillion in output!",
+          callout: "Microdata Reality: Rural women show 11% HIGHER willingness to earn than urban women (75.1% vs 64.2%). Care infrastructure is the missing link."
+        },
+        options: [
+          {
+            key: "1",
+            title: "Unconditional Cash Stipend Increase Only",
+            desc: "Increase the quarterly BISP Kafalat stipend by 10%. Provide direct cash without any care infrastructure.",
+            specs: ["Fiscal Cost: PKR 50B / yr", "Time Saved: 0.0 hrs", "Payback: Never", "BCR: 1.05×"],
+            impact: { gdp: 0.08, gdpShare: 0.08, women: 0.2, hours: 0.0, flfp: 22.9, bcr: "1.05×", payback: "Infinity", approval: 65 },
+            rationale: "Cash transfers provide vital consumption relief for food, but do not reduce domestic care hours. Women remain unable to leave the household for income-earning activities."
+          },
+          {
+            key: "2",
+            title: "⚡ Community Laundry & Electric Flour Mills (Chakki)",
+            desc: "Install cluster-shared solar washing hubs and motorized flour mills shared across 200–250 households (PKR 3,000 / household capex).",
+            specs: ["Capex: PKR 3,000 / HH", "Time Saved: 2.5 hrs/wk", "Payback: 2.83 Months", "BCR: 4.24×"],
+            impact: { gdp: 1.85, gdpShare: 1.74, women: 3.80, hours: 2.5, flfp: 26.8, bcr: "4.24×", payback: "2.83 Months", approval: 91 },
+            rationale: "Eliminating manual clothes scrubbing and mill trips saves 2.5 hrs/week. Under α = 0.35 elasticity, each household generates PKR 8,903/year in new output, repaying capital in just 2.8 months!"
+          },
+          {
+            key: "3",
+            title: "🍲 Clean Cookstoves & LPG Starter Kits",
+            desc: "Deploy clean cookstoves and community biogas/LPG kits to eliminate 7.4 hrs/wk of firewood gathering and toxic smoke.",
+            specs: ["Capex: PKR 4,500 / HH", "Time Saved: 3.5 hrs/wk", "Payback: 4.8 Months", "BCR: 3.85×"],
+            impact: { gdp: 1.45, gdpShare: 1.37, women: 3.10, hours: 3.5, flfp: 25.4, bcr: "3.85×", payback: "4.8 Months", approval: 84 },
+            rationale: "Cutting firewood collection saves 3.5 hrs/week and reduces chronic respiratory disease. Yields strong health co-benefits and carbon credit revenues."
+          },
+          {
+            key: "4",
+            title: "🌟 Integrated Care & Clean Energy Super-Clusters",
+            desc: "Full package: Solar community laundry + electric chakki + clean cookstoves + village creche centers (PKR 7,500 / household).",
+            specs: ["Capex: PKR 7,500 / HH", "Time Saved: 6.0 hrs/wk", "Payback: 6.2 Months", "BCR: 5.12×"],
+            impact: { gdp: 2.55, gdpShare: 2.40, women: 5.20, hours: 6.0, flfp: 29.5, bcr: "5.12×", payback: "6.2 Months", approval: 95 },
+            rationale: "The super-cluster frees 6 hours per week per mother, unlocking maximum labor conversion while providing safe early childhood education for village children."
+          }
+        ]
+      },
+      {
+        id: 3,
+        phase: "Phase 3 / 5: The IMF & Fiscal Deficit Showdown",
+        title: "Dilemma 3: Defending the Investment Under IMF Fiscal Caps",
+        desc: "The Finance Minister warns: 'The IMF Extended Fund Facility primary deficit cap prevents new expenditure.' How do you defend care capital?",
+        img: "assets/images/economic_war_room.jpg",
+        speaker: {
+          name: "Muhammad Aurangzeb",
+          role: "Federal Minister for Finance & Revenue",
+          avatar: "💼",
+          quote: "Advisor! The IMF team in Islamabad is reviewing our primary balance. Every rupee of borrowing is scrutinized. If we spend billions on community centers, we risk non-compliance with the SBA/EFF benchmarks! Prove to me this won't inflate the national debt.",
+          callout: "Fiscal Reality: Foregone output of housewives is PKR 3.023 Trillion/year. Inaction is bleeding 2.85% of GDP in lost economic production."
+        },
+        options: [
+          {
+            key: "1",
+            title: "Fiscal Freeze: Cancel Infrastructure to Satisfy IMF",
+            desc: "Pause all public care investments. Focus purely on debt servicing and tax hikes.",
+            specs: ["Deficit: Neutral", "Output Lost: PKR 3.02T", "FLFP: Frozen", "Poverty Rises"],
+            impact: { gdp: 0.0, gdpShare: 0.0, women: 0.0, hours: 0.0, flfp: 22.7, bcr: "0.0×", payback: "None", approval: 42 },
+            rationale: "Strict austerity preserves IMF targets in the immediate term but destroys long-term growth by keeping half the adult population out of the economy."
+          },
+          {
+            key: "2",
+            title: "Rationalize Untargeted Subsidies to Fund Self-Financing Care",
+            desc: "Shift 3% of inefficient fossil fuel subsidies and corporate tax exemptions directly into revolving village care funds.",
+            specs: ["Net Deficit: ZERO", "Self-Financing < 3 Mo", "Domestic Revenue +PKR 85B", "BCR: 4.24×"],
+            impact: { gdp: 2.10, gdpShare: 1.98, women: 4.50, hours: 3.2, flfp: 27.5, bcr: "4.24×", payback: "2.83 Months", approval: 88 },
+            rationale: "This satisfies the IMF by cutting distortionary subsidies. Because care capital pays back in 2.83 months, the newly monetized female businesses generate local tax revenues."
+          },
+          {
+            key: "3",
+            title: "Issue Sovereign Gender & Climate Resilience Bonds",
+            desc: "Issue $500M in Sovereign Green & Care Bonds backed by multilateral concessional guarantees (UN Women, Korea MOGEF, ADB at 2.5%).",
+            specs: ["External Inflow: $500M", "Concessional 2.5%", "FX Reserves +$500M", "BCR: 4.80×"],
+            impact: { gdp: 2.75, gdpShare: 2.59, women: 5.60, hours: 4.0, flfp: 29.8, bcr: "4.80×", payback: "4.1 Months", approval: 92 },
+            rationale: "External blended finance bolsters State Bank FX reserves while funding village infrastructure with zero impact on domestic deficit ceilings."
+          }
+        ]
+      },
+      {
+        id: 4,
+        phase: "Phase 4 / 5: Female Micro-Enterprise & Digital Banking",
+        title: "Dilemma 4: Converting Saved Time into Cash Income",
+        desc: "Women in pilot districts now have 2.5 to 6 free hours per week. How do we ensure they can actually sell goods and earn income?",
+        img: "assets/images/women_empowerment.jpg",
+        speaker: {
+          name: "Dr. Fareeha Armughan",
+          role: "Senior Development Economist (SDPI / UN Women)",
+          avatar: "📊",
+          quote: "Advisor, our econometric model uses an elasticity of α = 0.35. That means 35% of freed time is monetized, while 65% goes to physical rest and child tutoring. To reach the full PKR 3.02 Trillion output, women need digital banking wallets, raw material links, and access to local mandis.",
+          callout: "BISP DFLT-2 Finding: Only 7.5% of rural BISP women currently possess formal bank accounts. Mobile digital inclusion is critical."
+        },
+        options: [
+          {
+            key: "1",
+            title: "Laissez-Faire Approach (No Enterprise Support)",
+            desc: "Let women find informal odd-jobs on their own with no digital accounts or market linkages.",
+            specs: ["Conversion: α = 0.15", "Output: +PKR 1.29T", "Informal Traps", "BCR: 2.1×"],
+            impact: { gdp: 1.29, gdpShare: 1.21, women: 2.40, hours: 2.5, flfp: 24.8, bcr: "2.10×", payback: "6.5 Months", approval: 60 },
+            rationale: "Without enterprise support, middle-men exploit female home-workers, capturing 70% of profit margins and dampening female labor incentives."
+          },
+          {
+            key: "2",
+            title: "BISP Digital Micro-Wallets & Village Cooperative Mandis",
+            desc: "Direct digital financial wallets on smartphones, micro-credit for sewing/poultry/dairy, and mobile transport to rural markets.",
+            specs: ["Conversion: α = 0.35 Full", "Output: +PKR 3.023T", "6.19M Active Earners", "BCR: 4.24×"],
+            impact: { gdp: 3.02, gdpShare: 2.85, women: 6.19, hours: 3.5, flfp: 31.2, bcr: "4.24×", payback: "2.83 Months", approval: 96 },
+            rationale: "Enabling direct mobile payments and cooperative marketing achieves the full α = 0.35 potential, injecting PKR 3.02 Trillion directly into rural family accounts."
+          }
+        ]
+      },
+      {
+        id: 5,
+        phase: "Phase 5 / 5: The Grand Vision 2035 Accord",
+        title: "Dilemma 5: The TransformCare Pakistan Accord 2026–2035",
+        desc: "The Prime Minister addresses the National Assembly. What national rollout scale does Pakistan commit to in the TransformCare Accord?",
+        img: "assets/images/pm_cabinet_room.jpg",
+        speaker: {
+          name: "Mian Muhammad Shehbaz Sharif",
+          role: "Prime Minister of Pakistan",
+          avatar: "🇵🇰",
+          quote: "Members of the Cabinet and Parliament! Our pilot results are undeniable: community care infrastructure pays for itself in less than 3 months, while lifting millions of women into economic dignity. Advisor, present your final recommendation on national rollout scale!",
+          callout: "The 2035 Target: Moving Pakistan's female labor force participation from 22.7% to above 32%, closing South Asia's gender gap."
+        },
+        options: [
+          {
+            key: "1",
+            title: "Quartile 1: 25% Rollout (Highest-Burden Rural Tehsils)",
+            desc: "2.23 Million households in off-grid Balochistan, Southern Punjab, and rural Sindh.",
+            specs: ["Coverage: 2.23M HH", "Capex: PKR 6.7B", "Annual Output: +PKR 755B", "FLFP: 25.5%"],
+            impact: { gdp: 0.75, gdpShare: 0.71, women: 2.23, hours: 2.5, flfp: 25.5, bcr: "4.24×", payback: "2.83 Months", approval: 78 },
+            rationale: "Targeting the poorest quartile establishes immediate proof-of-concept with modest fiscal commitment."
+          },
+          {
+            key: "2",
+            title: "Quartile 2: 50% Regional Rollout (All Off-Grid Districts)",
+            desc: "4.47 Million households across all off-grid and semi-arid districts in all 4 provinces.",
+            specs: ["Coverage: 4.47M HH", "Capex: PKR 13.4B", "Annual Output: +PKR 1.51T", "FLFP: 28.2%"],
+            impact: { gdp: 1.51, gdpShare: 1.42, women: 4.47, hours: 3.0, flfp: 28.2, bcr: "4.24×", payback: "2.83 Months", approval: 89 },
+            rationale: "Covers all off-grid districts, transforming half of Pakistan's vulnerable rural economy."
+          },
+          {
+            key: "3",
+            title: "Universal 100% Rollout: TransformCare Pakistan 2026–2035",
+            desc: "National universal scale covering all 8.94 Million BISP households with permanent solar care hubs, electric mills, and digital banking.",
+            specs: ["Coverage: 8.94M HH (Universal)", "Output: +PKR 3.023 Trillion", "6.19M Women Earning", "FLFP: 32.5%"],
+            impact: { gdp: 3.02, gdpShare: 2.85, women: 6.19, hours: 3.8, flfp: 32.5, bcr: "4.24×", payback: "2.83 Months", approval: 98 },
+            rationale: "Universal rollout permanently resolves Pakistan's female labor stagnation, injecting 2.85% into GDP and unlocking $10.8 Billion annually!"
+          }
+        ]
+      }
+    ];
+
+    // === 3. SIMULATION STATE ===
+    let currentScenarioIdx = 0;
+    let selectedOption = null;
+    let hallMode = false;
+    let hallVotes = [0, 0, 0, 0];
+
+    let currentStats = {
+      gdp: 0.0,
+      gdpShare: 0.0,
+      women: 0.0,
+      hours: 0.0,
+      flfp: 22.7,
+      bcr: "—",
+      approval: 65
+    };
+
+    // DOM Elements
+    const scenarioContainer = document.getElementById('scenario-container');
+    const finaleContainer = document.getElementById('finale-container');
+    const calcOverlay = document.getElementById('calc-overlay');
+    const mathDrawer = document.getElementById('math-drawer');
+
+    const scenarioPhaseBadge = document.getElementById('scenario-phase-badge');
+    const scenarioTitle = document.getElementById('scenario-title');
+    const scenarioDesc = document.getElementById('scenario-desc');
+    const scenarioImg = document.getElementById('scenario-img');
+    const speakerAvatar = document.getElementById('speaker-avatar');
+    const speakerName = document.getElementById('speaker-name');
+    const speakerRole = document.getElementById('speaker-role');
+    const briefingQuote = document.getElementById('briefing-quote');
+    const briefingCallout = document.getElementById('briefing-callout');
+    const optionsList = document.getElementById('options-list');
+    const btnCommit = document.getElementById('btn-commit-choice');
+    const hallVoteCount = document.getElementById('hall-vote-count');
+
+    // HUD Elements
+    const hudGdp = document.getElementById('hud-gdp');
+    const hudGdpShare = document.getElementById('hud-gdp-share');
+    const hudWomen = document.getElementById('hud-women');
+    const hudHours = document.getElementById('hud-hours');
+    const hudFlfp = document.getElementById('hud-flfp');
+    const hudBcr = document.getElementById('hud-bcr');
+    const hudApproval = document.getElementById('hud-approval');
+
+    // Buttons
+    const btnHallPoll = document.getElementById('btn-hall-poll');
+    const btnAudioToggle = document.getElementById('btn-audio-toggle');
+    const audioIcon = document.getElementById('audio-icon');
+    const btnMathDrawer = document.getElementById('btn-math-drawer');
+    const btnCloseDrawer = document.getElementById('btn-close-drawer');
+    const btnFullscreen = document.getElementById('btn-fullscreen');
+    const btnNextScenario = document.getElementById('btn-next-scenario');
+    const btnRestartSim = document.getElementById('btn-restart-sim');
+
+    // === 4. RENDER SCENARIO ===
+    function renderScenario(idx) {
+      if (idx >= scenarios.length) {
+        showFinale();
+        return;
+      }
+      const s = scenarios[idx];
+      selectedOption = null;
+      btnCommit.disabled = true;
+
+      // Text and Assets
+      scenarioPhaseBadge.textContent = s.phase;
+      scenarioTitle.textContent = s.title;
+      scenarioDesc.textContent = s.desc;
+      scenarioImg.src = s.img;
+
+      speakerAvatar.textContent = s.speaker.avatar;
+      speakerName.textContent = s.speaker.name;
+      speakerRole.textContent = s.speaker.role;
+      briefingQuote.textContent = `"${s.speaker.quote}"`;
+      briefingCallout.innerHTML = s.speaker.callout;
+
+      // Render Options
+      optionsList.innerHTML = '';
+      hallVotes = s.options.map(() => 0);
+
+      s.options.forEach((opt, optIdx) => {
+        const card = document.createElement('div');
+        card.className = 'policy-card';
+        card.dataset.index = optIdx;
+
+        card.innerHTML = `
+          <div class="policy-card-top">
+            <div class="policy-key">${opt.key}</div>
+            <div class="policy-header-title">${opt.title}</div>
+          </div>
+          <div class="policy-desc">${opt.desc}</div>
+          <div class="policy-specs-row">
+            ${opt.specs.map(sp => `<span class="spec-badge ${sp.toLowerCase().includes('cost') ? 'cost' : (sp.toLowerCase().includes('risk') ? 'risk' : '')}">${sp}</span>`).join('')}
+          </div>
+          <div class="vote-bar-wrap">
+            <div class="vote-bar-fill" id="vote-bar-${optIdx}"></div>
+          </div>
+        `;
+
+        card.addEventListener('click', () => selectOption(optIdx));
+        optionsList.appendChild(card);
+      });
+
+      audio.click();
+    }
+
+    function selectOption(optIdx) {
+      const s = scenarios[currentScenarioIdx];
+      selectedOption = s.options[optIdx];
+
+      document.querySelectorAll('.policy-card').forEach((el, idx) => {
+        if (idx === optIdx) {
+          el.classList.add('selected');
+        } else {
+          el.classList.remove('selected');
+        }
+      });
+
+      btnCommit.disabled = false;
+      audio.select();
+
+      if (hallMode) {
+        hallVotes[optIdx] += 1;
+        updateHallVoteBars();
+      }
+    }
+
+    function updateHallVoteBars() {
+      const total = hallVotes.reduce((a, b) => a + b, 0);
+      hallVotes.forEach((votes, idx) => {
+        const bar = document.getElementById(`vote-bar-${idx}`);
+        if (bar) {
+          const pct = total > 0 ? (votes / total) * 100 : 0;
+          bar.style.width = `${pct}%`;
+        }
+      });
+      hallVoteCount.textContent = `Votes: ${total}`;
+    }
+
+    // === 5. COMMIT CHOICE & ANIMATE HUD ===
+    btnCommit.addEventListener('click', () => {
+      if (!selectedOption) return;
+      audio.commit();
+
+      const imp = selectedOption.impact;
+      currentStats.gdp = Math.max(currentStats.gdp, imp.gdp);
+      currentStats.gdpShare = Math.max(currentStats.gdpShare, imp.gdpShare);
+      currentStats.women = Math.max(currentStats.women, imp.women);
+      currentStats.hours = Math.max(currentStats.hours, imp.hours);
+      currentStats.flfp = Math.max(currentStats.flfp, imp.flfp);
+      currentStats.bcr = imp.bcr;
+      currentStats.approval = imp.approval;
+
+      // Animate HUD
+      updateHudGauges();
+
+      // Show Splash
+      showCalculationModal(selectedOption);
+    });
+
+    function updateHudGauges() {
+      animateValue(hudGdp, `+PKR ${currentStats.gdp.toFixed(2)} T`);
+      animateValue(hudGdpShare, `+${currentStats.gdpShare.toFixed(2)}% GDP`);
+      animateValue(hudWomen, `${currentStats.women.toFixed(2)} M`);
+      animateValue(hudHours, `${currentStats.hours.toFixed(1)} h/wk`);
+      animateValue(hudFlfp, `${currentStats.flfp.toFixed(1)}%`);
+      animateValue(hudBcr, currentStats.bcr);
+      animateValue(hudApproval, `${currentStats.approval}%`);
+    }
+
+    function animateValue(el, targetText) {
+      el.classList.remove('updated');
+      void el.offsetWidth;
+      el.textContent = targetText;
+      el.classList.add('updated');
+      audio.calcRoll();
+    }
+
+    function showCalculationModal(opt) {
+      const imp = opt.impact;
+      document.getElementById('calc-title').textContent = opt.title;
+      document.getElementById('calc-gdp-val').textContent = `+PKR ${imp.gdp.toFixed(2)} T / yr`;
+      document.getElementById('calc-women-val').textContent = `${imp.women.toFixed(2)} Million`;
+      document.getElementById('calc-payback-val').textContent = imp.payback;
+      document.getElementById('calc-bcr-val').textContent = imp.bcr;
+      document.getElementById('calc-rationale').textContent = opt.rationale;
+
+      calcOverlay.style.display = 'flex';
+    }
+
+    btnNextScenario.addEventListener('click', () => {
+      calcOverlay.style.display = 'none';
+      currentScenarioIdx++;
+      renderScenario(currentScenarioIdx);
+    });
+
+    function showFinale() {
+      scenarioContainer.style.display = 'none';
+      finaleContainer.style.display = 'block';
+
+      document.getElementById('fin-gdp').textContent = `PKR ${currentStats.gdp.toFixed(2)} T`;
+      document.getElementById('fin-women').textContent = `${currentStats.women.toFixed(2)} Million`;
+      document.getElementById('fin-bcr').textContent = currentStats.bcr;
+      document.getElementById('fin-flfp').textContent = `${currentStats.flfp.toFixed(1)}%`;
+
+      audio.victory();
+    }
+
+    btnRestartSim.addEventListener('click', () => {
+      currentScenarioIdx = 0;
+      currentStats = { gdp: 0.0, gdpShare: 0.0, women: 0.0, hours: 0.0, flfp: 22.7, bcr: "—", approval: 65 };
+      updateHudGauges();
+      finaleContainer.style.display = 'none';
+      scenarioContainer.style.display = 'flex';
+      renderScenario(0);
+    });
+
+    // === 6. CONTROLS (HALL POLL, SOUND, MATH, FULLSCREEN) ===
+    btnHallPoll.addEventListener('click', () => {
+      hallMode = !hallMode;
+      btnHallPoll.classList.toggle('active', hallMode);
+      document.body.classList.toggle('hall-mode-active', hallMode);
+      hallVoteCount.style.display = hallMode ? 'inline' : 'none';
+      audio.click();
+    });
+
+    btnAudioToggle.addEventListener('click', () => {
+      audio.enabled = !audio.enabled;
+      btnAudioToggle.classList.toggle('active', audio.enabled);
+      audioIcon.textContent = audio.enabled ? '🔊' : '🔇';
+    });
+
+    btnMathDrawer.addEventListener('click', () => {
+      mathDrawer.classList.toggle('open');
+      audio.click();
+    });
+
+    btnCloseDrawer.addEventListener('click', () => {
+      mathDrawer.classList.remove('open');
+      audio.click();
+    });
+
+    btnFullscreen.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    });
+
+    // === 7. KEYBOARD NAVIGATION ===
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      const key = e.key;
+      if (['1', '2', '3', '4'].includes(key)) {
+        const optIdx = parseInt(key) - 1;
+        const s = scenarios[currentScenarioIdx];
+        if (s && optIdx < s.options.length) {
+          selectOption(optIdx);
+        }
+      } else if (key === 'Enter' || key === ' ') {
+        if (calcOverlay.style.display === 'flex') {
+          btnNextScenario.click();
+        } else if (!btnCommit.disabled) {
+          btnCommit.click();
+        }
+      } else if (key.toLowerCase() === 'p') {
+        btnHallPoll.click();
+      } else if (key.toLowerCase() === 'e') {
+        btnMathDrawer.click();
+      } else if (key.toLowerCase() === 'm') {
+        btnAudioToggle.click();
+      } else if (key.toLowerCase() === 'f') {
+        btnFullscreen.click();
+      } else if (key === 'Escape') {
+        mathDrawer.classList.remove('open');
+        calcOverlay.style.display = 'none';
+      }
+    });
+
+    // INITIALIZE
+    renderScenario(0);
+  </script>
+</body>
+</html>
