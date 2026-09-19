@@ -1,1041 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Harvard Executive Branch Simulation — Care Economy Cinematic Video</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-
-  <style>
-    :root {
-      --bg-dark: #05080e;
-      --emerald-glow: #10b981;
-      --emerald-light: #34d399;
-      --cyan-glow: #06b6d4;
-      --amber-gold: #f59e0b;
-      --rose-red: #f43f5e;
-      --text-white: #f8fafc;
-      --text-dim: #94a3b8;
-      --font-ui: 'Plus Jakarta Sans', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-      --font-cinema: 'Cinzel', serif;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-white);
-      font-family: var(--font-ui);
-      overflow: hidden;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
-    /* FULL BLEED VIDEO STAGE */
-    .video-viewport {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      z-index: 1;
-    }
-
-    video#mainVideo {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      background: #000;
-      outline: none;
-    }
-
-    /* TOP CINEMA HUD */
-    .cinema-top-hud {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      background: linear-gradient(180deg, rgba(5,8,14,0.92) 0%, rgba(5,8,14,0.4) 75%, transparent 100%);
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 28px;
-      transition: opacity 0.3s ease;
-    }
-
-    .brand-group {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .brand-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.5);
-      padding: 5px 12px;
-      border-radius: 9999px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--emerald-light);
-      font-family: var(--font-mono);
-      letter-spacing: 0.05em;
-    }
-
-    .brand-badge .pulse-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--emerald-light);
-      box-shadow: 0 0 10px var(--emerald-light);
-      animation: blinkDot 1.5s infinite;
-    }
-
-    @keyframes blinkDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.3; transform: scale(0.85); }
-    }
-
-    .brand-title {
-      font-family: var(--font-cinema);
-      font-weight: 800;
-      font-size: 1.05rem;
-      letter-spacing: 0.06em;
-      color: #fff;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .hud-btn {
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: #cbd5e1;
-      padding: 7px 15px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      font-family: var(--font-mono);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s ease;
-      backdrop-filter: blur(10px);
-    }
-
-    .hud-btn:hover {
-      background: rgba(16, 185, 129, 0.25);
-      border-color: var(--emerald-light);
-      color: #fff;
-      transform: translateY(-1px);
-    }
-
-    .hud-btn.primary {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: #05080e;
-      font-weight: 800;
-      border: none;
-      box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
-    }
-
-    .hud-btn.primary:hover {
-      background: linear-gradient(135deg, #34d399, #10b981);
-      box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
-    }
-
-    /* BOTTOM FLOATING TRANSPORT BAR */
-    .cinema-bottom-hud {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: linear-gradient(0deg, rgba(5,8,14,0.95) 0%, rgba(5,8,14,0.6) 80%, transparent 100%);
-      z-index: 20;
-      padding: 16px 28px 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      transition: opacity 0.3s ease;
-    }
-
-    /* SCENE MARKERS TIMELINE */
-    .timeline-container {
-      width: 100%;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .timeline-bar {
-      width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 4px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .timeline-progress {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #10b981, #06b6d4);
-      border-radius: 4px;
-      transition: width 0.1s linear;
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
-    }
-
-    /* Scene markers */
-    .scene-markers-bar {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 4px;
-      padding: 0 4px;
-    }
-
-    .scene-mark-item {
-      font-size: 0.65rem;
-      color: #94a3b8;
-      font-family: var(--font-mono);
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-
-    .scene-mark-item:hover, .scene-mark-item.active {
-      color: var(--emerald-light);
-      font-weight: 700;
-    }
-
-    /* CONTROLS ROW */
-    .controls-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 4px;
-    }
-
-    .left-controls {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .play-btn {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: #10b981;
-      border: none;
-      color: #05080e;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1.1rem;
-      transition: all 0.2s ease;
-      box-shadow: 0 0 16px rgba(16, 185, 129, 0.5);
-    }
-
-    .play-btn:hover {
-      transform: scale(1.08);
-      background: #34d399;
-      box-shadow: 0 0 24px rgba(16, 185, 129, 0.8);
-    }
-
-    .time-display {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      letter-spacing: 0.05em;
-    }
-
-    .right-controls {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    /* START SPLASH SCREEN */
-    .splash-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: radial-gradient(circle at center, rgba(15,23,42,0.85) 0%, #030712 90%);
-      z-index: 50;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px;
-      backdrop-filter: blur(12px);
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-    }
-
-    .splash-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .splash-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      padding: 6px 18px;
-      border-radius: 9999px;
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--emerald-light);
-      margin-bottom: 20px;
-      letter-spacing: 0.08em;
-    }
-
-    .splash-title {
-      font-family: var(--font-cinema);
-      font-size: 3rem;
-      font-weight: 900;
-      color: #fff;
-      line-height: 1.15;
-      margin-bottom: 16px;
-      text-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
-    }
-
-    .splash-title span {
-      color: var(--emerald-light);
-      display: block;
-    }
-
-    .splash-desc {
-      font-size: 1.1rem;
-      color: #94a3b8;
-      max-width: 700px;
-      line-height: 1.6;
-      margin-bottom: 32px;
-    }
-
-    .splash-btn {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      border: none;
-      color: #05080e;
-      font-family: var(--font-ui);
-      font-weight: 800;
-      font-size: 1.15rem;
-      padding: 16px 42px;
-      border-radius: 9999px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 10px 35px rgba(16, 185, 129, 0.4);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .splash-btn:hover {
-      transform: scale(1.05) translateY(-2px);
-      box-shadow: 0 15px 45px rgba(16, 185, 129, 0.7);
-      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-    }
-
-    /* HARVARD DECISION OVERLAY (TRANSLUCENT OVER VIDEO) */
-    .decision-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(3, 7, 18, 0.88);
-      backdrop-filter: blur(20px);
-      z-index: 40;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .decision-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .decision-modal-card {
-      width: 100%;
-      max-width: 1100px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      padding: 36px;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(16, 185, 129, 0.15);
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 18px;
-    }
-
-    .modal-header-left {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .modal-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--amber-gold);
-      font-size: 0.75rem;
-      font-weight: 700;
-      font-family: var(--font-mono);
-      letter-spacing: 0.08em;
-    }
-
-    .modal-title {
-      font-family: var(--font-cinema);
-      font-size: 1.7rem;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .options-container {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .option-card-row {
-      background: rgba(30, 41, 59, 0.6);
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
-      padding: 20px 24px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .option-card-row:hover {
-      background: rgba(30, 41, 59, 0.9);
-      transform: translateY(-2px);
-    }
-
-    .option-card-row.option-a:hover {
-      border-color: var(--emerald-light);
-      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
-    }
-
-    .option-card-row.option-b:hover {
-      border-color: var(--rose-red);
-      box-shadow: 0 10px 30px rgba(244, 63, 94, 0.2);
-    }
-
-    .option-content {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-width: 820px;
-    }
-
-    .option-top-line {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .opt-tag {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 0.75rem;
-      padding: 4px 10px;
-      border-radius: 6px;
-    }
-
-    .opt-tag.green {
-      background: rgba(16, 185, 129, 0.2);
-      color: var(--emerald-light);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-    }
-
-    .opt-tag.red {
-      background: rgba(244, 63, 94, 0.2);
-      color: #fb7185;
-      border: 1px solid rgba(244, 63, 94, 0.4);
-    }
-
-    .opt-title {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .opt-metrics {
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      line-height: 1.45;
-    }
-
-    .opt-coalition {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--amber-gold);
-    }
-
-    .vote-action-btn {
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-weight: 800;
-      font-family: var(--font-ui);
-      font-size: 0.9rem;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .vote-action-btn.green {
-      background: var(--emerald-light);
-      color: #05080e;
-    }
-
-    .vote-action-btn.red {
-      background: var(--rose-red);
-      color: #fff;
-    }
-
-    /* HARVARD OUTCOME SUMMARY MODAL */
-    .outcome-display {
-      display: none;
-      flex-direction: column;
-      gap: 20px;
-      animation: fadeIn 0.4s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .strengths-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-      margin-top: 10px;
-    }
-
-    .strength-card {
-      background: #090d16;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 12px;
-      text-align: center;
-    }
-
-    .strength-title {
-      font-size: 0.7rem;
-      color: #94a3b8;
-      font-family: var(--font-mono);
-      margin-bottom: 6px;
-    }
-
-    .strength-val {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--emerald-light);
-      font-family: var(--font-mono);
-    }
-
-    .standing-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      margin-top: 8px;
-    }
-
-    .standing-table th {
-      background: rgba(255, 255, 255, 0.05);
-      color: #94a3b8;
-      padding: 8px 12px;
-      text-align: left;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .standing-table td {
-      padding: 8px 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      color: #e2e8f0;
-    }
-
-    .tag-check {
-      color: var(--emerald-light);
-      font-weight: 800;
-    }
-
-    .tag-cross {
-      color: var(--rose-red);
-      font-weight: 800;
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Executive Branch Simulation — Pakistan Care Economy Crisis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050810;--em:#10b981;--eml:#34d399;--cy:#06b6d4;--go:#f59e0b;--ro:#f43f5e;--wh:#f8fafc;--dm:#94a3b8;
+--fu:'Plus Jakarta Sans',sans-serif;--fm:'JetBrains Mono',monospace;--fc:'Cinzel',serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--wh);font-family:var(--fu);overflow:hidden;width:100vw;height:100vh;}
+canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;}
+#narrative{position:absolute;bottom:0;left:0;width:100%;z-index:20;pointer-events:none;transition:opacity .4s;}
+#narrative.hidden{opacity:0;}
+.nb{margin:0 auto 36px;max-width:1100px;background:rgba(5,8,16,.92);backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:22px 30px;
+box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 40px rgba(16,185,129,.1);}
+.nbg{display:inline-flex;align-items:center;gap:6px;font-family:var(--fm);font-size:.7rem;font-weight:700;
+color:var(--eml);letter-spacing:.08em;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.4);
+padding:4px 12px;border-radius:99px;margin-bottom:8px;}
+.nbg .dt{width:6px;height:6px;border-radius:50%;background:var(--eml);animation:bl 1.2s infinite;}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.2}}
+.nsp{font-family:var(--fc);font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:5px;}
+.nt{font-size:.92rem;color:#cbd5e1;line-height:1.6;min-height:44px;}
+.nt .cu{display:inline-block;width:2px;height:1em;background:var(--eml);animation:cb .6s infinite;vertical-align:text-bottom;margin-left:2px;}
+@keyframes cb{0%,100%{opacity:1}50%{opacity:0}}
+#cc{position:absolute;right:36px;top:50%;transform:translateY(-50%) translateX(120%);z-index:25;
+width:360px;background:rgba(5,8,16,.94);backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;
+box-shadow:0 25px 80px rgba(0,0,0,.9),0 0 50px rgba(16,185,129,.12);
+transition:transform .6s cubic-bezier(.16,1,.3,1);}
+#cc.vis{transform:translateY(-50%) translateX(0);}
+.ci{width:100%;height:210px;object-fit:cover;display:block;}
+.cb{padding:18px 22px;}
+.cr{font-family:var(--fm);font-size:.62rem;font-weight:700;color:var(--go);letter-spacing:.1em;margin-bottom:3px;}
+.cn{font-family:var(--fc);font-size:1.15rem;font-weight:800;color:#fff;margin-bottom:3px;}
+.ct{font-size:.78rem;color:var(--eml);margin-bottom:8px;}
+.cs{display:flex;flex-wrap:wrap;gap:5px;}
+.cp{font-family:var(--fm);font-size:.58rem;padding:3px 7px;border-radius:5px;
+background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#94a3b8;}
+#th{position:absolute;top:0;left:0;width:100%;height:46px;z-index:30;
+background:linear-gradient(180deg,rgba(5,8,16,.9) 0%,transparent 100%);
+display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+.hl{display:flex;align-items:center;gap:10px;}
+.hr{display:flex;align-items:center;gap:6px;font-family:var(--fm);font-size:.68rem;color:var(--ro);}
+.hr .rd{width:7px;height:7px;border-radius:50%;background:var(--ro);animation:bl 1s infinite;}
+.hlc{font-family:var(--fm);font-size:.68rem;color:var(--dm);letter-spacing:.05em;}
+.hri{display:flex;align-items:center;gap:10px;}
+.hb{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;
+padding:5px 12px;border-radius:7px;font-size:.72rem;font-weight:600;font-family:var(--fm);
+cursor:pointer;transition:all .2s;backdrop-filter:blur(10px);}
+.hb:hover{background:rgba(16,185,129,.2);border-color:var(--em);color:#fff;}
+.hb.pr{background:linear-gradient(135deg,#10b981,#059669);color:#050810;border:none;font-weight:800;}
+#do{position:absolute;top:0;left:0;width:100%;height:100%;z-index:50;
+background:rgba(3,7,18,.92);backdrop-filter:blur(25px);
+display:flex;align-items:center;justify-content:center;
+opacity:0;visibility:hidden;transition:all .5s cubic-bezier(.16,1,.3,1);}
+#do.act{opacity:1;visibility:visible;}
+.dc{width:95%;max-width:1000px;max-height:90vh;overflow-y:auto;
+background:rgba(15,23,42,.95);border:1px solid rgba(255,255,255,.12);
+border-radius:18px;padding:28px 32px;
+box-shadow:0 30px 100px rgba(0,0,0,.9),0 0 60px rgba(16,185,129,.1);}
+.dh{border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:14px;margin-bottom:16px;}
+.ds{font-family:var(--fm);font-size:.68rem;color:var(--go);letter-spacing:.1em;margin-bottom:3px;}
+.dti{font-family:var(--fc);font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:6px;}
+.dctx{font-size:.85rem;color:#94a3b8;line-height:1.5;}
+.dops{display:flex;flex-direction:column;gap:12px;margin-top:14px;}
+.dop{background:rgba(30,41,59,.5);border:2px solid rgba(255,255,255,.08);border-radius:12px;
+padding:16px 20px;cursor:pointer;transition:all .25s;}
+.dop:hover{background:rgba(30,41,59,.8);transform:translateY(-2px);}
+.dop.gr:hover{border-color:var(--eml);box-shadow:0 8px 28px rgba(16,185,129,.2);}
+.dop.rd:hover{border-color:var(--ro);box-shadow:0 8px 28px rgba(244,63,94,.2);}
+.dop.bl:hover{border-color:var(--cy);box-shadow:0 8px 28px rgba(6,182,212,.2);}
+.dop.gd:hover{border-color:var(--go);box-shadow:0 8px 28px rgba(245,158,11,.2);}
+.otg{font-family:var(--fm);font-weight:700;font-size:.68rem;padding:3px 7px;border-radius:4px;display:inline-block;margin-bottom:5px;}
+.otg.tg{background:rgba(16,185,129,.2);color:var(--eml);border:1px solid rgba(16,185,129,.3);}
+.otg.tr{background:rgba(244,63,94,.15);color:#fb7185;border:1px solid rgba(244,63,94,.3);}
+.otg.tb{background:rgba(6,182,212,.15);color:#67e8f9;border:1px solid rgba(6,182,212,.3);}
+.otg.td{background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.3);}
+.ott{font-size:.95rem;font-weight:800;color:#fff;margin-bottom:5px;}
+.otd{font-size:.8rem;color:#94a3b8;line-height:1.45;}
+.otc{font-family:var(--fm);font-size:.62rem;color:var(--go);margin-top:6px;}
+.dout{animation:fu .5s ease;}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.ob{padding:14px 18px;border-radius:11px;margin-bottom:14px;}
+.ob.gd2{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);}
+.ob.bd{background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.3);}
+.ob.mx{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);}
+.obt{font-family:var(--fc);font-size:1.05rem;font-weight:800;margin-bottom:3px;}
+.obx{font-size:.83rem;color:#cbd5e1;line-height:1.45;}
+.sg{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin:12px 0;}
+.sc{background:#090d16;border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:9px;text-align:center;}
+.sl{font-family:var(--fm);font-size:.58rem;color:#64748b;margin-bottom:3px;}
+.sv{font-family:var(--fm);font-size:1rem;font-weight:800;}
+.sv.hi{color:var(--eml);}.sv.mi{color:var(--go);}.sv.lo{color:var(--ro);}
+.da{display:flex;justify-content:flex-end;gap:9px;margin-top:14px;}
+#sp{position:absolute;top:0;left:0;width:100%;height:100%;z-index:100;
+background:radial-gradient(ellipse at center,rgba(15,23,42,.85) 0%,#030712 90%);
+display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+backdrop-filter:blur(12px);transition:opacity .6s,visibility .6s;}
+#sp.gn{opacity:0;visibility:hidden;pointer-events:none;}
+.spb{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,.12);
+border:1px solid rgba(16,185,129,.35);padding:6px 16px;border-radius:99px;
+font-family:var(--fm);font-size:.72rem;color:var(--eml);margin-bottom:16px;letter-spacing:.08em;}
+.spt{font-family:var(--fc);font-size:2.6rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:12px;
+text-shadow:0 0 60px rgba(16,185,129,.25);}
+.spt span{color:var(--eml);display:block;}
+.spd{font-size:.95rem;color:#94a3b8;max-width:620px;line-height:1.6;margin-bottom:24px;}
+.spn{background:linear-gradient(135deg,#10b981,#059669);border:none;color:#050810;
+font-family:var(--fu);font-weight:800;font-size:1.05rem;padding:14px 36px;border-radius:99px;
+cursor:pointer;display:flex;align-items:center;gap:10px;
+box-shadow:0 10px 40px rgba(16,185,129,.4);transition:all .25s cubic-bezier(.16,1,.3,1);}
+.spn:hover{transform:scale(1.05) translateY(-2px);box-shadow:0 15px 50px rgba(16,185,129,.6);}
+#pb{position:absolute;bottom:0;left:0;width:100%;height:3px;z-index:35;background:rgba(255,255,255,.1);}
+#pf{height:100%;width:0%;background:linear-gradient(90deg,var(--em),var(--cy));
+box-shadow:0 0 10px rgba(16,185,129,.6);transition:width .3s linear;}
+</style>
 </head>
-
 <body>
-
-  <!-- 1. FULL-BLEED VIDEO VIEWPORT -->
-  <div class="video-viewport">
-    <video id="mainVideo" playsinline preload="auto" src="care_economy_cinematic_sim.mp4"></video>
-  </div>
-
-  <!-- 2. TOP CINEMA HUD -->
-  <div class="cinema-top-hud" id="topHud">
-    <div class="brand-group">
-      <div class="brand-badge">
-        <span class="pulse-dot"></span>
-        <span>HARVARD SIMULATION</span>
-      </div>
-      <div class="brand-title">PAKISTAN CARE ECONOMY — EXECUTIVE CUTSCENE</div>
-    </div>
-
-    <div class="top-actions">
-      <button class="hud-btn" id="btnRestart">↺ RESTART</button>
-      <button class="hud-btn" id="btnMute">🔊 SOUND ON</button>
-      <button class="hud-btn primary" id="btnVoteNow">⚖ CAST VOTE NOW</button>
-      <button class="hud-btn" id="btnFullscreen">⛶ FULLSCREEN</button>
-      <a href="care_economy_cinematic_sim.mp4" download class="hud-btn" style="text-decoration:none;">⬇ DOWNLOAD MP4</a>
-    </div>
-  </div>
-
-  <!-- 3. BOTTOM CINEMA HUD -->
-  <div class="cinema-bottom-hud" id="bottomHud">
-    <!-- TIMELINE SCRUBBER -->
-    <div class="timeline-container" id="timelineContainer">
-      <div class="timeline-bar">
-        <div class="timeline-progress" id="timelineProgress"></div>
-      </div>
-      <div class="scene-markers-bar">
-        <span class="scene-mark-item" onclick="jumpTo(0)">0:00 GATE 01</span>
-        <span class="scene-mark-item" onclick="jumpTo(4.5)">0:04 PM HOUSE</span>
-        <span class="scene-mark-item" onclick="jumpTo(9.0)">0:09 CABINET HALL</span>
-        <span class="scene-mark-item" onclick="jumpTo(13.0)">0:13 PM SHEHBAZ</span>
-        <span class="scene-mark-item" onclick="jumpTo(18.0)">0:18 MIN. AURANGZEB</span>
-        <span class="scene-mark-item" onclick="jumpTo(23.0)">0:23 DR. FAREEHA</span>
-        <span class="scene-mark-item" onclick="jumpTo(28.0)">0:28 BAKHTAWAR BIBI</span>
-        <span class="scene-mark-item" onclick="jumpTo(33.0)">0:33 CHIEF ADVISOR</span>
-        <span class="scene-mark-item" onclick="jumpTo(38.0)">0:38 WAR ROOM</span>
-        <span class="scene-mark-item" onclick="jumpTo(43.0)">0:43 DECISION</span>
-      </div>
-    </div>
-
-    <!-- CONTROLS ROW -->
-    <div class="controls-row">
-      <div class="left-controls">
-        <button class="play-btn" id="btnPlayPause">▶</button>
-        <div class="time-display">
-          <span id="curTime">00:00</span> / <span id="durTime">00:49</span>
-        </div>
-      </div>
-
-      <div class="right-controls">
-        <button class="hud-btn" onclick="setSpeed(1)">1.0x</button>
-        <button class="hud-btn" onclick="setSpeed(1.25)">1.25x</button>
-        <button class="hud-btn" onclick="setSpeed(1.5)">1.5x</button>
-        <a href="index.html" class="hud-btn" style="text-decoration:none;">PRESENTATION DECK ➔</a>
-        <a href="lfs_dashboard.html" class="hud-btn" style="text-decoration:none;">LFS DATA DASHBOARD ➔</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- 4. START SPLASH SCREEN -->
-  <div class="splash-overlay" id="splashScreen">
-    <div class="splash-badge">● HARVARD EXECUTIVE BRANCH SIMULATION</div>
-    <h1 class="splash-title">THE CARE ECONOMY <span>NATIONAL SUMMONS</span></h1>
-    <p class="splash-desc">
-      Experience the official cinematic video simulation. Join the emergency cabinet session at the Prime Minister House, inspect the 5 key national actors, and cast your strategic executive vote.
-    </p>
-    <button class="splash-btn" id="btnStartSim">
-      <span>▶ PLAY SIMULATION VIDEO</span>
-    </button>
-  </div>
-
-  <!-- 5. HARVARD DECISION OVERLAY (TRANSLUCENT OVER VIDEO) -->
-  <div class="decision-overlay" id="decisionOverlay">
-    <div class="decision-modal-card">
-      <div class="modal-header">
-        <div class="modal-header-left">
-          <div class="modal-badge">● HARVARD EXECUTIVE MODEL // CASE 01 DEADLOCK</div>
-          <div class="modal-title">EXECUTIVE DECISION: NATIONAL CARE INFRASTRUCTURE</div>
-        </div>
-        <button class="hud-btn" onclick="closeDecisionOverlay()">✕ CLOSE / RESUME VIDEO</button>
-      </div>
-
-      <!-- DECISION OPTIONS -->
-      <div class="options-container" id="decisionOptions">
-        <!-- OPTION A -->
-        <div class="option-card-row option-a" onclick="executeVote('A')">
-          <div class="option-content">
-            <div class="option-top-line">
-              <span class="opt-tag green">OPTION A : PASS HISTORIC CARE REFORM</span>
-              <span class="opt-title">ENACT CARE INFRASTRUCTURE ACT (Roshni Solar Hubs + Daycare)</span>
-            </div>
-            <div class="opt-metrics">
-              • Macro Surge: <strong>+PKR 3.02 Trillion (+2.85%) GDP</strong> | 2.14M rural women enter formal labor market.<br />
-              • Grassroots Relief: Reduces unpaid daily slog from 8.2 hrs to 3.8 hrs via solar tube-wells and communal milling.<br />
-              • Fiscal Payback: PKR 142B outlay self-funds in 18 months through newly generated sales and payroll tax receipts.
-            </div>
-            <div class="opt-coalition">
-              CABINET SUPPORT: PM Shehbaz (APPROVES) | Dr. Fareeha (STRONGLY APPROVES) | Bakhtawar (UNANIMOUS) | Finance Min (CONDITIONAL)
-            </div>
-          </div>
-          <button class="vote-action-btn green">CAST VOTE FOR OPTION A</button>
-        </div>
-
-        <!-- OPTION B -->
-        <div class="option-card-row option-b" onclick="executeVote('B')">
-          <div class="option-content">
-            <div class="option-top-line">
-              <span class="opt-tag red">OPTION B : AUSTERITY FREEZE</span>
-              <span class="opt-title">ENFORCE STRICT FISCAL FREEZE & REJECT INFRASTRUCTURE BILL</span>
-            </div>
-            <div class="opt-metrics">
-              • Macro Impact: National GDP growth capped at 2.1%; 8.94M women remain in unpaid subsistence traps.<br />
-              • Grassroots Burden: Rural women continue 8.2 hours daily water fetching and manual grinding; girls out of school.<br />
-              • Fiscal Defense: Protects strict IMF 0.4% deficit target in the immediate quarter; avoids any public debt.
-            </div>
-            <div class="opt-coalition">
-              CABINET SUPPORT: Finance Min (APPROVES) | PM Shehbaz (DIVIDED) | Dr. Fareeha (OPPOSES) | Bakhtawar (HARD NO)
-            </div>
-          </div>
-          <button class="vote-action-btn red">CAST VOTE FOR OPTION B</button>
-        </div>
-      </div>
-
-      <!-- OUTCOME RESULTS (DISPLAYED AFTER VOTE) -->
-      <div class="outcome-display" id="outcomeDisplay">
-        <div style="background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); border-radius:12px; padding:18px;">
-          <h3 id="outcomeTitle" style="font-family:var(--font-cinema); font-size:1.3rem; color:var(--emerald-light); margin-bottom:6px;"></h3>
-          <p id="outcomeSummary" style="font-size:0.9rem; color:#cbd5e1; line-height:1.5;"></p>
-        </div>
-
-        <div style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-dim);">
-          UPDATED ADMINISTRATION STRENGTHS (HARVARD 1-5 MODEL):
-        </div>
-        <div class="strengths-grid" id="strengthsGrid"></div>
-
-        <div style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-dim); margin-top:8px;">
-          PERSONAL STANDING TABLE (HKS CASE 2 SCORECARD):
-        </div>
-        <table class="standing-table">
-          <thead>
-            <tr>
-              <th>Cabinet Member</th>
-              <th>Alignment</th>
-              <th>Your Standing Score</th>
-              <th>Status After Vote</th>
-            </tr>
-          </thead>
-          <tbody id="standingTableBody"></tbody>
-        </table>
-
-        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:12px;">
-          <button class="hud-btn" onclick="resetDecision()">↺ VOTE AGAIN</button>
-          <button class="hud-btn primary" onclick="closeDecisionOverlay()">RESUME CINEMA</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <script>
-    const video = document.getElementById('mainVideo');
-    const splashScreen = document.getElementById('splashScreen');
-    const btnStartSim = document.getElementById('btnStartSim');
-    const btnPlayPause = document.getElementById('btnPlayPause');
-    const btnRestart = document.getElementById('btnRestart');
-    const btnMute = document.getElementById('btnMute');
-    const btnVoteNow = document.getElementById('btnVoteNow');
-    const btnFullscreen = document.getElementById('btnFullscreen');
-    const timelineProgress = document.getElementById('timelineProgress');
-    const timelineContainer = document.getElementById('timelineContainer');
-    const curTimeEl = document.getElementById('curTime');
-    const durTimeEl = document.getElementById('durTime');
-    const decisionOverlay = document.getElementById('decisionOverlay');
-
-    let isMuted = false;
-
-    // Start Splash Click
-    btnStartSim.addEventListener('click', () => {
-      splashScreen.classList.add('hidden');
-      video.play();
-      btnPlayPause.textContent = '⏸';
-    });
-
-    // Play/Pause
-    btnPlayPause.addEventListener('click', () => {
-      if (video.paused) {
-        video.play();
-        btnPlayPause.textContent = '⏸';
-      } else {
-        video.pause();
-        btnPlayPause.textContent = '▶';
-      }
-    });
-
-    // Spacebar to pause/play
-    window.addEventListener('keydown', (e) => {
-      if (e.code === 'Space') {
-        e.preventDefault();
-        btnPlayPause.click();
-      }
-    });
-
-    // Restart
-    btnRestart.addEventListener('click', () => {
-      video.currentTime = 0;
-      video.play();
-      btnPlayPause.textContent = '⏸';
-    });
-
-    // Mute / Unmute
-    btnMute.addEventListener('click', () => {
-      isMuted = !isMuted;
-      video.muted = isMuted;
-      btnMute.textContent = isMuted ? '🔇 MUTED' : '🔊 SOUND ON';
-    });
-
-    // Fullscreen
-    btnFullscreen.addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => alert(err.message));
-      } else {
-        document.exitFullscreen();
-      }
-    });
-
-    // Speed
-    function setSpeed(speed) {
-      video.playbackRate = speed;
-    }
-
-    // Jump to time
-    function jumpTo(sec) {
-      video.currentTime = sec;
-      if (video.paused) {
-        video.play();
-        btnPlayPause.textContent = '⏸';
-      }
-    }
-
-    // Scrubber click
-    timelineContainer.addEventListener('click', (e) => {
-      const rect = timelineContainer.getBoundingClientRect();
-      const pos = (e.clientX - rect.left) / rect.width;
-      if (video.duration) {
-        video.currentTime = pos * video.duration;
-      }
-    });
-
-    // Format time
-    function fmtTime(sec) {
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-    }
-
-    // Video Time Update
-    video.addEventListener('timeupdate', () => {
-      if (!video.duration) return;
-      const pct = (video.currentTime / video.duration) * 100;
-      timelineProgress.style.width = pct + '%';
-      curTimeEl.textContent = fmtTime(video.currentTime);
-      durTimeEl.textContent = fmtTime(video.duration);
-
-      // Auto trigger decision modal at decision slate (43s) if not already triggered
-      if (video.currentTime >= 43.0 && !video.dataset.triggered) {
-        video.dataset.triggered = "true";
-        openDecisionOverlay();
-      }
-    });
-
-    video.addEventListener('ended', () => {
-      btnPlayPause.textContent = '▶';
-      openDecisionOverlay();
-    });
-
-    // Open/Close Decision Overlay
-    function openDecisionOverlay() {
-      decisionOverlay.classList.add('active');
-      video.pause();
-      btnPlayPause.textContent = '▶';
-    }
-
-    function closeDecisionOverlay() {
-      decisionOverlay.classList.remove('active');
-    }
-
-    btnVoteNow.addEventListener('click', () => {
-      openDecisionOverlay();
-    });
-
-    // Harvard Simulation Model Execution
-    function executeVote(choice) {
-      document.getElementById('decisionOptions').style.display = 'none';
-      const outcomeDisplay = document.getElementById('outcomeDisplay');
-      outcomeDisplay.style.display = 'flex';
-
-      const outcomeTitle = document.getElementById('outcomeTitle');
-      const outcomeSummary = document.getElementById('outcomeSummary');
-      const strengthsGrid = document.getElementById('strengthsGrid');
-      const standingTableBody = document.getElementById('standingTableBody');
-
-      if (choice === 'A') {
-        outcomeTitle.textContent = "MAJORITY CONSENSUS REACHED: OPTION A ENACTED INTO LAW";
-        outcomeSummary.textContent = "The Prime Minister has approved the historic Care Economy and Roshni Infrastructure Act. Pakistan triggers South Asia's largest female economic dividend: +PKR 3.02 Trillion added to GDP, 2.14M formal female workers liberated, and rural drudgery reduced by 53.6%.";
-
-        strengthsGrid.innerHTML = `
-          <div class="strength-card">
-            <div class="strength-title">PUBLIC LEGITIMACY</div>
-            <div class="strength-val">4.8 / 5.0</div>
-          </div>
-          <div class="strength-card">
-            <div class="strength-title">ECONOMIC OUTPUT</div>
-            <div class="strength-val">4.9 / 5.0</div>
-          </div>
-          <div class="strength-card">
-            <div class="strength-title">CABINET COHESION</div>
-            <div class="strength-val">4.2 / 5.0</div>
-          </div>
-          <div class="strength-card">
-            <div class="strength-title">INTERNATIONAL STANDING</div>
-            <div class="strength-val">4.6 / 5.0</div>
-          </div>
-          <div class="strength-card">
-            <div class="strength-title">GRASSROOTS RATING</div>
-            <div class="strength-val">5.0 / 5.0</div>
-          </div>
-        `;
-
-        standingTableBody.innerHTML = `
-          <tr>
-            <td>PM Shehbaz Sharif</td>
-            <td>Approving Sovereign</td>
-            <td><span class="tag-check">✔ STANDING ELEVATED (+2)</span></td>
-            <td>Pleased with decisive national growth package.</td>
-          </tr>
-          <tr>
-            <td>Dr. Fareeha Armughan</td>
-            <td>Harvard Lead Scientist</td>
-            <td><span class="tag-check">✔ UNANIMOUS ALLIANCE (+3)</span></td>
-            <td>Empirical econometric model fully validated.</td>
-          </tr>
-          <tr>
-            <td>Bakhtawar Bibi</td>
-            <td>Grassroots Care Workers</td>
-            <td><span class="tag-check">✔ HEROIC STANDING (+3)</span></td>
-            <td>8.94M rural mothers liberated from unpaid drudgery.</td>
-          </tr>
-          <tr>
-            <td>Muhammad Aurangzeb</td>
-            <td>Finance Minister</td>
-            <td><span class="tag-check">✔ CONDITIONAL CONCURRENCE (0)</span></td>
-            <td>Satisfied by 18-month self-funding tax recovery clause.</td>
-          </tr>
-        `;
-      } else {
-        outcomeTitle.textContent = "AUSTERITY MAINTAINED: OPTION B ENFORCED";
-        outcomeSummary.textContent = "The Cabinet has vetoed care infrastructure in deference to immediate IMF deficit ceilings. Fiscal borrowing is contained at 0.4%, but Pakistan's growth ceiling remains stuck at 2.1% with 8.94M women trapped in unpaid drudgery.";
-
-        strengthsGrid.innerHTML = `
-          <div class="strength-card">
-            <div class="strength-title">PUBLIC LEGITIMACY</div>
-            <div class="strength-val" style="color:var(--rose-red);">2.1 / 5.0</div>
-          </div>
-          <div class="strength-card">
-            <div class="strength-title">ECONOMIC OUTPUT</div>
-            <div class="strength-val" style="color:var(--rose-red);">2.0 / 5.0</div>
-          </div>
-          <div class="strength-card">
-            <div class="strength-title">CABINET COHESION</div>
-            <div class="strength-val">3.0 / 5.0</div>
-          </div>
-          <div class="strength-card">
-            <div class="strength-title">INTERNATIONAL STANDING</div>
-            <div class="strength-val">3.4 / 5.0</div>
-          </div>
-          <div class="strength-card">
-            <div class="strength-title">GRASSROOTS RATING</div>
-            <div class="strength-val" style="color:var(--rose-red);">1.4 / 5.0</div>
-          </div>
-        `;
-
-        standingTableBody.innerHTML = `
-          <tr>
-            <td>PM Shehbaz Sharif</td>
-            <td>Sovereign Leader</td>
-            <td><span class="tag-cross">✖ STANDING ERODED (-1)</span></td>
-            <td>Faces political backlash from rising cost of living.</td>
-          </tr>
-          <tr>
-            <td>Dr. Fareeha Armughan</td>
-            <td>Harvard Lead Scientist</td>
-            <td><span class="tag-cross">✖ DISAFFECTION (-3)</span></td>
-            <td>Disappointed by abandonment of empirical data.</td>
-          </tr>
-          <tr>
-            <td>Bakhtawar Bibi</td>
-            <td>Grassroots Care Workers</td>
-            <td><span class="tag-cross">✖ SEVERE BETRAYAL (-3)</span></td>
-            <td>Rural mothers remain trapped in 8.2 hours daily manual slog.</td>
-          </tr>
-          <tr>
-            <td>Muhammad Aurangzeb</td>
-            <td>Finance Minister</td>
-            <td><span class="tag-check">✔ FISCAL ALLY (+2)</span></td>
-            <td>Pleased with immediate zero-borrowing compliance.</td>
-          </tr>
-        `;
-      }
-    }
-
-    function resetDecision() {
-      document.getElementById('decisionOptions').style.display = 'flex';
-      document.getElementById('outcomeDisplay').style.display = 'none';
-    }
-  </script>
+<canvas id="gc"></canvas>
+<div id="th"><div class="hl"><div class="hr"><span class="rd"></span> REC</div>
+<div class="hlc" id="hL">CONSTITUTION AVE // GATE 01</div></div>
+<div class="hri"><div class="hlc" id="hT">23:45 PKT</div>
+<button class="hb" onclick="tM()" id="bM">🔊 SOUND</button>
+<button class="hb" onclick="rG()">↺ RESTART</button>
+<button class="hb pr" onclick="sD()">⚖ SKIP TO DECISIONS</button></div></div>
+<div id="narrative"><div class="nb">
+<div class="nbg"><span class="dt"></span> <span id="nB">ARRIVAL</span></div>
+<div class="nsp" id="nS">NARRATOR</div>
+<div class="nt" id="nT"><span class="cu"></span></div>
+</div></div>
+<div id="cc"><img class="ci" id="cI" src="" alt=""/>
+<div class="cb"><div class="cr" id="cR"></div><div class="cn" id="cN"></div>
+<div class="ct" id="cT"></div><div class="cs" id="cS"></div></div></div>
+<div id="do"><div class="dc" id="dC"></div></div>
+<div id="sp"><div class="spb">● HARVARD EXECUTIVE BRANCH SIMULATION</div>
+<h1 class="spt">THE CARE ECONOMY<span>NATIONAL CRISIS</span></h1>
+<p class="spd">Step into the shoes of the Chief Economic Advisor. Walk through the Prime Minister House at midnight, meet the key power players, and face impossible policy decisions that will reshape 8.94 million lives.</p>
+<button class="spn" onclick="sG()">▶ ENTER THE SIMULATION</button></div>
+<div id="pb"><div id="pf"></div></div>
+<script>
+const C=document.getElementById('gc'),x=C.getContext('2d');
+let W,H,dp,gT=0,run=false,mut=false,aC,gN,cP=0,pT=0,ccV=false;
+function rsz(){dp=devicePixelRatio||1;W=innerWidth;H=innerHeight;C.width=W*dp;C.height=H*dp;x.setTransform(dp,0,0,dp,0,0);}
+addEventListener('resize',rsz);rsz();
+const iS={gate:'assets/images/pm_gate_advisor_entry.jpg',pmH:'assets/images/pm_house_exterior.jpg',
+cab:'assets/images/pm_cabinet_room.jpg',pm:'assets/images/pm_shehbaz_portrait.jpg',
+fin:'assets/images/finance_minister_portrait.jpg',far:'assets/images/dr_fareeha_portrait.jpg',
+bak:'assets/images/bakhtawar_portrait.jpg',adv:'assets/images/advisor_player_portrait.jpg',
+war:'assets/images/economic_war_room.jpg',rur:'assets/images/rural_care_hub.jpg'};
+const im={};let iL=0;
+Object.entries(iS).forEach(([k,s])=>{const i=new Image();i.onload=i.onerror=()=>iL++;i.src=s;im[k]=i;});
+function iA(){if(aC)return;aC=new(AudioContext||webkitAudioContext)();gN=aC.createGain();gN.gain.value=.15;gN.connect(aC.destination);
+const o1=aC.createOscillator(),o2=aC.createOscillator(),g1=aC.createGain(),g2=aC.createGain();
+o1.type='sine';o1.frequency.value=55;o2.type='sine';o2.frequency.value=110;
+g1.gain.value=.12;g2.gain.value=.05;o1.connect(g1);g1.connect(gN);o2.connect(g2);g2.connect(gN);o1.start();o2.start();}
+function pI(){if(!aC)return;const o=aC.createOscillator(),g=aC.createGain();
+o.type='sine';o.frequency.value=60;g.gain.setValueAtTime(.3,aC.currentTime);
+g.gain.exponentialRampToValueAtTime(.001,aC.currentTime+1.5);o.connect(g);g.connect(gN);o.start();o.stop(aC.currentTime+1.5);
+const p=aC.createOscillator(),pg=aC.createGain();p.type='sine';p.frequency.value=1200;
+pg.gain.setValueAtTime(.08,aC.currentTime);pg.gain.exponentialRampToValueAtTime(.001,aC.currentTime+.4);
+p.connect(pg);pg.connect(gN);p.start();p.stop(aC.currentTime+.4);}
+function tM(){mut=!mut;if(gN)gN.gain.value=mut?0:.15;document.getElementById('bM').textContent=mut?'🔇 MUTED':'🔊 SOUND';}
+class Pt{constructor(tp){this.tp=tp;this.rs();}
+rs(){this.x=Math.random()*W;this.y=-10;
+if(this.tp==='r'){this.sp=8+Math.random()*12;this.ln=15+Math.random()*25;this.al=.15+Math.random()*.25;this.wi=-1.5+Math.random()*.5;}
+else{this.y=Math.random()*H;this.sp=.2+Math.random()*.5;this.sz=1+Math.random()*2;this.al=.1+Math.random()*.2;this.dr=Math.random()*Math.PI*2;}}
+up(dt){if(this.tp==='r'){this.y+=this.sp*dt*60;this.x+=this.wi*dt*60;if(this.y>H+20)this.rs();}
+else{this.dr+=dt*.5;this.x+=Math.sin(this.dr)*.3;this.y-=this.sp*dt*60;this.al=.1+Math.sin(this.dr*2)*.08;if(this.y<-10){this.y=H+10;this.x=Math.random()*W;}}}
+dw(c){if(this.tp==='r'){c.strokeStyle=`rgba(180,210,255,${this.al})`;c.lineWidth=1;c.beginPath();c.moveTo(this.x,this.y);c.lineTo(this.x+this.wi*3,this.y+this.ln);c.stroke();}
+else{c.fillStyle=`rgba(255,255,200,${this.al})`;c.beginPath();c.arc(this.x,this.y,this.sz,0,Math.PI*2);c.fill();}}}
+let rn=[],du=[];for(let i=0;i<200;i++)rn.push(new Pt('r'));for(let i=0;i<40;i++)du.push(new Pt('d'));
+const wk={x:-.05,tx:.35,y:.62,bp:0,vis:true};
+function dW(c,t){if(!wk.vis)return;const wx=wk.x*W,wy=wk.y*H,bob=Math.sin(wk.bp)*4,lean=Math.sin(wk.bp*.5)*2;
+c.save();c.translate(wx,wy+bob);c.rotate(lean*Math.PI/180);
+c.fillStyle='rgba(0,0,0,.3)';c.beginPath();c.ellipse(0,45,18,5,0,0,Math.PI*2);c.fill();
+c.fillStyle='#1a1a2e';c.fillRect(-12,-20,24,45);c.fillStyle='#0f0f23';c.fillRect(-10,-15,20,38);
+c.fillStyle='#d4a373';c.beginPath();c.arc(0,-32,12,0,Math.PI*2);c.fill();
+c.fillStyle='#2d2d2d';c.beginPath();c.arc(0,-36,11,Math.PI,0);c.fill();
+const as=Math.sin(wk.bp)*8;c.fillStyle='#5a3825';c.fillRect(14,8+as,12,10);c.fillStyle='#d4a060';c.fillRect(15,7+as,10,2);
+c.fillStyle='#111122';c.save();c.translate(-5,25);c.rotate(Math.sin(wk.bp)*.3);c.fillRect(-3,0,6,20);c.restore();
+c.save();c.translate(5,25);c.rotate(Math.sin(wk.bp+Math.PI)*.3);c.fillRect(-3,0,6,20);c.restore();c.restore();}
+function dIF(img,ox,zm){if(!img||!img.complete)return;const z=zm||1,iw=img.width*z,ih=img.height*z,
+sc=Math.max(W/iw,H/ih),dw2=iw*sc,dh=ih*sc;x.drawImage(img,(W-dw2)/2+(ox||0),(H-dh)/2,dw2,dh);}
+function dV(){const g=x.createRadialGradient(W/2,H/2,W*.2,W/2,H/2,W*.8);
+g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.55)');x.fillStyle=g;x.fillRect(0,0,W,H);}
+function dSL(){x.fillStyle='rgba(0,0,0,.04)';for(let y=0;y<H;y+=4)x.fillRect(0,y,W,2);}
+function mCP(loc,ik,an,nr,cd){return[{dur:6,loc,tm:'23:50 PKT',
+en(){wk.vis=false;pI();sN(an,'NARRATOR',nr);setTimeout(()=>sCC(cd,ik),1200);},
+up(dt){},dr(c,t){dIF(im[ik],Math.sin(t*.15)*20,1+t*.004);dV();du.forEach(d=>{d.up(1/60);d.dw(c);});dSL();}}];}
+const PH=[
+{dur:7,loc:'CONSTITUTION AVE // GATE 01',tm:'23:45 PKT',
+en(){wk.x=-.05;wk.tx=.35;wk.vis=true;sN('ARRIVAL','NARRATOR','A black SUV pulls up to Constitution Avenue. The Chief Economic Advisor steps out into the monsoon rain. Ahead, the iron gates of the Prime Minister Secretariat loom through the downpour. An emergency midnight summons \u2014 the nation\'s economy hangs by a thread.');},
+up(dt){wk.x+=(wk.tx-wk.x)*dt*.8;wk.bp+=dt*6;},
+dr(c,t){dIF(im.gate,Math.sin(t*.15)*30,1+t*.004);dV();rn.forEach(r=>{r.up(1/60);r.dw(c);});dW(c,t);dSL();}},
+{dur:6,loc:'PM HOUSE // SECURITY LEVEL 5',tm:'23:47 PKT',
+en(){wk.x=-.05;wk.tx=.5;wk.vis=true;pI();sN('EXECUTIVE RESIDENCE','NARRATOR','Security floodlights sweep the neoclassical portico as the motorcade escort clears the inner perimeter. The flags of Pakistan snap violently in the storm wind. Inside these walls, five people will decide the fate of 8.94 million unpaid women.');},
+up(dt){wk.x+=(wk.tx-wk.x)*dt*.6;wk.bp+=dt*5;},
+dr(c,t){dIF(im.pmH,-20+t*8,1.02+t*.003);c.save();const bx=W*.3+Math.sin(t*.4)*W*.4;
+const g=c.createLinearGradient(bx-100,0,bx+100,0);g.addColorStop(0,'rgba(255,255,220,0)');g.addColorStop(.5,'rgba(255,255,220,.06)');g.addColorStop(1,'rgba(255,255,220,0)');
+c.fillStyle=g;c.fillRect(bx-200,0,400,H);c.restore();dV();rn.forEach(r=>{r.up(1/60);r.dw(c);});dW(c,t);dSL();}},
+{dur:5,loc:'FEDERAL CABINET HALL // EMERGENCY SESSION',tm:'23:49 PKT',
+en(){wk.vis=false;pI();sN('THE INNER SANCTUM','NARRATOR','The double oak doors part with a deep resonance. Crystal chandeliers illuminate a mahogany table where the most powerful economic decision-makers in Pakistan sit in tense silence. Every eye turns to you \u2014 the Chief Advisor.');},
+up(dt){},dr(c,t){dIF(im.cab,Math.sin(t*.12)*15,1+t*.005);dV();du.forEach(d=>{d.up(1/60);d.dw(c);});dSL();}},
+...mCP('GUY 1 // EXECUTIVE AUTHORITY','pm','ACTOR 01 OF 05',
+'The Prime Minister sits at the head of the table, a red dossier marked URGENT: ECONOMIC SURVIVAL open before him. He inherited a country with $4.5 billion foreign reserves and 40% food inflation. He needs a solution that delivers results before the next election cycle \u2014 or his coalition collapses.',
+{role:'GUY 1 : THE EXECUTIVE DECIDER',name:'MIAN MUHAMMAD SHEHBAZ SHARIF',title:'Prime Minister & Chairman, National Economic Council',
+stats:['VETO POWER: Final Law Signoff','ALIGNMENT: Coalition Survival','HORIZON: 18-Month Electoral Cycle','THREAT: IMF Deficit Breach']}),
+...mCP('GUY 2 // FISCAL AUTHORITY','fin','ACTOR 02 OF 05',
+'The Finance Minister sits rigid, a single spreadsheet projected on the wall behind him. Every rupee must be accounted for. The IMF Extended Fund Facility agreement is non-negotiable \u2014 breach the 0.4% deficit ceiling and Pakistan loses its credit lifeline.',
+{role:'GUY 2 : THE FISCAL GUARDIAN',name:'MUHAMMAD AURANGZEB',title:'Federal Minister for Finance & Revenue',
+stats:['CONSTRAINT: 0.4% Deficit Ceiling','SPECIALTY: IMF Compliance','POWER: Budget Veto','RISK TOLERANCE: Zero']}),
+...mCP('GUY 3 // EMPIRICAL AUTHORITY','far','ACTOR 03 OF 05',
+'Dr. Fareeha opens her laptop, her Harvard econometric models casting blue light across the table. She has irrefutable proof: every hour saved from women\'s unpaid drudgery generates a 3.2% increase in female labor force participation. The numbers don\'t lie \u2014 but numbers alone don\'t move politicians.',
+{role:'GUY 3 : THE LEAD SCIENTIST',name:'DR. FAREEHA ARMUGHAN (Harvard PhD)',title:'Lead Care Econometrician & Policy Fellow, SDPI',
+stats:['CONFIDENCE: 99.2% (p < 0.001)','ELASTICITY: \u03b5 = -0.35','DIVIDEND: 8.94M Women','GDP IMPACT: +PKR 3.02 Trillion']}),
+...mCP('GUY 4 // GRASSROOTS VOICE','bak','ACTOR 04 OF 05',
+'Bakhtawar Bibi sits uncomfortably in the polished chair, her calloused hands gripping a folder of handwritten testimonials from her village. She carries 25-liter water pots 4 kilometers every day. Her daughter was pulled from school last month to help with grinding wheat. She is the human face of 8.94 million women.',
+{role:'GUY 4 : THE GRASSROOTS WITNESS',name:'BAKHTAWAR BIBI',title:'Rural Mother & Grassroots Care Worker Spokesperson',
+stats:['DAILY BURDEN: 8.2 Hours Unpaid','WATER WALK: 4km, 25L Pots','REPRESENTING: 8,940,000 Women','EDUCATION: Daughter Dropped Out']}),
+...mCP('GUY 5 // THE AUDIENCE','adv','ACTOR 05 OF 05',
+'You take your seat at the table. Every person in this room is looking at you for the decisive recommendation. You have the data, you understand the politics, you feel the human cost. The Prime Minister clears his throat: "Advisor, what do you recommend? We need a decision tonight."',
+{role:'GUY 5 : THE STRATEGIST (YOU)',name:'CHIEF ECONOMIC ADVISOR TO THE PM',title:'The Audience / Executive Simulation Player',
+stats:['INFLUENCE: 5/5 Maximum','SPECIALTY: Macro Synthesis','STATUS: Decisive Vote','PRESSURE: Every Eye On You']}),
+{dur:5,loc:'ECONOMIC WAR ROOM // CLOCK TICKING',tm:'00:15 PKT',
+en(){wk.vis=false;pI();sN('CRISIS PROTOCOL ENGAGED','PM SHEHBAZ SHARIF','"Enough background. We have exactly three policy decisions to make tonight. Each one will reshape this country. I want your strategic recommendation on each \u2014 and I want to know the trade-offs. No sugarcoating. Begin the simulation."');},
+up(dt){},dr(c,t){dIF(im.war,Math.sin(t*.1)*20,1+Math.sin(t*.2)*.015);
+c.fillStyle=`rgba(244,63,94,${.03+Math.sin(t*2)*.02})`;c.fillRect(0,0,W,H);dV();du.forEach(d=>{d.up(1/60);d.dw(c);});dSL();}},
+{dur:999,loc:'SCENARIO 01 // INFRASTRUCTURE',tm:'00:18 PKT',en(){shD(0);},up(dt){},
+dr(c,t){dIF(im.war,Math.sin(t*.08)*10,1.02);c.fillStyle='rgba(5,8,16,.6)';c.fillRect(0,0,W,H);dSL();}},
+{dur:999,loc:'SCENARIO 02 // POLITICAL TIMING',tm:'00:35 PKT',en(){shD(1);},up(dt){},
+dr(c,t){dIF(im.rur,Math.sin(t*.08)*10,1.02);c.fillStyle='rgba(5,8,16,.6)';c.fillRect(0,0,W,H);dSL();}},
+{dur:999,loc:'SCENARIO 03 // IMPOSSIBLE TRADE-OFF',tm:'01:02 PKT',en(){shD(2);},up(dt){},
+dr(c,t){dIF(im.cab,Math.sin(t*.08)*10,1.02);c.fillStyle='rgba(5,8,16,.6)';c.fillRect(0,0,W,H);dSL();}}
+];
+const DEC=[
+{sc:'SCENARIO 01 OF 03 // INFRASTRUCTURE ALLOCATION',ti:'The \u20b9142 Billion Question',
+cx:'Dr. Fareeha\'s model proves Roshni Solar Care Hubs can free 2.14M women into the formal workforce within 3 years, generating +PKR 3.02T in GDP. But the Finance Minister insists the \u20b9142B outlay violates IMF conditions. The PM wants your recommendation.',
+opts:[
+{tg:'OPTION A',tc:'tg',cc:'gr',tt:'Full National Rollout \u2014 4,200 Roshni Hubs Across All Districts',
+dt:'GDP: +PKR 3.02T (+2.85%) in 36 months | Women: 2.14M freed | Cost: PKR 142B upfront, self-funding in 18mo | Risk: IMF deficit breach triggers credit review',
+co:'Dr. Fareeha: STRONGLY APPROVE | Bakhtawar: UNANIMOUS | Finance Min: HARD VETO | PM: CAUTIOUS',
+oc:{tp:'mx',tt:'BOLD BUT RISKY: IMF TRIGGERS 90-DAY REVIEW',tx:'The IMF suspends the next $1.1B tranche pending fiscal audit. However, early results from pilot hubs show 23% female employment surge in Sindh. International media generates $400M in World Bank soft loans. Temporary turbulence, but structural transformation begins.',
+st:[{l:'PUBLIC TRUST',v:'4.5',c:'hi'},{l:'ECONOMIC',v:'4.7',c:'hi'},{l:'CABINET',v:'2.8',c:'lo'},{l:'INTL',v:'3.5',c:'mi'},{l:'GRASSROOTS',v:'5.0',c:'hi'}]}},
+{tg:'OPTION B',tc:'tb',cc:'bl',tt:'Phased Provincial Pilot \u2014 800 Hubs in 3 Priority Districts',
+dt:'GDP: +PKR 680B (+0.64%) Phase 1 | Women: 420K freed | Cost: PKR 28B, IMF-compliant | Risk: 3-year delay traps 1.7M additional women',
+co:'Finance Min: APPROVE | PM: COMFORTABLE | Dr. Fareeha: RELUCTANT | Bakhtawar: FRUSTRATED',
+oc:{tp:'gd',tt:'STRATEGIC PATIENCE: PILOT PROVES THE MODEL',tx:'Pilot districts show irrefutable results within 14 months. Female labor participation jumps 31%. Finance Minister personally advocates national scale-up. But Bakhtawar\'s village is not in the pilot zone \u2014 she waits another 2 years.',
+st:[{l:'PUBLIC TRUST',v:'3.8',c:'mi'},{l:'ECONOMIC',v:'3.2',c:'mi'},{l:'CABINET',v:'4.6',c:'hi'},{l:'INTL',v:'4.4',c:'hi'},{l:'GRASSROOTS',v:'2.8',c:'lo'}]}},
+{tg:'OPTION C',tc:'td',cc:'gd',tt:'Public-Private Partnership \u2014 Corporate CSR + Microfinance',
+dt:'GDP: +PKR 1.2T (+1.1%) | Women: 900K freed | Cost: PKR 12B seed + PKR 90B private | Risk: Private operators cherry-pick urban areas; rural women abandoned',
+co:'Finance Min: ENTHUSIASTIC | PM: SUPPORTIVE | Dr. Fareeha: CONCERNED | Bakhtawar: BETRAYED',
+oc:{tp:'mx',tt:'MARKET FORCES: URBAN GAINS, RURAL ABANDONMENT',tx:'Corporate partners build 600 hubs in semi-urban areas. Urban female employment surges. But zero hubs reach Bakhtawar\'s district. The rural-urban care divide deepens. Dr. Fareeha publishes a damning paper.',
+st:[{l:'PUBLIC TRUST',v:'3.2',c:'mi'},{l:'ECONOMIC',v:'3.8',c:'mi'},{l:'CABINET',v:'4.2',c:'hi'},{l:'INTL',v:'4.0',c:'mi'},{l:'GRASSROOTS',v:'1.6',c:'lo'}]}},
+{tg:'OPTION D',tc:'tr',cc:'rd',tt:'Reject Infrastructure \u2014 Enforce Strict Fiscal Austerity',
+dt:'GDP: Capped at 2.1% | Women: Zero freed | Fiscal: Preserves IMF 0.4% deficit ceiling | Risk: Pakistan falls behind Bangladesh in female workforce participation',
+co:'Finance Min: APPROVE | PM: RELUCTANT | Dr. Fareeha: VETO | Bakhtawar: DEVASTATED',
+oc:{tp:'bd',tt:'AUSTERITY PREVAILS: 8.94M WOMEN REMAIN TRAPPED',tx:'IMF approves next tranche. Bond markets stabilize. But rural female labor participation drops another 0.8%. Bakhtawar pulls her second daughter from school. Bangladesh overtakes Pakistan in female economic participation rankings.',
+st:[{l:'PUBLIC TRUST',v:'2.0',c:'lo'},{l:'ECONOMIC',v:'2.1',c:'lo'},{l:'CABINET',v:'3.4',c:'mi'},{l:'INTL',v:'3.8',c:'mi'},{l:'GRASSROOTS',v:'1.2',c:'lo'}]}}]},
+{sc:'SCENARIO 02 OF 03 // POLITICAL TIMING DILEMMA',ti:'The Electoral Calculus',
+cx:'The PM pulls you aside: "I believe in this reform. But elections are in 18 months. If we launch now and results take 3 years, the opposition calls it waste and I lose my seat. If I lose, the next government scraps everything. What\'s the smart play \u2014 politically and morally?"',
+opts:[
+{tg:'OPTION A',tc:'tg',cc:'gr',tt:'Launch Immediately \u2014 Bet Your Legacy On Visible Results',
+dt:'Strategy: Deploy 1,200 hubs in swing constituencies FIRST | Political Risk: High \u2014 12 months of opposition attacks | Moral Risk: Poorest districts deprioritized | If it works: Historic legacy',
+co:'PM: TEMPTED | Dr. Fareeha: ETHICALLY CONFLICTED | Bakhtawar: "My village isn\'t a swing seat"',
+oc:{tp:'mx',tt:'POLITICAL GAMBLE: EARLY RESULTS SHIFT THE POLLS',tx:'Swing district women enter markets within 10 months. Visible change. But Bakhtawar\'s non-swing district waits. Opposition attacks targeting as "political bribery." Polls shift 4% \u2014 but ethical economists question the allocation.',
+st:[{l:'PUBLIC TRUST',v:'3.6',c:'mi'},{l:'ECONOMIC',v:'3.8',c:'mi'},{l:'CABINET',v:'3.0',c:'mi'},{l:'INTL',v:'3.4',c:'mi'},{l:'GRASSROOTS',v:'3.0',c:'mi'}]}},
+{tg:'OPTION B',tc:'tb',cc:'bl',tt:'Announce Now, Launch After Elections \u2014 Secure Mandate First',
+dt:'Strategy: Make care reform the election platform centerpiece | Political Risk: Low | Moral Risk: 18 more months of 8.2-hour daily drudgery | If it works: Overwhelming mandate',
+co:'PM: COMFORTABLE | Finance Min: APPROVE | Dr. Fareeha: FRUSTRATED | Bakhtawar: "How many more months?"',
+oc:{tp:'mx',tt:'DELAYED PROMISE: MANDATE WON BUT TRUST TESTED',tx:'PM wins with 12-seat majority on care reform platform. But during 18-month delay, 340,000 additional girls dropped out of school. Dr. Fareeha calculates delay cost PKR 890B in foregone GDP. Mandate is strong \u2014 but so is the regret.',
+st:[{l:'PUBLIC TRUST',v:'4.2',c:'hi'},{l:'ECONOMIC',v:'2.4',c:'lo'},{l:'CABINET',v:'4.8',c:'hi'},{l:'INTL',v:'3.6',c:'mi'},{l:'GRASSROOTS',v:'2.2',c:'lo'}]}},
+{tg:'OPTION C',tc:'td',cc:'gd',tt:'Bipartisan Framework \u2014 Constitutional Amendment on Care',
+dt:'Strategy: Invite opposition to co-own reform via Constitutional Amendment | Political Risk: Share credit | Moral Risk: 6-month negotiation delay; compromise may exclude rural areas | If it works: Reform survives any government',
+co:'PM: SKEPTICAL | Finance Min: NEUTRAL | Dr. Fareeha: CAUTIOUSLY OPTIMISTIC | Bakhtawar: CONFUSED',
+oc:{tp:'gd',tt:'CONSTITUTIONAL LOCK-IN: REFORM SURVIVES ALL GOVERNMENTS',tx:'After 8 months of bitter negotiation, a Constitutional Amendment passes with 2/3 majority. Care infrastructure becomes a permanent state obligation. The compromise excludes 3 tribal districts \u2014 but the rest is ironclad. Dr. Fareeha calls it "the most significant structural reform since the 18th Amendment."',
+st:[{l:'PUBLIC TRUST',v:'4.4',c:'hi'},{l:'ECONOMIC',v:'3.4',c:'mi'},{l:'CABINET',v:'4.0',c:'mi'},{l:'INTL',v:'4.8',c:'hi'},{l:'GRASSROOTS',v:'3.6',c:'mi'}]}}]},
+{sc:'SCENARIO 03 OF 03 // THE IMPOSSIBLE TRADE-OFF',ti:'Sophie\'s Choice: Water or Education',
+cx:'Budget negotiations have reached their final hour. You have PKR 45B remaining \u2014 not enough for both. The World Bank will only co-finance ONE initiative. You must choose between solar-powered community water systems OR universal childcare centers. Both are critical. Both save lives. You can only fund one.',
+opts:[
+{tg:'WATER',tc:'tb',cc:'bl',tt:'Fund Community Water Systems \u2014 Eliminate the 4km Daily Walk',
+dt:'Impact: 3.2M women freed from 2.5hrs daily water fetching | Health: 60% drop in waterborne disease | Economic: +PKR 420B output | Lose: Without childcare, mothers can\'t take formal jobs',
+co:'Bakhtawar: PLEADING | Dr. Fareeha: "Water first \u2014 survival before education" | Finance Min: NEUTRAL',
+oc:{tp:'gd',tt:'WATER OF LIFE: SURVIVAL SECURED',tx:'Clean water reaches 12,000 villages within 24 months. Waterborne disease drops 64%. Women redirect freed hours into subsistence agriculture \u2014 food security improves 40%. But without childcare, structural transformation stalls. Dr. Fareeha notes: "We solved survival. We haven\'t solved liberation."',
+st:[{l:'PUBLIC TRUST',v:'4.6',c:'hi'},{l:'ECONOMIC',v:'3.4',c:'mi'},{l:'CABINET',v:'4.0',c:'mi'},{l:'INTL',v:'4.2',c:'hi'},{l:'GRASSROOTS',v:'4.8',c:'hi'}]}},
+{tg:'EDUCATION',tc:'tg',cc:'gr',tt:'Fund Universal Childcare \u2014 Unlock Formal Female Employment',
+dt:'Impact: 1.8M mothers take formal jobs | Education: 890K girls return to school | Economic: +PKR 780B, higher multiplier | Lose: Without water systems, daily drudgery continues',
+co:'Dr. Fareeha: "Childcare has higher GDP multiplier" | Finance Min: APPROVE | Bakhtawar: TORN',
+oc:{tp:'mx',tt:'EDUCATION DIVIDEND: STRUCTURAL SHIFT BEGINS',tx:'Childcare centers open in 800 districts. 890,000 girls return to classrooms. Mothers enter markets as shopkeepers and vendors. But they still walk 4km for water every morning. Bakhtawar\'s daughter is back in school \u2014 but Bakhtawar herself still carries water pots at dawn. "Half a miracle," she says.',
+st:[{l:'PUBLIC TRUST',v:'3.8',c:'mi'},{l:'ECONOMIC',v:'4.4',c:'hi'},{l:'CABINET',v:'4.2',c:'hi'},{l:'INTL',v:'4.6',c:'hi'},{l:'GRASSROOTS',v:'3.0',c:'mi'}]}},
+{tg:'DEFY ORDERS',tc:'td',cc:'gd',tt:'Refuse to Choose \u2014 Demand the PM Find Additional \u20b945B',
+dt:'Strategy: Present both as non-negotiable human rights | Sources: Military reallocation, telecom spectrum auction | Political Risk: EXTREME \u2014 challenging PM\'s authority | If it fails: You\'re fired tonight',
+co:'PM: FURIOUS | Finance Min: APPALLED | Dr. Fareeha: SECRETLY ADMIRING | Bakhtawar: PRAYING',
+oc:{tp:'gd',tt:'THE ADVISOR WHO REFUSED TO CHOOSE',tx:'The room goes silent. The PM stares at you for 30 seconds. Then he picks up the phone and calls the Army Chief. After a tense 40-minute negotiation, PKR 38B is reallocated from military parade budgets. Both programs launch. Dr. Fareeha whispers: "That took more courage than any econometric model." The PM never fully trusts you again \u2014 but he respects you.',
+st:[{l:'PUBLIC TRUST',v:'4.8',c:'hi'},{l:'ECONOMIC',v:'4.6',c:'hi'},{l:'CABINET',v:'2.4',c:'lo'},{l:'INTL',v:'4.4',c:'hi'},{l:'GRASSROOTS',v:'5.0',c:'hi'}]}}]}
+];
+let cDec=0;
+function shD(idx){const d=DEC[idx],ov=document.getElementById('do'),ct=document.getElementById('dC');
+let h=`<div class="dh"><div class="ds">${d.sc}</div><div class="dti">${d.ti}</div><div class="dctx">${d.cx}</div></div><div class="dops" id="oC">`;
+d.opts.forEach((o,i)=>{h+=`<div class="dop ${o.cc}" onclick="sO(${idx},${i})"><span class="otg ${o.tc}">${o.tg}</span><div class="ott">${o.tt}</div><div class="otd">${o.dt}</div><div class="otc">${o.co}</div></div>`;});
+h+='</div><div id="oA"></div>';ct.innerHTML=h;ov.classList.add('act');document.getElementById('narrative').classList.add('hidden');}
+function sO(di,oi){const o=DEC[di].opts[oi].oc;document.getElementById('oC').style.display='none';
+const a=document.getElementById('oA');let sh='';
+o.st.forEach(s=>{sh+=`<div class="sc"><div class="sl">${s.l}</div><div class="sv ${s.c}">${s.v}/5</div></div>`;});
+const cls=o.tp==='gd'?'gd2':o.tp==='bd'?'bd':'mx';
+const clr=o.tp==='gd'?'var(--eml)':o.tp==='bd'?'var(--ro)':'var(--go)';
+a.innerHTML=`<div class="dout"><div class="ob ${cls}"><div class="obt" style="color:${clr}">${o.tt}</div><div class="obx">${o.tx}</div></div>
+<div style="font-family:var(--fm);font-size:.68rem;color:var(--dm);letter-spacing:.08em">UPDATED ADMINISTRATION STRENGTHS:</div>
+<div class="sg">${sh}</div><div class="da"><button class="hb pr" onclick="nAD()">CONTINUE TO ${di<2?'NEXT SCENARIO':'FINAL BRIEFING'} \u27a4</button></div></div>`;pI();}
+function nAD(){document.getElementById('do').classList.remove('act');cDec++;
+if(cP<PH.length-1){cP++;pT=0;eP();}else{sN('SIMULATION COMPLETE','NARRATOR',
+'The emergency session ends at 02:47 PKT. Three historic decisions have been made. The fate of 8.94 million women now rests on their execution. As you step out into the pre-dawn quiet of Constitution Avenue, the rain has stopped. Somewhere in rural Sindh, Bakhtawar Bibi is already awake \u2014 waiting.');
+document.getElementById('narrative').classList.remove('hidden');}}
+function sN(b,s,t){document.getElementById('nB').textContent=b;document.getElementById('nS').textContent=s;
+document.getElementById('narrative').classList.remove('hidden');tT(t);}
+function tT(t){const e=document.getElementById('nT');e.innerHTML='<span class="cu"></span>';let i=0;
+function tk(){if(i<t.length){e.innerHTML=t.substring(0,i+1)+'<span class="cu"></span>';i++;setTimeout(tk,18);}else e.innerHTML=t;}tk();}
+function sCC(d,ik){const c=document.getElementById('cc');
+document.getElementById('cI').src=iS[ik];document.getElementById('cR').textContent=d.role;
+document.getElementById('cN').textContent=d.name;document.getElementById('cT').textContent=d.title;
+document.getElementById('cS').innerHTML=d.stats.map(s=>`<div class="cp">${s}</div>`).join('');c.classList.add('vis');ccV=true;}
+function hCC(){document.getElementById('cc').classList.remove('vis');ccV=false;}
+function eP(){hCC();const p=PH[cP];document.getElementById('hL').textContent=p.loc;
+document.getElementById('hT').textContent=p.tm;if(p.en)p.en();uPr();}
+function uPr(){let e=0;for(let i=0;i<cP;i++)e+=Math.min(PH[i].dur,60);
+const t=PH.reduce((s,p)=>s+Math.min(p.dur,60),0);document.getElementById('pf').style.width=(e/t*100)+'%';}
+let lT=0;
+function gL(ts){if(!run)return;const dt=Math.min((ts-lT)/1000,.05);lT=ts;gT+=dt;pT+=dt;
+x.fillStyle='#050810';x.fillRect(0,0,W,H);const p=PH[cP];
+if(p){if(p.up)p.up(dt);if(p.dr)p.dr(x,pT);if(p.dur<900&&pT>=p.dur&&cP<PH.length-1){cP++;pT=0;eP();}}
+requestAnimationFrame(gL);}
+function sG(){document.getElementById('sp').classList.add('gn');iA();run=true;lT=performance.now();cP=0;pT=0;eP();requestAnimationFrame(gL);}
+function rG(){cP=0;pT=0;gT=0;cDec=0;document.getElementById('do').classList.remove('act');eP();}
+function sD(){cP=PH.findIndex(p=>p.dur===999);if(cP<0)cP=PH.length-3;pT=0;
+document.getElementById('do').classList.remove('act');
+if(!run){document.getElementById('sp').classList.add('gn');iA();run=true;lT=performance.now();requestAnimationFrame(gL);}eP();}
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();if(PH[cP]?.dur<900&&cP<PH.length-1){cP++;pT=0;eP();}}});
+</script>
 </body>
 </html>
