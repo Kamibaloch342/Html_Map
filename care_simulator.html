@@ -3,18 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Executive Branch Simulation: Pakistan Care Economy — Harvard Case Model</title>
+  <title>Harvard Executive Branch Simulation — Care Economy Cinematic Video</title>
 
-  <!-- Google Fonts: Plus Jakarta Sans for UI, JetBrains Mono for counters, Cinzel for titles -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg-dark: #070a10;
-      --bg-card: rgba(15, 23, 42, 0.9);
-      --border-card: rgba(255, 255, 255, 0.14);
+      --bg-dark: #05080e;
       --emerald-glow: #10b981;
       --emerald-light: #34d399;
       --cyan-glow: #06b6d4;
@@ -22,7 +19,6 @@
       --rose-red: #f43f5e;
       --text-white: #f8fafc;
       --text-dim: #94a3b8;
-      
       --font-ui: 'Plus Jakarta Sans', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       --font-cinema: 'Cinzel', serif;
@@ -44,1320 +40,1002 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
+      position: relative;
     }
 
-    /* TOP GLOBAL STATUS & CONTROLS HUD */
-    .sim-header {
+    /* FULL BLEED VIDEO STAGE */
+    .video-viewport {
       position: absolute;
-      top: 0; left: 0; width: 100%;
-      height: 56px;
-      background: rgba(7, 10, 16, 0.92);
-      backdrop-filter: blur(15px);
-      border-bottom: 1px solid var(--border-card);
-      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    video#mainVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+      outline: none;
+    }
+
+    /* TOP CINEMA HUD */
+    .cinema-top-hud {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: linear-gradient(180deg, rgba(5,8,14,0.92) 0%, rgba(5,8,14,0.4) 75%, transparent 100%);
+      z-index: 20;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 28px;
+      transition: opacity 0.3s ease;
     }
 
-    .sim-brand {
+    .brand-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
-    .sim-brand-title {
-      font-family: var(--font-cinema);
-      font-size: 0.95rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      color: #ffffff;
+    .brand-badge {
       display: flex;
       align-items: center;
       gap: 8px;
-    }
-
-    .hks-tag {
-      background: #8b0000;
-      color: #ffffff;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--emerald-light);
       font-family: var(--font-mono);
-      font-size: 0.65rem;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: 800;
       letter-spacing: 0.05em;
     }
 
-    /* MECHANICAL ODOMETER TIMER [00|01|45] */
-    .odometer-wrap {
-      display: flex;
-      align-items: center;
-      background: #000000;
-      border: 1.5px solid rgba(255, 255, 255, 0.25);
-      border-radius: 6px;
-      padding: 3px 6px;
-      gap: 2px;
-      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.5);
-    }
-
-    .odo-digit {
-      background: #111827;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 3px;
-      color: #f8fafc;
-      font-family: var(--font-mono);
-      font-size: 1.1rem;
-      font-weight: 800;
-      width: 20px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    }
-
-    .sim-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .hud-btn {
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid var(--border-card);
-      color: #ffffff;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-
-    .hud-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      border-color: var(--emerald-glow);
-    }
-
-    .hud-btn.active {
-      background: rgba(16, 185, 129, 0.25);
-      border-color: var(--emerald-glow);
-      color: var(--emerald-light);
-    }
-
-    /* AUTO PROGRESS BAR */
-    .auto-progress-container {
-      position: absolute;
-      top: 55px; left: 0; width: 100%;
-      height: 3px;
-      background: rgba(255, 255, 255, 0.05);
-      z-index: 1001;
-    }
-
-    .auto-progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--emerald-glow), var(--cyan-glow));
-      transition: width 0.1s linear;
-    }
-
-    /* VIEWPORT STAGE */
-    .stage-container {
-      flex: 1;
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      background: #000;
-    }
-
-    /* FRAME LAYER (CINEMATIC FULLSCREEN BACKGROUND) */
-    .frame-layer {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      opacity: 0;
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 8s cubic-bezier(0.16, 1, 0.3, 1);
-      transform: scale(1.04);
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .frame-layer.active {
-      opacity: 1;
-      transform: scale(1.0);
-      pointer-events: auto;
-    }
-
-    .frame-bg-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.65) contrast(1.1);
-    }
-
-    .frame-vignette {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at center, rgba(7, 10, 16, 0.1) 15%, rgba(7, 10, 16, 0.9) 85%);
-    }
-
-    /* FRAME 1: THE WATCHER AT GATE 01 OVERLAY */
-    .cutscene-caption-box {
-      position: absolute;
-      bottom: 60px;
-      left: 60px;
-      max-width: 650px;
-      background: rgba(7, 10, 16, 0.85);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--border-card);
-      border-left: 4px solid var(--amber-gold);
-      border-radius: 0 1rem 1rem 0;
-      padding: 24px 28px;
-      z-index: 10;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-      animation: captionSlide 0.8s ease;
-    }
-
-    @keyframes captionSlide {
-      from { opacity: 0; transform: translateX(-30px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    .cutscene-loc {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--amber-gold);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-weight: 700;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .live-blinker {
-      width: 7px;
-      height: 7px;
+    .brand-badge .pulse-dot {
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: var(--rose-red);
-      animation: blink 1s infinite;
+      background: var(--emerald-light);
+      box-shadow: 0 0 10px var(--emerald-light);
+      animation: blinkDot 1.5s infinite;
     }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
+    @keyframes blinkDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.85); }
     }
 
-    .cutscene-headline {
-      font-size: 1.45rem;
+    .brand-title {
+      font-family: var(--font-cinema);
       font-weight: 800;
-      color: #ffffff;
-      margin-bottom: 8px;
-      line-height: 1.25;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
+      color: #fff;
     }
 
-    .cutscene-text {
-      font-size: 0.92rem;
-      line-height: 1.6;
-      color: #cbd5e1;
-    }
-
-    /* CHARACTER INTRO CARDS (VIDEO GAME RPG STYLE) */
-    .character-stage-overlay {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 80px 40px 40px;
-      z-index: 10;
-    }
-
-    .char-profile-card {
-      max-width: 1050px;
-      width: 100%;
-      background: var(--bg-card);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid var(--border-card);
-      border-radius: 1.5rem;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(16, 185, 129, 0.15);
-      display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
-      gap: 36px;
-      padding: 36px;
-      align-items: center;
-      animation: charCardEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    @keyframes charCardEntrance {
-      from { opacity: 0; transform: scale(0.95) translateY(30px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    .char-visual {
-      position: relative;
-      height: 380px;
-      border-radius: 1.25rem;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
-      background: #000;
-    }
-
-    .char-visual img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-    }
-
-    .char-badge-strip {
-      position: absolute;
-      bottom: 14px; left: 14px;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 6px 14px;
-      border-radius: 9999px;
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--emerald-light);
-    }
-
-    .char-details {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .char-number-tag {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--amber-gold);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-weight: 800;
-    }
-
-    .char-hero-name {
-      font-size: 2.1rem;
-      font-weight: 900;
-      color: #ffffff;
-      line-height: 1.15;
-    }
-
-    .char-official-role {
-      font-size: 0.95rem;
-      color: var(--emerald-light);
-      font-weight: 700;
-    }
-
-    .char-specialties-block {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      padding: 14px 18px;
-    }
-
-    .specialties-title {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
-    }
-
-    .specialties-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 0.82rem;
-      color: #e2e8f0;
-    }
-
-    .specialties-list li {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .specialties-list li::before {
-      content: "•";
-      color: var(--emerald-light);
-      font-weight: bold;
-    }
-
-    .char-stakes-note {
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      line-height: 1.55;
-      border-left: 3px solid var(--emerald-glow);
-      padding-left: 14px;
-      font-style: italic;
-    }
-
-    /* HARVARD SIMULATION INTERACTIVE SCENARIOS STAGE */
-    .scenario-stage-overlay {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 76px 40px 30px;
-      z-index: 10;
-      overflow-y: auto;
-    }
-
-    .hks-scenario-panel {
-      max-width: 900px;
-      width: 100%;
-      background: #181c24;
-      border: 1.5px solid rgba(255, 255, 255, 0.15);
-      border-radius: 1rem;
-      padding: 36px 40px;
-      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      animation: charCardEntrance 0.6s ease;
-      color: #f1f5f9;
-    }
-
-    .hks-scenario-title {
-      font-size: 1.65rem;
-      font-weight: 900;
-      color: #ffffff;
-      line-height: 1.25;
-    }
-
-    .hks-scenario-instruction {
-      font-size: 0.85rem;
-      font-style: italic;
-      color: #94a3b8;
-    }
-
-    .hks-narrative-p {
-      font-size: 0.95rem;
-      line-height: 1.65;
-      color: #e2e8f0;
-    }
-
-    .hks-outcomes-box {
-      background: rgba(0, 0, 0, 0.4);
-      border-left: 3px solid var(--cyan-glow);
-      padding: 16px 20px;
-      border-radius: 0 8px 8px 0;
-      font-size: 0.88rem;
-      line-height: 1.55;
-      color: #cbd5e1;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    /* ADMINISTRATION STRENGTH SCORES TABLE (HARVARD 1-5 MODEL) */
-    .admin-scores-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.82rem;
-      margin: 8px 0;
-      background: #0f141c;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .admin-scores-table th {
-      background: #000;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-      text-transform: uppercase;
-      padding: 8px 12px;
-      text-align: left;
-      font-weight: 700;
-    }
-
-    .admin-scores-table td {
-      padding: 8px 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .score-pill {
-      font-family: var(--font-mono);
-      font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-    }
-    .score-weak { background: rgba(244, 63, 94, 0.2); color: #fda4af; }
-    .score-mod { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
-    .score-strong { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
-
-    /* FORM INPUTS & RADIO GROUPS (HARVARD STYLE) */
-    .hks-decision-box {
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .hks-radio-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .hks-radio-option {
+    .top-actions {
       display: flex;
       align-items: center;
       gap: 12px;
+    }
+
+    .hud-btn {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #cbd5e1;
+      padding: 7px 15px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
       cursor: pointer;
-      font-size: 0.92rem;
-      padding: 8px 12px;
-      border-radius: 6px;
-      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
     }
 
-    .hks-radio-option:hover {
-      background: rgba(255, 255, 255, 0.06);
+    .hud-btn:hover {
+      background: rgba(16, 185, 129, 0.25);
+      border-color: var(--emerald-light);
+      color: #fff;
+      transform: translateY(-1px);
     }
 
-    .hks-radio-option input[type="radio"] {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--emerald-light);
+    .hud-btn.primary {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #05080e;
+      font-weight: 800;
+      border: none;
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+    }
+
+    .hud-btn.primary:hover {
+      background: linear-gradient(135deg, #34d399, #10b981);
+      box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
+    }
+
+    /* BOTTOM FLOATING TRANSPORT BAR */
+    .cinema-bottom-hud {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(0deg, rgba(5,8,14,0.95) 0%, rgba(5,8,14,0.6) 80%, transparent 100%);
+      z-index: 20;
+      padding: 16px 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: opacity 0.3s ease;
+    }
+
+    /* SCENE MARKERS TIMELINE */
+    .timeline-container {
+      width: 100%;
+      position: relative;
       cursor: pointer;
     }
 
-    .hks-footer-nav {
+    .timeline-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .timeline-progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      border-radius: 4px;
+      transition: width 0.1s linear;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+    }
+
+    /* Scene markers */
+    .scene-markers-bar {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 4px;
+      padding: 0 4px;
+    }
+
+    .scene-mark-item {
+      font-size: 0.65rem;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .scene-mark-item:hover, .scene-mark-item.active {
+      color: var(--emerald-light);
+      font-weight: 700;
+    }
+
+    /* CONTROLS ROW */
+    .controls-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 10px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 4px;
     }
 
-    .btn-hks-next {
-      background: #f8fafc;
-      color: #0f172a;
+    .left-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .play-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #10b981;
       border: none;
-      padding: 10px 24px;
-      font-size: 0.9rem;
-      font-weight: 800;
-      border-radius: 6px;
+      color: #05080e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.5);
+    }
+
+    .play-btn:hover {
+      transform: scale(1.08);
+      background: #34d399;
+      box-shadow: 0 0 24px rgba(16, 185, 129, 0.8);
+    }
+
+    .time-display {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      letter-spacing: 0.05em;
+    }
+
+    .right-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* START SPLASH SCREEN */
+    .splash-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, rgba(15,23,42,0.85) 0%, #030712 90%);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      backdrop-filter: blur(12px);
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .splash-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      padding: 6px 18px;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--emerald-light);
+      margin-bottom: 20px;
+      letter-spacing: 0.08em;
+    }
+
+    .splash-title {
+      font-family: var(--font-cinema);
+      font-size: 3rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      text-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
+    }
+
+    .splash-title span {
+      color: var(--emerald-light);
+      display: block;
+    }
+
+    .splash-desc {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      max-width: 700px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .splash-btn {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border: none;
+      color: #05080e;
+      font-family: var(--font-ui);
+      font-weight: 800;
+      font-size: 1.15rem;
+      padding: 16px 42px;
+      border-radius: 9999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 10px 35px rgba(16, 185, 129, 0.4);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .splash-btn:hover {
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 15px 45px rgba(16, 185, 129, 0.7);
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    }
+
+    /* HARVARD DECISION OVERLAY (TRANSLUCENT OVER VIDEO) */
+    .decision-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(3, 7, 18, 0.88);
+      backdrop-filter: blur(20px);
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .decision-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .decision-modal-card {
+      width: 100%;
+      max-width: 1100px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(16, 185, 129, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 18px;
+    }
+
+    .modal-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .modal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--amber-gold);
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      letter-spacing: 0.08em;
+    }
+
+    .modal-title {
+      font-family: var(--font-cinema);
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .option-card-row {
+      background: rgba(30, 41, 59, 0.6);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 20px 24px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .option-card-row:hover {
+      background: rgba(30, 41, 59, 0.9);
+      transform: translateY(-2px);
+    }
+
+    .option-card-row.option-a:hover {
+      border-color: var(--emerald-light);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+    }
+
+    .option-card-row.option-b:hover {
+      border-color: var(--rose-red);
+      box-shadow: 0 10px 30px rgba(244, 63, 94, 0.2);
+    }
+
+    .option-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 820px;
+    }
+
+    .option-top-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .opt-tag {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .opt-tag.green {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--emerald-light);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .opt-tag.red {
+      background: rgba(244, 63, 94, 0.2);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.4);
+    }
+
+    .opt-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .opt-metrics {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+
+    .opt-coalition {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--amber-gold);
+    }
+
+    .vote-action-btn {
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-family: var(--font-ui);
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
       transition: all 0.2s;
     }
 
-    .btn-hks-next:hover {
-      background: #ffffff;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+    .vote-action-btn.green {
+      background: var(--emerald-light);
+      color: #05080e;
     }
 
-    .btn-hks-next:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-      transform: none;
+    .vote-action-btn.red {
+      background: var(--rose-red);
+      color: #fff;
     }
 
-    /* PERSONAL STANDING TABLE (FINAL HARVARD RESULT) */
+    /* HARVARD OUTCOME SUMMARY MODAL */
+    .outcome-display {
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .strengths-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .strength-card {
+      background: #090d16;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .strength-title {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-family: var(--font-mono);
+      margin-bottom: 6px;
+    }
+
+    .strength-val {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--emerald-light);
+      font-family: var(--font-mono);
+    }
+
     .standing-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 16px 0;
-      font-size: 0.85rem;
-    }
-    .standing-table th, .standing-table td {
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 10px 14px;
-      text-align: center;
-    }
-    .standing-table th {
-      background: #0a0f18;
-      color: var(--amber-gold);
       font-family: var(--font-mono);
+      font-size: 0.8rem;
+      margin-top: 8px;
     }
-    .check-mark { color: var(--emerald-light); font-weight: bold; font-size: 1.1rem; }
-    .cross-mark { color: var(--rose-red); font-weight: bold; font-size: 1.1rem; }
+
+    .standing-table th {
+      background: rgba(255, 255, 255, 0.05);
+      color: #94a3b8;
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .standing-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+    }
+
+    .tag-check {
+      color: var(--emerald-light);
+      font-weight: 800;
+    }
+
+    .tag-cross {
+      color: var(--rose-red);
+      font-weight: 800;
+    }
   </style>
 </head>
+
 <body>
 
-  <!-- TOP STATUS & CONTROLS HUD -->
-  <header class="sim-header">
-    <div class="sim-brand">
-      <span style="font-size:1.25rem;">🇵🇰</span>
-      <div class="sim-brand-title">
-        EXECUTIVE BRANCH SIMULATION
-        <span class="hks-tag">HARVARD CASE 2</span>
-      </div>
-    </div>
-
-    <!-- MECHANICAL ODOMETER TIMER [00|01|45] -->
-    <div class="odometer-wrap" title="Simulation Clock">
-      <div class="odo-digit" id="odo-0">0</div>
-      <div class="odo-digit" id="odo-1">0</div>
-      <div class="odo-digit" id="odo-2">0</div>
-      <div class="odo-digit" id="odo-3">1</div>
-      <div class="odo-digit" id="odo-4">4</div>
-      <div class="odo-digit" id="odo-5">5</div>
-    </div>
-
-    <!-- CONTROLS -->
-    <div class="sim-controls">
-      <button id="btn-auto-timer" class="hud-btn active" title="Toggle 2.5s Auto-Progression">
-        <span>⏱️</span> <span id="auto-btn-label">Auto-Play (3s)</span>
-      </button>
-      <button id="btn-sound-toggle" class="hud-btn" title="Toggle Sound FX">
-        <span id="sound-icon">🔊</span> Sound
-      </button>
-      <button id="btn-skip-to-scenario" class="hud-btn" style="background:rgba(16,185,129,0.2); border-color:var(--emerald-glow);">
-        <span>⚡</span> Jump to Scenario 1
-      </button>
-    </div>
-  </header>
-
-  <!-- AUTO PROGRESS BAR -->
-  <div class="auto-progress-container">
-    <div class="auto-progress-bar" id="progress-bar"></div>
+  <!-- 1. FULL-BLEED VIDEO VIEWPORT -->
+  <div class="video-viewport">
+    <video id="mainVideo" playsinline preload="auto" src="care_economy_cinematic_sim.mp4"></video>
   </div>
 
-  <!-- VIEWPORT STAGE (FRAME-BY-FRAME CONTAINER) -->
-  <main class="stage-container" id="main-stage">
+  <!-- 2. TOP CINEMA HUD -->
+  <div class="cinema-top-hud" id="topHud">
+    <div class="brand-group">
+      <div class="brand-badge">
+        <span class="pulse-dot"></span>
+        <span>HARVARD SIMULATION</span>
+      </div>
+      <div class="brand-title">PAKISTAN CARE ECONOMY — EXECUTIVE CUTSCENE</div>
+    </div>
 
-    <!-- FRAME 1: A GUY WATCHING PM HOUSE AT GATE 01 AT NIGHT -->
-    <div class="frame-layer active" id="frame-gate">
-      <img src="assets/images/pm_gate_advisor_entry.jpg" alt="Advisor at Gate 01" class="frame-bg-img" />
-      <div class="frame-vignette"></div>
-      <div class="cutscene-caption-box">
-        <div class="cutscene-loc">
-          <div class="live-blinker"></div>
-          <span>GATE 01 // PM SECRETARIAT ISLAMABAD — 23:45 PKT</span>
-        </div>
-        <h2 class="cutscene-headline">The Arrival: 15 Minutes Before Midnight</h2>
-        <p class="cutscene-text">
-          A sole economic advisor stands at the red laser checkpoint. Through the drizzle and cold mist, the distant neoclassical facade of the Prime Minister's House slowly powers on its security spotlights.
-        </p>
+    <div class="top-actions">
+      <button class="hud-btn" id="btnRestart">↺ RESTART</button>
+      <button class="hud-btn" id="btnMute">🔊 SOUND ON</button>
+      <button class="hud-btn primary" id="btnVoteNow">⚖ CAST VOTE NOW</button>
+      <button class="hud-btn" id="btnFullscreen">⛶ FULLSCREEN</button>
+      <a href="care_economy_cinematic_sim.mp4" download class="hud-btn" style="text-decoration:none;">⬇ DOWNLOAD MP4</a>
+    </div>
+  </div>
+
+  <!-- 3. BOTTOM CINEMA HUD -->
+  <div class="cinema-bottom-hud" id="bottomHud">
+    <!-- TIMELINE SCRUBBER -->
+    <div class="timeline-container" id="timelineContainer">
+      <div class="timeline-bar">
+        <div class="timeline-progress" id="timelineProgress"></div>
+      </div>
+      <div class="scene-markers-bar">
+        <span class="scene-mark-item" onclick="jumpTo(0)">0:00 GATE 01</span>
+        <span class="scene-mark-item" onclick="jumpTo(4.5)">0:04 PM HOUSE</span>
+        <span class="scene-mark-item" onclick="jumpTo(9.0)">0:09 CABINET HALL</span>
+        <span class="scene-mark-item" onclick="jumpTo(13.0)">0:13 PM SHEHBAZ</span>
+        <span class="scene-mark-item" onclick="jumpTo(18.0)">0:18 MIN. AURANGZEB</span>
+        <span class="scene-mark-item" onclick="jumpTo(23.0)">0:23 DR. FAREEHA</span>
+        <span class="scene-mark-item" onclick="jumpTo(28.0)">0:28 BAKHTAWAR BIBI</span>
+        <span class="scene-mark-item" onclick="jumpTo(33.0)">0:33 CHIEF ADVISOR</span>
+        <span class="scene-mark-item" onclick="jumpTo(38.0)">0:38 WAR ROOM</span>
+        <span class="scene-mark-item" onclick="jumpTo(43.0)">0:43 DECISION</span>
       </div>
     </div>
 
-    <!-- FRAME 2: APPROACHING THE ILLUMINATED PM HOUSE -->
-    <div class="frame-layer" id="frame-approach">
-      <img src="assets/images/pm_house_exterior.jpg" alt="PM House Exterior Lights" class="frame-bg-img" />
-      <div class="frame-vignette"></div>
-      <div class="cutscene-caption-box">
-        <div class="cutscene-loc">
-          <div class="live-blinker"></div>
-          <span>SECURITY CLEARANCE // GATE CHECK VERIFIED</span>
-        </div>
-        <h2 class="cutscene-headline">The Gates Swing Open</h2>
-        <p class="cutscene-text">
-          Security barriers lift. The executive escort guides the delegation up the rain-soaked drive. The Prime Minister has summoned an emergency economic war council.
-        </p>
-      </div>
-    </div>
-
-    <!-- FRAME 3: ENTERING THE GRAND MEETING HALL -->
-    <div class="frame-layer" id="frame-hall">
-      <img src="assets/images/advisor_player_portrait.jpg" alt="Entering Cabinet Room" class="frame-bg-img" />
-      <div class="frame-vignette"></div>
-      <div class="cutscene-caption-box">
-        <div class="cutscene-loc">
-          <div class="live-blinker"></div>
-          <span>EXECUTIVE WING // CABINET MEETING CHAMBER</span>
-        </div>
-        <h2 class="cutscene-headline">Stepping into the War Room</h2>
-        <p class="cutscene-text">
-          The heavy mahogany double doors open. The room falls silent. Around the grand conference table, the nation's key decision-makers take their seats.
-        </p>
-      </div>
-    </div>
-
-    <!-- FRAME 4: CHARACTER 1 - THE PRIME MINISTER -->
-    <div class="frame-layer" id="frame-char-pm">
-      <img src="assets/images/pm_cabinet_room.jpg" alt="Cabinet Table" class="frame-bg-img" />
-      <div class="frame-vignette"></div>
-      <div class="character-stage-overlay">
-        <div class="char-profile-card">
-          <div class="char-visual">
-            <img src="assets/images/pm_shehbaz_portrait.jpg" alt="Prime Minister Shehbaz Sharif" />
-            <div class="char-badge-strip">
-              <span>HEAD OF GOVERNMENT</span>
-            </div>
-          </div>
-          <div class="char-details">
-            <span class="char-number-tag">CHARACTER 01 // CABINET CHAIR</span>
-            <h2 class="char-hero-name">Mian Muhammad Shehbaz Sharif</h2>
-            <span class="char-official-role">Prime Minister of Pakistan</span>
-            <div class="char-specialties-block">
-              <div class="specialties-title">SPECIALTIES & POWERS</div>
-              <ul class="specialties-list">
-                <li>Executive Veto & Presidential / PM Directive Authority</li>
-                <li>National Assembly Coalition Management</li>
-                <li>Political Leverage over Provincial Allocations</li>
-              </ul>
-            </div>
-            <p class="char-stakes-note">
-              "I need 5% GDP growth to keep this country solvent. PBS tells me women do PKR 10.38 Trillion in unpaid care, but my finance team says it has zero fiscal value. Who is right?"
-            </p>
-          </div>
+    <!-- CONTROLS ROW -->
+    <div class="controls-row">
+      <div class="left-controls">
+        <button class="play-btn" id="btnPlayPause">▶</button>
+        <div class="time-display">
+          <span id="curTime">00:00</span> / <span id="durTime">00:49</span>
         </div>
       </div>
-    </div>
 
-    <!-- FRAME 5: CHARACTER 2 - THE FINANCE MINISTER -->
-    <div class="frame-layer" id="frame-char-finance">
-      <img src="assets/images/pm_cabinet_room.jpg" alt="Cabinet Table" class="frame-bg-img" />
-      <div class="frame-vignette"></div>
-      <div class="character-stage-overlay">
-        <div class="char-profile-card">
-          <div class="char-visual">
-            <img src="assets/images/finance_minister_portrait.jpg" alt="Finance Minister Muhammad Aurangzeb" />
-            <div class="char-badge-strip">
-              <span style="color:var(--rose-red);">FISCAL GATEKEEPER</span>
-            </div>
-          </div>
-          <div class="char-details">
-            <span class="char-number-tag">CHARACTER 02 // THE FISCAL HAWK</span>
-            <h2 class="char-hero-name">Muhammad Aurangzeb</h2>
-            <span class="char-official-role">Federal Minister for Finance & Revenue</span>
-            <div class="char-specialties-block">
-              <div class="specialties-title">SPECIALTIES & POWERS</div>
-              <ul class="specialties-list">
-                <li>IMF Extended Fund Facility Primary Balance Enforcement</li>
-                <li>Sovereign Debt Servicing & Treasury Liquidity</li>
-                <li>Cabinet Budget Veto on Unfunded Mandates</li>
-              </ul>
-            </div>
-            <p class="char-stakes-note">
-              "We have zero fiscal space. Every single rupee of borrowing is scrutinized by the IMF. If this care infrastructure doesn't pay back in under 6 months, I cannot approve it."
-            </p>
-          </div>
-        </div>
+      <div class="right-controls">
+        <button class="hud-btn" onclick="setSpeed(1)">1.0x</button>
+        <button class="hud-btn" onclick="setSpeed(1.25)">1.25x</button>
+        <button class="hud-btn" onclick="setSpeed(1.5)">1.5x</button>
+        <a href="index.html" class="hud-btn" style="text-decoration:none;">PRESENTATION DECK ➔</a>
+        <a href="lfs_dashboard.html" class="hud-btn" style="text-decoration:none;">LFS DATA DASHBOARD ➔</a>
       </div>
     </div>
+  </div>
 
-    <!-- FRAME 6: CHARACTER 3 - DR. FAREEHA ARMGUGHAN -->
-    <div class="frame-layer" id="frame-char-fareeha">
-      <img src="assets/images/pm_cabinet_room.jpg" alt="Cabinet Table" class="frame-bg-img" />
-      <div class="frame-vignette"></div>
-      <div class="character-stage-overlay">
-        <div class="char-profile-card">
-          <div class="char-visual">
-            <img src="assets/images/dr_fareeha_portrait.jpg" alt="Dr. Fareeha Armughan" />
-            <div class="char-badge-strip">
-              <span style="color:var(--cyan-glow);">CHIEF ECONOMIST</span>
+  <!-- 4. START SPLASH SCREEN -->
+  <div class="splash-overlay" id="splashScreen">
+    <div class="splash-badge">● HARVARD EXECUTIVE BRANCH SIMULATION</div>
+    <h1 class="splash-title">THE CARE ECONOMY <span>NATIONAL SUMMONS</span></h1>
+    <p class="splash-desc">
+      Experience the official cinematic video simulation. Join the emergency cabinet session at the Prime Minister House, inspect the 5 key national actors, and cast your strategic executive vote.
+    </p>
+    <button class="splash-btn" id="btnStartSim">
+      <span>▶ PLAY SIMULATION VIDEO</span>
+    </button>
+  </div>
+
+  <!-- 5. HARVARD DECISION OVERLAY (TRANSLUCENT OVER VIDEO) -->
+  <div class="decision-overlay" id="decisionOverlay">
+    <div class="decision-modal-card">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <div class="modal-badge">● HARVARD EXECUTIVE MODEL // CASE 01 DEADLOCK</div>
+          <div class="modal-title">EXECUTIVE DECISION: NATIONAL CARE INFRASTRUCTURE</div>
+        </div>
+        <button class="hud-btn" onclick="closeDecisionOverlay()">✕ CLOSE / RESUME VIDEO</button>
+      </div>
+
+      <!-- DECISION OPTIONS -->
+      <div class="options-container" id="decisionOptions">
+        <!-- OPTION A -->
+        <div class="option-card-row option-a" onclick="executeVote('A')">
+          <div class="option-content">
+            <div class="option-top-line">
+              <span class="opt-tag green">OPTION A : PASS HISTORIC CARE REFORM</span>
+              <span class="opt-title">ENACT CARE INFRASTRUCTURE ACT (Roshni Solar Hubs + Daycare)</span>
+            </div>
+            <div class="opt-metrics">
+              • Macro Surge: <strong>+PKR 3.02 Trillion (+2.85%) GDP</strong> | 2.14M rural women enter formal labor market.<br />
+              • Grassroots Relief: Reduces unpaid daily slog from 8.2 hrs to 3.8 hrs via solar tube-wells and communal milling.<br />
+              • Fiscal Payback: PKR 142B outlay self-funds in 18 months through newly generated sales and payroll tax receipts.
+            </div>
+            <div class="opt-coalition">
+              CABINET SUPPORT: PM Shehbaz (APPROVES) | Dr. Fareeha (STRONGLY APPROVES) | Bakhtawar (UNANIMOUS) | Finance Min (CONDITIONAL)
             </div>
           </div>
-          <div class="char-details">
-            <span class="char-number-tag">CHARACTER 03 // THE EMPIRICAL ARCHITECT</span>
-            <h2 class="char-hero-name">Dr. Fareeha Armughan</h2>
-            <span class="char-official-role">Senior Development Economist (Harvard PhD | SDPI × UN Women)</span>
-            <div class="char-specialties-block">
-              <div class="specialties-title">SPECIALTIES & POWERS</div>
-              <ul class="specialties-list">
-                <li>BISP NSER Censal Microdata Architecture (N = 254,648)</li>
-                <li>UN SNA 2008 Household Care Satellite Accounts</li>
-                <li>Labor Conversion Elasticity Modeling (α = 0.35 Duflo Standard)</li>
-              </ul>
+          <button class="vote-action-btn green">CAST VOTE FOR OPTION A</button>
+        </div>
+
+        <!-- OPTION B -->
+        <div class="option-card-row option-b" onclick="executeVote('B')">
+          <div class="option-content">
+            <div class="option-top-line">
+              <span class="opt-tag red">OPTION B : AUSTERITY FREEZE</span>
+              <span class="opt-title">ENFORCE STRICT FISCAL FREEZE & REJECT INFRASTRUCTURE BILL</span>
             </div>
-            <p class="char-stakes-note">
-              "Minister, community laundry and electric chakki hubs pay back capital in exactly 2.83 months. We are ignoring a PKR 3.02 Trillion annual deadweight loss."
-            </p>
+            <div class="opt-metrics">
+              • Macro Impact: National GDP growth capped at 2.1%; 8.94M women remain in unpaid subsistence traps.<br />
+              • Grassroots Burden: Rural women continue 8.2 hours daily water fetching and manual grinding; girls out of school.<br />
+              • Fiscal Defense: Protects strict IMF 0.4% deficit target in the immediate quarter; avoids any public debt.
+            </div>
+            <div class="opt-coalition">
+              CABINET SUPPORT: Finance Min (APPROVES) | PM Shehbaz (DIVIDED) | Dr. Fareeha (OPPOSES) | Bakhtawar (HARD NO)
+            </div>
           </div>
+          <button class="vote-action-btn red">CAST VOTE FOR OPTION B</button>
         </div>
       </div>
-    </div>
 
-    <!-- FRAME 7: CHARACTER 4 - BAKHTAWAR BIBI -->
-    <div class="frame-layer" id="frame-char-bakhtawar">
-      <img src="assets/images/pm_cabinet_room.jpg" alt="Cabinet Table" class="frame-bg-img" />
-      <div class="frame-vignette"></div>
-      <div class="character-stage-overlay">
-        <div class="char-profile-card">
-          <div class="char-visual">
-            <img src="assets/images/bakhtawar_portrait.jpg" alt="Bakhtawar Bibi" />
-            <div class="char-badge-strip">
-              <span style="color:var(--amber-gold);">THE REAL ECONOMY</span>
-            </div>
-          </div>
-          <div class="char-details">
-            <span class="char-number-tag">CHARACTER 04 // THE GROUND TRUTH</span>
-            <h2 class="char-hero-name">Bakhtawar Bibi</h2>
-            <span class="char-official-role">Rural Mother & Household Head (Sindh / Balochistan Cluster)</span>
-            <div class="char-specialties-block">
-              <div class="specialties-title">LIVED BURDEN & ASPIRATIONS</div>
-              <ul class="specialties-list">
-                <li>14.5 Hours Daily Unpaid Domestic Physical Chores</li>
-                <li>Spends 4.3h/wk fetching water & 7.4h/wk foraging wood</li>
-                <li>69.8% Stated Aspiration: Desperately wants to work and earn</li>
-              </ul>
-            </div>
-            <p class="char-stakes-note">
-              "Mujhe khairat nahi chahiye. Mujhe pani aur chakki ka waqt bacha kar dein, taake mein apne haathon se izzat ki roti kama sakoon."
-            </p>
-          </div>
+      <!-- OUTCOME RESULTS (DISPLAYED AFTER VOTE) -->
+      <div class="outcome-display" id="outcomeDisplay">
+        <div style="background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); border-radius:12px; padding:18px;">
+          <h3 id="outcomeTitle" style="font-family:var(--font-cinema); font-size:1.3rem; color:var(--emerald-light); margin-bottom:6px;"></h3>
+          <p id="outcomeSummary" style="font-size:0.9rem; color:#cbd5e1; line-height:1.5;"></p>
+        </div>
+
+        <div style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-dim);">
+          UPDATED ADMINISTRATION STRENGTHS (HARVARD 1-5 MODEL):
+        </div>
+        <div class="strengths-grid" id="strengthsGrid"></div>
+
+        <div style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-dim); margin-top:8px;">
+          PERSONAL STANDING TABLE (HKS CASE 2 SCORECARD):
+        </div>
+        <table class="standing-table">
+          <thead>
+            <tr>
+              <th>Cabinet Member</th>
+              <th>Alignment</th>
+              <th>Your Standing Score</th>
+              <th>Status After Vote</th>
+            </tr>
+          </thead>
+          <tbody id="standingTableBody"></tbody>
+        </table>
+
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:12px;">
+          <button class="hud-btn" onclick="resetDecision()">↺ VOTE AGAIN</button>
+          <button class="hud-btn primary" onclick="closeDecisionOverlay()">RESUME CINEMA</button>
         </div>
       </div>
+
     </div>
-
-    <!-- FRAME 8: CHARACTER 5 - YOU: THE CHIEF ADVISOR -->
-    <div class="frame-layer" id="frame-char-advisor">
-      <img src="assets/images/pm_cabinet_room.jpg" alt="Cabinet Table" class="frame-bg-img" />
-      <div class="frame-vignette"></div>
-      <div class="character-stage-overlay">
-        <div class="char-profile-card">
-          <div class="char-visual">
-            <img src="assets/images/advisor_player_portrait.jpg" alt="Chief Advisor" />
-            <div class="char-badge-strip">
-              <span>YOU // THE SCRIBE</span>
-            </div>
-          </div>
-          <div class="char-details">
-            <span class="char-number-tag">CHARACTER 05 // LEAD STRATEGIST</span>
-            <h2 class="char-hero-name">Chief Economic Advisor</h2>
-            <span class="char-official-role">Presenter & Scribe (Hall Delegation Lead)</span>
-            <div class="char-specialties-block">
-              <div class="specialties-title">YOUR ADVISORY MANDATE</div>
-              <ul class="specialties-list">
-                <li>Log the Group's Consensus (Unanimous vs Majority)</li>
-                <li>Guide the Prime Minister through 4 Harvard Case Dilemmas</li>
-                <li>Balance Personal Moral Standing vs Administration Success</li>
-              </ul>
-            </div>
-            <p class="char-stakes-note">
-              The Prime Minister looks up from his briefing paper. "Advisor, you have the floor. Read Scenario 1 to the room."
-            </p>
-            <div style="margin-top:10px;">
-              <button class="btn-hks-next" onclick="goToFrame(8)" style="background:var(--emerald-light); color:#000;">
-                <span>ENTER SCENARIO 1 (HARVARD MODEL) ➔</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FRAME 9: HARVARD CASE - SCENARIO 1 (ADVISE SCENARIO) -->
-    <div class="frame-layer" id="frame-scenario-1">
-      <img src="assets/images/economic_war_room.jpg" alt="Economic War Room" class="frame-bg-img" />
-      <div class="frame-vignette"></div>
-      <div class="scenario-stage-overlay">
-        <div class="hks-scenario-panel">
-          <div>
-            <h2 class="hks-scenario-title">Scenario 1: The Care Satellite & Infrastructure Act</h2>
-            <p class="hks-scenario-instruction">Take a few minutes to individually read the scenario before coming together to discuss.</p>
-          </div>
-
-          <p class="hks-narrative-p">
-            One month ago, the Pakistan Bureau of Statistics published the landmark 37th Labour Force Survey (LFS 2024–25). Chapter 12 reveals that 66.7 Million women perform 15.3 hours a week of unpaid domestic care, valued at <strong>PKR 10.38 Trillion (9.8% of GDP)</strong> under the statutory minimum wage (PKR 195.67/hr).
-          </p>
-
-          <p class="hks-narrative-p">
-            In response, a bipartisan coalition in the National Assembly has introduced the <em>TransformCare Pakistan Infrastructure Act</em>. The bill mandates the creation of an official UN SNA 2008 Household Care Satellite Account and directs PKR 26.8 Billion into village solar washing and electric chakki hubs for BISP housewives. The Finance Ministry strongly opposes it, fearing IMF primary balance sanctions, but civil society and rural MPAs passionately support it.
-          </p>
-
-          <p class="hks-narrative-p">
-            You must <u>advise</u> the Prime Minister on whether to endorse and sign the bill into law.
-          </p>
-
-          <div class="hks-outcomes-box">
-            <strong>If you advise the Prime Minister to sign the bill into law:</strong>
-            • <em>Success:</em> Unlocks $250M in UN Women/ADB blended green care finance; female labor force participation jumps by +2.5%; capital pays back in 2.83 months.<br/>
-            • <em>Failure:</em> The IMF flags non-compliance with primary deficit benchmarks; short-term fiscal friction occurs.<br/><br/>
-            <strong>If you advise the Prime Minister to veto the bill:</strong>
-            • <em>Success:</em> Preserves orthodox IMF program compliance and avoids budget disputes.<br/>
-            • <em>Failure:</em> 8.94 Million housewives remain trapped in 14-hour physical chores; PKR 3.02 Trillion in foregone output is lost annually.
-          </div>
-
-          <div>
-            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--amber-gold); margin-bottom:4px; font-weight:700;">
-              WHERE YOUR ADMINISTRATION STANDS NOW:
-            </div>
-            <table class="admin-scores-table">
-              <thead>
-                <tr>
-                  <th>National Economy</th>
-                  <th>Fiscal Discipline</th>
-                  <th>Party Harmony</th>
-                  <th>Public Standing</th>
-                  <th>Implementation Capacity</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><span class="score-pill score-weak">2 (Weak)</span></td>
-                  <td><span class="score-pill score-weak">2 (Weak)</span></td>
-                  <td><span class="score-pill score-mod">3 (Moderate)</span></td>
-                  <td><span class="score-pill score-strong">4 (Strong)</span></td>
-                  <td><span class="score-pill score-strong">4 (Strong)</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="hks-decision-box">
-            <div style="font-size:0.85rem; font-weight:800; color:#fff;">Log your group's decision here. Do you advise the Prime Minister to:</div>
-            <div class="hks-radio-group">
-              <label class="hks-radio-option">
-                <input type="radio" name="s1_decision" value="sign" checked onchange="enableS1Next()" />
-                <span><strong>Sign the Bill</strong> (Enact Care Infrastructure Act & SNA Satellite Account)</span>
-              </label>
-              <label class="hks-radio-option">
-                <input type="radio" name="s1_decision" value="veto" onchange="enableS1Next()" />
-                <span><strong>Veto the Bill</strong> (Shelve care capital to maintain IMF orthodox compliance)</span>
-              </label>
-            </div>
-
-            <div style="font-size:0.85rem; font-weight:800; color:#fff; margin-top:8px;">
-              Group Agreement Level:
-            </div>
-            <div class="hks-radio-group" style="flex-direction:row; gap:24px;">
-              <label class="hks-radio-option">
-                <input type="radio" name="s1_consensus" value="unanimous" checked />
-                <span>Unanimous</span>
-              </label>
-              <label class="hks-radio-option">
-                <input type="radio" name="s1_consensus" value="majority" />
-                <span>Majority</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="hks-footer-nav">
-            <span style="font-size:0.75rem; color:#94a3b8; font-family:var(--font-mono);">Harvard Case Simulation Model</span>
-            <button class="btn-hks-next" id="btn-s1-next" onclick="resolveScenario1()">
-              <span>LOG DECISION & CALCULATE OUTCOME ➔</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FRAME 10: HARVARD CASE - SCENARIO 2 (COMPLY SCENARIO) -->
-    <div class="frame-layer" id="frame-scenario-2">
-      <img src="assets/images/economic_war_room.jpg" alt="War Room" class="frame-bg-img" />
-      <div class="frame-vignette"></div>
-      <div class="scenario-stage-overlay">
-        <div class="hks-scenario-panel">
-          <div>
-            <h2 class="hks-scenario-title">Scenario 2: The IMF Primary Deficit Ultimatum</h2>
-            <p class="hks-scenario-instruction">COMPLY SCENARIO: The Prime Minister has already decided on a course of action.</p>
-          </div>
-
-          <p class="hks-narrative-p">
-            During an emergency late-night session with the IMF resident mission in Islamabad, the IMF warns that the primary budget deficit cannot increase by even 0.1% of GDP. In response, Prime Minister Shehbaz Sharif announces a radical executive solution:
-          </p>
-
-          <blockquote class="hks-narrative-p" style="border-left:3px solid var(--amber-gold); padding-left:14px; background:rgba(0,0,0,0.3); padding:10px 14px; font-style:italic;">
-            "We will not cancel care infrastructure, nor will we violate the deficit ceiling. I am reallocating 3% of distortionary, untargeted fossil fuel subsidies directly into self-financing revolving village care funds. The capital pays back in 2.83 months and generates local tax revenues. I need every advisor in this room to publicly defend this reallocation tomorrow."
-          </blockquote>
-
-          <p class="hks-narrative-p">
-            This is a <u>compliance</u> scenario. The Prime Minister is not asking for your recommendation—he is asking for your loyalty and compliance. Some members of your group worry that powerful industrial lobbies will retaliate.
-          </p>
-
-          <div class="hks-decision-box">
-            <div style="font-size:0.85rem; font-weight:800; color:#fff;">Do you comply with the Prime Minister's request?</div>
-            <div class="hks-radio-group">
-              <label class="hks-radio-option">
-                <input type="radio" name="s2_comply" value="all" checked />
-                <span><strong>Everyone in the group complies</strong> (The PM is pleased; rates action as Success)</span>
-              </label>
-              <label class="hks-radio-option">
-                <input type="radio" name="s2_comply" value="some" />
-                <span><strong>Some in the group comply, but not everyone</strong> (Outcome decided by computer model chance)</span>
-              </label>
-              <label class="hks-radio-option">
-                <input type="radio" name="s2_comply" value="none" />
-                <span><strong>No one in the group complies</strong> (The PM is displeased; rates action as Failure)</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="hks-footer-nav">
-            <span style="font-size:0.75rem; color:#94a3b8; font-family:var(--font-mono);">Harvard Compliance Model</span>
-            <button class="btn-hks-next" onclick="resolveScenario2()">
-              <span>LOG COMPLIANCE & REVEAL RESULT ➔</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FRAME 11: HARVARD CASE - SCENARIO 3 (THE 8.94M BISP ROLLOUT) -->
-    <div class="frame-layer" id="frame-scenario-3">
-      <img src="assets/images/rural_care_hub.jpg" alt="Roshni Care Hub" class="frame-bg-img" />
-      <div class="frame-vignette"></div>
-      <div class="scenario-stage-overlay">
-        <div class="hks-scenario-panel">
-          <div>
-            <h2 class="hks-scenario-title">Scenario 3: The Rural Infrastructure Architecture</h2>
-            <p class="hks-scenario-instruction">ADVISE SCENARIO: Target 8.94 Million BISP Housewives across Pakistan.</p>
-          </div>
-
-          <p class="hks-narrative-p">
-            Microdata from 254,648 BISP women shows 74.5% are full-time domestic housewives, and 69.8% (6.19 Million) want to earn income. Dr. Fareeha Armughan presents three capital infrastructure models evaluated at the statutory wage anchor (PKR 195.67/hr) with conversion elasticity α = 0.35:
-          </p>
-
-          <div class="hks-decision-box">
-            <div style="font-size:0.85rem; font-weight:800; color:#fff;">Select your group's recommended infrastructure package:</div>
-            <div class="hks-radio-group">
-              <label class="hks-radio-option">
-                <input type="radio" name="s3_pkg" value="solar_mill" checked />
-                <span><strong>⚡ Package A: Community Laundry & Electric Flour Mills</strong> (Capex: PKR 3,000/hh; Saves 2.5h/wk; Payback: 2.83 Months; BCR: 4.24×; Output: +PKR 2.10T)</span>
-              </label>
-              <label class="hks-radio-option">
-                <input type="radio" name="s3_pkg" value="clean_cooking" />
-                <span><strong>🍲 Package B: Clean Cookstoves & Biogas/LPG Kits</strong> (Capex: PKR 4,500/hh; Saves 3.5h/wk; Payback: 4.8 Months; BCR: 3.85×; Output: +PKR 1.45T)</span>
-              </label>
-              <label class="hks-radio-option">
-                <input type="radio" name="s3_pkg" value="super_cluster" />
-                <span><strong>🌟 Package C: Integrated Care Super-Clusters</strong> (Laundry + Chakki + Cookstoves + Village Creche; Capex: PKR 7,500/hh; Saves 6.0h/wk; Payback: 6.2 Months; BCR: 5.12×; Output: +PKR 3.02T)</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="hks-footer-nav">
-            <span style="font-size:0.75rem; color:#94a3b8; font-family:var(--font-mono);">Econometric Capital Budgeting</span>
-            <button class="btn-hks-next" onclick="resolveScenario3()">
-              <span>EXECUTE INFRASTRUCTURE ADVISORY ➔</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FRAME 12: HARVARD CASE - PERSONAL STANDING & FINAL TRANSFORMATION SCOREBOARD -->
-    <div class="frame-layer" id="frame-final-scoreboard">
-      <img src="assets/images/women_empowerment.jpg" alt="Women Empowerment" class="frame-bg-img" />
-      <div class="frame-vignette"></div>
-      <div class="scenario-stage-overlay">
-        <div class="hks-scenario-panel" style="max-width:960px;">
-          <div style="text-align:center;">
-            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--emerald-light); font-weight:800; letter-spacing:0.1em; text-transform:uppercase;">
-              SIMULATION COMPLETE // HARVARD EXECUTIVE DEBRIEF
-            </div>
-            <h2 class="hks-scenario-title" style="font-size:2.2rem; margin-top:6px;">TransformCare Pakistan 2026–2035 Accord Enacted</h2>
-            <p class="hks-narrative-p" style="max-width:750px; margin:8px auto;">
-              The Prime Minister has enacted your group's policy framework into national law. By moving from unpaid care traps to targeted community infrastructure, Pakistan has triggered the largest female economic surge in South Asian history.
-            </p>
-          </div>
-
-          <!-- MACRO RESULTS GRID -->
-          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin:16px 0;">
-            <div style="background:#0a0f18; padding:16px; border-radius:10px; border:1px solid rgba(255,255,255,0.1);">
-              <div style="font-size:0.65rem; color:var(--text-dim); font-family:var(--font-mono);">ANNUAL OUTPUT ADDED</div>
-              <div style="font-size:1.4rem; font-weight:800; color:var(--emerald-light); font-family:var(--font-mono);">+PKR 3.02 T</div>
-              <div style="font-size:0.7rem; color:#94a3b8;">+2.85% GDP Growth</div>
-            </div>
-            <div style="background:#0a0f18; padding:16px; border-radius:10px; border:1px solid rgba(255,255,255,0.1);">
-              <div style="font-size:0.65rem; color:var(--text-dim); font-family:var(--font-mono);">WOMEN EARNING</div>
-              <div style="font-size:1.4rem; font-weight:800; color:var(--emerald-light); font-family:var(--font-mono);">6.19 Million</div>
-              <div style="font-size:0.7rem; color:#94a3b8;">BISP Housewives</div>
-            </div>
-            <div style="background:#0a0f18; padding:16px; border-radius:10px; border:1px solid rgba(255,255,255,0.1);">
-              <div style="font-size:0.65rem; color:var(--text-dim); font-family:var(--font-mono);">CAPITAL PAYBACK</div>
-              <div style="font-size:1.4rem; font-weight:800; color:var(--emerald-light); font-family:var(--font-mono);">2.83 Months</div>
-              <div style="font-size:0.7rem; color:#94a3b8;">Self-Financing ROI</div>
-            </div>
-            <div style="background:#0a0f18; padding:16px; border-radius:10px; border:1px solid rgba(255,255,255,0.1);">
-              <div style="font-size:0.65rem; color:var(--text-dim); font-family:var(--font-mono);">FLFP JUMP</div>
-              <div style="font-size:1.4rem; font-weight:800; color:var(--emerald-light); font-family:var(--font-mono);">32.5%</div>
-              <div style="font-size:0.7rem; color:#94a3b8;">Up from 22.7%</div>
-            </div>
-          </div>
-
-          <!-- HARVARD PERSONAL STANDING TRACKING TABLE -->
-          <div>
-            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--amber-gold); font-weight:800;">
-              YOUR PERSONAL STANDING IN THE ADMINISTRATION (HARVARD TABLE)
-            </div>
-            <table class="standing-table">
-              <thead>
-                <tr>
-                  <th>Scenario 1 (Advise)</th>
-                  <th>Scenario 2 (Comply)</th>
-                  <th>Scenario 3 (Advise)</th>
-                  <th>Final Standing with Prime Minister</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><span class="check-mark">✓ SUCCESS</span></td>
-                  <td><span class="check-mark">✓ LOYAL COMPLY</span></td>
-                  <td><span class="check-mark">✓ 4.24× BCR</span></td>
-                  <td><strong style="color:var(--emerald-light);">HIGH STANDING (PM Enacts Priority)</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin-top:10px;">
-            <button class="btn-hks-next" onclick="goToFrame(0)" style="background:rgba(255,255,255,0.15); color:#fff;">
-              <span>🔄 Restart Simulation</span>
-            </button>
-            <a href="care_economy_deck.html" class="btn-hks-next" style="text-decoration:none; background:var(--emerald-light); color:#000;">
-              <span>🚀 Open Full Synthesis Deck</span>
-            </a>
-            <a href="Care_Economy_Econometric_Methodology_and_Formulas_Dr_Fareeha.docx" class="btn-hks-next" style="text-decoration:none; background:#ffffff; color:#0f172a;">
-              <span>📄 Download Working Paper (.docx)</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </main>
+  </div>
 
   <script>
-    // === 1. AUDIO SYNTHESIZER (CINEMATIC WEB AUDIO) ===
-    class SimAudio {
-      constructor() {
-        this.ctx = null;
-        this.enabled = true;
-      }
-      init() {
-        if (!this.ctx) {
-          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-      }
-      beep(freq, duration = 0.06, type = 'sine', gainVal = 0.08) {
-        if (!this.enabled) return;
-        this.init();
-        try {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = type;
-          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-          gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start();
-          osc.stop(this.ctx.currentTime + duration);
-        } catch(e){}
-      }
-      advance() {
-        this.beep(520, 0.08, 'triangle', 0.1);
-      }
-      chime() {
-        this.beep(880, 0.12, 'sine', 0.12);
-      }
-      gavel() {
-        if (!this.enabled) return;
-        this.init();
-        try {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'square';
-          osc.frequency.setValueAtTime(120, this.ctx.currentTime);
-          gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start();
-          osc.stop(this.ctx.currentTime + 0.35);
-        } catch(e){}
-      }
-      victory() {
-        [440, 554, 659, 880].forEach((f, idx) => {
-          setTimeout(() => this.beep(f, 0.35, 'triangle', 0.15), idx * 110);
-        });
-      }
-    }
-    const audio = new SimAudio();
+    const video = document.getElementById('mainVideo');
+    const splashScreen = document.getElementById('splashScreen');
+    const btnStartSim = document.getElementById('btnStartSim');
+    const btnPlayPause = document.getElementById('btnPlayPause');
+    const btnRestart = document.getElementById('btnRestart');
+    const btnMute = document.getElementById('btnMute');
+    const btnVoteNow = document.getElementById('btnVoteNow');
+    const btnFullscreen = document.getElementById('btnFullscreen');
+    const timelineProgress = document.getElementById('timelineProgress');
+    const timelineContainer = document.getElementById('timelineContainer');
+    const curTimeEl = document.getElementById('curTime');
+    const durTimeEl = document.getElementById('durTime');
+    const decisionOverlay = document.getElementById('decisionOverlay');
 
-    // === 2. TIMED FRAME CUTSCENE STATE MACHINE ===
-    // Total 12 frames: 
-    // Frames 0-2: Gate 01 -> Approach -> Meeting Hall
-    // Frames 3-7: Characters 1-5 (PM, Finance, Fareeha, Bakhtawar, Advisor)
-    // Frames 8-11: Scenarios 1, 2, 3, and Final Scoreboard
-    const frameIds = [
-      'frame-gate',           // 0
-      'frame-approach',       // 1
-      'frame-hall',           // 2
-      'frame-char-pm',        // 3
-      'frame-char-finance',   // 4
-      'frame-char-fareeha',   // 5
-      'frame-char-bakhtawar', // 6
-      'frame-char-advisor',   // 7
-      'frame-scenario-1',     // 8 (Harvard Scenario 1)
-      'frame-scenario-2',     // 9 (Harvard Scenario 2)
-      'frame-scenario-3',     // 10 (Harvard Scenario 3)
-      'frame-final-scoreboard'// 11 (Final Standing)
-    ];
+    let isMuted = false;
 
-    let currentFrameIdx = 0;
-    let autoPlayActive = true;
-    let autoTimer = null;
-    let progressInterval = null;
-    const FRAME_DURATION = 3500; // 3.5 seconds per frame for intro
+    // Start Splash Click
+    btnStartSim.addEventListener('click', () => {
+      splashScreen.classList.add('hidden');
+      video.play();
+      btnPlayPause.textContent = '⏸';
+    });
 
-    function goToFrame(idx) {
-      if (idx < 0 || idx >= frameIds.length) return;
-      currentFrameIdx = idx;
-
-      // Update frames
-      frameIds.forEach((id, fIdx) => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.classList.toggle('active', fIdx === currentFrameIdx);
-        }
-      });
-
-      // Sound effect
-      if (idx < 8) {
-        audio.advance();
-      } else if (idx === 11) {
-        audio.victory();
-      }
-
-      // Stop auto-play once in interactive scenarios (Frame 8+)
-      if (idx >= 8 && autoPlayActive) {
-        toggleAutoPlay(false);
-      } else if (autoPlayActive) {
-        resetAutoTimer();
-      }
-    }
-
-    function nextFrame() {
-      if (currentFrameIdx < 7) {
-        goToFrame(currentFrameIdx + 1);
-      }
-    }
-
-    function prevFrame() {
-      if (currentFrameIdx > 0) {
-        goToFrame(currentFrameIdx - 1);
-      }
-    }
-
-    // === 3. AUTO TIMER & PROGRESS BAR ===
-    const progressBar = document.getElementById('progress-bar');
-    let progressPct = 0;
-
-    function resetAutoTimer() {
-      clearInterval(autoTimer);
-      clearInterval(progressInterval);
-      progressPct = 0;
-      if (progressBar) progressBar.style.width = '0%';
-
-      if (!autoPlayActive || currentFrameIdx >= 8) return;
-
-      const stepMs = 50;
-      const stepPct = (stepMs / FRAME_DURATION) * 100;
-
-      progressInterval = setInterval(() => {
-        progressPct += stepPct;
-        if (progressBar) progressBar.style.width = `${Math.min(progressPct, 100)}%`;
-      }, stepMs);
-
-      autoTimer = setTimeout(() => {
-        nextFrame();
-      }, FRAME_DURATION);
-    }
-
-    function toggleAutoPlay(forceState = null) {
-      autoPlayActive = forceState !== null ? forceState : !autoPlayActive;
-      const btn = document.getElementById('btn-auto-timer');
-      const lbl = document.getElementById('auto-btn-label');
-      if (btn) btn.classList.toggle('active', autoPlayActive);
-      if (lbl) lbl.textContent = autoPlayActive ? 'Auto-Play (3s)' : 'Auto-Play (Paused)';
-
-      if (autoPlayActive) {
-        resetAutoTimer();
+    // Play/Pause
+    btnPlayPause.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+        btnPlayPause.textContent = '⏸';
       } else {
-        clearInterval(autoTimer);
-        clearInterval(progressInterval);
-        if (progressBar) progressBar.style.width = '0%';
+        video.pause();
+        btnPlayPause.textContent = '▶';
       }
-    }
-
-    document.getElementById('btn-auto-timer').addEventListener('click', () => toggleAutoPlay());
-
-    document.getElementById('btn-skip-to-scenario').addEventListener('click', () => {
-      goToFrame(8);
     });
 
-    document.getElementById('btn-sound-toggle').addEventListener('click', () => {
-      audio.enabled = !audio.enabled;
-      document.getElementById('btn-sound-toggle').classList.toggle('active', audio.enabled);
-      document.getElementById('sound-icon').textContent = audio.enabled ? '🔊' : '🔇';
-    });
-
-    // === 4. MECHANICAL ODOMETER CLOCK TICKER ===
-    let secondsElapsed = 105; // starts at [00|01|45]
-    setInterval(() => {
-      secondsElapsed++;
-      const hrs = String(Math.floor(secondsElapsed / 3600)).padStart(2, '0');
-      const mins = String(Math.floor((secondsElapsed % 3600) / 60)).padStart(2, '0');
-      const secs = String(secondsElapsed % 60).padStart(2, '0');
-      const fullStr = `${hrs}${mins}${secs}`;
-
-      for (let i = 0; i < 6; i++) {
-        const digitEl = document.getElementById(`odo-${i}`);
-        if (digitEl && fullStr[i]) {
-          digitEl.textContent = fullStr[i];
-        }
-      }
-    }, 1000);
-
-    // === 5. HARVARD SCENARIO RESOLUTIONS ===
-    function enableS1Next() {
-      document.getElementById('btn-s1-next').disabled = false;
-    }
-
-    function resolveScenario1() {
-      audio.gavel();
-      goToFrame(9); // Advance to Scenario 2 (Comply)
-    }
-
-    function resolveScenario2() {
-      audio.gavel();
-      goToFrame(10); // Advance to Scenario 3 (Rollout)
-    }
-
-    function resolveScenario3() {
-      audio.gavel();
-      goToFrame(11); // Advance to Final Scoreboard
-    }
-
-    // === 6. KEYBOARD CONTROLS ===
+    // Spacebar to pause/play
     window.addEventListener('keydown', (e) => {
-      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-      if (e.key === ' ' || e.key === 'ArrowRight' || e.key === 'Enter') {
-        if (currentFrameIdx < 8) {
-          nextFrame();
-        }
-      } else if (e.key === 'ArrowLeft') {
-        prevFrame();
-      } else if (e.key.toLowerCase() === 'p') {
-        toggleAutoPlay();
+      if (e.code === 'Space') {
+        e.preventDefault();
+        btnPlayPause.click();
       }
     });
 
-    // Initialize auto play on load
-    goToFrame(0);
+    // Restart
+    btnRestart.addEventListener('click', () => {
+      video.currentTime = 0;
+      video.play();
+      btnPlayPause.textContent = '⏸';
+    });
+
+    // Mute / Unmute
+    btnMute.addEventListener('click', () => {
+      isMuted = !isMuted;
+      video.muted = isMuted;
+      btnMute.textContent = isMuted ? '🔇 MUTED' : '🔊 SOUND ON';
+    });
+
+    // Fullscreen
+    btnFullscreen.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => alert(err.message));
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    // Speed
+    function setSpeed(speed) {
+      video.playbackRate = speed;
+    }
+
+    // Jump to time
+    function jumpTo(sec) {
+      video.currentTime = sec;
+      if (video.paused) {
+        video.play();
+        btnPlayPause.textContent = '⏸';
+      }
+    }
+
+    // Scrubber click
+    timelineContainer.addEventListener('click', (e) => {
+      const rect = timelineContainer.getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      if (video.duration) {
+        video.currentTime = pos * video.duration;
+      }
+    });
+
+    // Format time
+    function fmtTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    // Video Time Update
+    video.addEventListener('timeupdate', () => {
+      if (!video.duration) return;
+      const pct = (video.currentTime / video.duration) * 100;
+      timelineProgress.style.width = pct + '%';
+      curTimeEl.textContent = fmtTime(video.currentTime);
+      durTimeEl.textContent = fmtTime(video.duration);
+
+      // Auto trigger decision modal at decision slate (43s) if not already triggered
+      if (video.currentTime >= 43.0 && !video.dataset.triggered) {
+        video.dataset.triggered = "true";
+        openDecisionOverlay();
+      }
+    });
+
+    video.addEventListener('ended', () => {
+      btnPlayPause.textContent = '▶';
+      openDecisionOverlay();
+    });
+
+    // Open/Close Decision Overlay
+    function openDecisionOverlay() {
+      decisionOverlay.classList.add('active');
+      video.pause();
+      btnPlayPause.textContent = '▶';
+    }
+
+    function closeDecisionOverlay() {
+      decisionOverlay.classList.remove('active');
+    }
+
+    btnVoteNow.addEventListener('click', () => {
+      openDecisionOverlay();
+    });
+
+    // Harvard Simulation Model Execution
+    function executeVote(choice) {
+      document.getElementById('decisionOptions').style.display = 'none';
+      const outcomeDisplay = document.getElementById('outcomeDisplay');
+      outcomeDisplay.style.display = 'flex';
+
+      const outcomeTitle = document.getElementById('outcomeTitle');
+      const outcomeSummary = document.getElementById('outcomeSummary');
+      const strengthsGrid = document.getElementById('strengthsGrid');
+      const standingTableBody = document.getElementById('standingTableBody');
+
+      if (choice === 'A') {
+        outcomeTitle.textContent = "MAJORITY CONSENSUS REACHED: OPTION A ENACTED INTO LAW";
+        outcomeSummary.textContent = "The Prime Minister has approved the historic Care Economy and Roshni Infrastructure Act. Pakistan triggers South Asia's largest female economic dividend: +PKR 3.02 Trillion added to GDP, 2.14M formal female workers liberated, and rural drudgery reduced by 53.6%.";
+
+        strengthsGrid.innerHTML = `
+          <div class="strength-card">
+            <div class="strength-title">PUBLIC LEGITIMACY</div>
+            <div class="strength-val">4.8 / 5.0</div>
+          </div>
+          <div class="strength-card">
+            <div class="strength-title">ECONOMIC OUTPUT</div>
+            <div class="strength-val">4.9 / 5.0</div>
+          </div>
+          <div class="strength-card">
+            <div class="strength-title">CABINET COHESION</div>
+            <div class="strength-val">4.2 / 5.0</div>
+          </div>
+          <div class="strength-card">
+            <div class="strength-title">INTERNATIONAL STANDING</div>
+            <div class="strength-val">4.6 / 5.0</div>
+          </div>
+          <div class="strength-card">
+            <div class="strength-title">GRASSROOTS RATING</div>
+            <div class="strength-val">5.0 / 5.0</div>
+          </div>
+        `;
+
+        standingTableBody.innerHTML = `
+          <tr>
+            <td>PM Shehbaz Sharif</td>
+            <td>Approving Sovereign</td>
+            <td><span class="tag-check">✔ STANDING ELEVATED (+2)</span></td>
+            <td>Pleased with decisive national growth package.</td>
+          </tr>
+          <tr>
+            <td>Dr. Fareeha Armughan</td>
+            <td>Harvard Lead Scientist</td>
+            <td><span class="tag-check">✔ UNANIMOUS ALLIANCE (+3)</span></td>
+            <td>Empirical econometric model fully validated.</td>
+          </tr>
+          <tr>
+            <td>Bakhtawar Bibi</td>
+            <td>Grassroots Care Workers</td>
+            <td><span class="tag-check">✔ HEROIC STANDING (+3)</span></td>
+            <td>8.94M rural mothers liberated from unpaid drudgery.</td>
+          </tr>
+          <tr>
+            <td>Muhammad Aurangzeb</td>
+            <td>Finance Minister</td>
+            <td><span class="tag-check">✔ CONDITIONAL CONCURRENCE (0)</span></td>
+            <td>Satisfied by 18-month self-funding tax recovery clause.</td>
+          </tr>
+        `;
+      } else {
+        outcomeTitle.textContent = "AUSTERITY MAINTAINED: OPTION B ENFORCED";
+        outcomeSummary.textContent = "The Cabinet has vetoed care infrastructure in deference to immediate IMF deficit ceilings. Fiscal borrowing is contained at 0.4%, but Pakistan's growth ceiling remains stuck at 2.1% with 8.94M women trapped in unpaid drudgery.";
+
+        strengthsGrid.innerHTML = `
+          <div class="strength-card">
+            <div class="strength-title">PUBLIC LEGITIMACY</div>
+            <div class="strength-val" style="color:var(--rose-red);">2.1 / 5.0</div>
+          </div>
+          <div class="strength-card">
+            <div class="strength-title">ECONOMIC OUTPUT</div>
+            <div class="strength-val" style="color:var(--rose-red);">2.0 / 5.0</div>
+          </div>
+          <div class="strength-card">
+            <div class="strength-title">CABINET COHESION</div>
+            <div class="strength-val">3.0 / 5.0</div>
+          </div>
+          <div class="strength-card">
+            <div class="strength-title">INTERNATIONAL STANDING</div>
+            <div class="strength-val">3.4 / 5.0</div>
+          </div>
+          <div class="strength-card">
+            <div class="strength-title">GRASSROOTS RATING</div>
+            <div class="strength-val" style="color:var(--rose-red);">1.4 / 5.0</div>
+          </div>
+        `;
+
+        standingTableBody.innerHTML = `
+          <tr>
+            <td>PM Shehbaz Sharif</td>
+            <td>Sovereign Leader</td>
+            <td><span class="tag-cross">✖ STANDING ERODED (-1)</span></td>
+            <td>Faces political backlash from rising cost of living.</td>
+          </tr>
+          <tr>
+            <td>Dr. Fareeha Armughan</td>
+            <td>Harvard Lead Scientist</td>
+            <td><span class="tag-cross">✖ DISAFFECTION (-3)</span></td>
+            <td>Disappointed by abandonment of empirical data.</td>
+          </tr>
+          <tr>
+            <td>Bakhtawar Bibi</td>
+            <td>Grassroots Care Workers</td>
+            <td><span class="tag-cross">✖ SEVERE BETRAYAL (-3)</span></td>
+            <td>Rural mothers remain trapped in 8.2 hours daily manual slog.</td>
+          </tr>
+          <tr>
+            <td>Muhammad Aurangzeb</td>
+            <td>Finance Minister</td>
+            <td><span class="tag-check">✔ FISCAL ALLY (+2)</span></td>
+            <td>Pleased with immediate zero-borrowing compliance.</td>
+          </tr>
+        `;
+      }
+    }
+
+    function resetDecision() {
+      document.getElementById('decisionOptions').style.display = 'flex';
+      document.getElementById('outcomeDisplay').style.display = 'none';
+    }
   </script>
 </body>
 </html>
