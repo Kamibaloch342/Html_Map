@@ -124,15 +124,80 @@ main {
   padding: 24px 24px 80px;
 }
 
+/* Hero Briefing Section */
+.hero-executive-brief {
+  background: linear-gradient(135deg, rgba(165, 28, 48, 0.12) 0%, rgba(15, 23, 42, 0.85) 60%, rgba(16, 185, 129, 0.08) 100%);
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.brief-left { flex: 1; }
+.brief-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--gold);
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-bottom: 10px;
+  letter-spacing: 0.08em;
+}
+.brief-heading {
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+.brief-desc {
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  line-height: 1.55;
+  max-width: 820px;
+}
+.brief-stats {
+  display: flex;
+  gap: 16px;
+}
+.stat-chip {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--surface-border);
+  padding: 12px 18px;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 125px;
+}
+.stat-chip-num {
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--emerald);
+}
+.stat-chip-lbl {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+
 /* =========================================================================
-   2-MINUTE MASTER CINEMATIC VIDEO PLAYER SECTION
+   CINEMATIC VIDEO STAGE & CUSTOM HUD
 ========================================================================= */
 .video-stage-card {
-  background: #000;
+  background: #020617;
   border: 1px solid var(--surface-border);
-  border-radius: 20px;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(165, 28, 48, 0.25);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85);
   margin-bottom: 36px;
   position: relative;
 }
@@ -239,11 +304,90 @@ main {
 }
 .vc-icon-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
 
+/* =========================================================================
+   TYPEWRITER LIVE TELEMETRY TICKER BAR
+========================================================================= */
+.video-terminal-ticker {
+  background: #060913;
+  border-top: 1px solid rgba(16, 185, 129, 0.25);
+  border-bottom: 1px solid var(--surface-border);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.terminal-prefix-col {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.terminal-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--emerald);
+  box-shadow: 0 0 8px var(--emerald);
+  animation: pulse-dot 1.5s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+.terminal-prefix-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--emerald);
+  letter-spacing: 0.08em;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.terminal-body-col {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+}
+.terminal-content {
+  color: #f1f5f9;
+}
+.terminal-action-col {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.terminal-sfx-toggle {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--surface-border);
+  color: var(--gold);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.terminal-sfx-toggle:hover {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: var(--gold);
+  color: #fff;
+}
+
 /* Timeline Scene Jump Buttons */
 .scene-jump-bar {
   background: var(--surface-card);
-  border-top: 1px solid var(--surface-border);
-  padding: 12px 20px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -265,6 +409,28 @@ main {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   border-color: var(--gold);
+}
+
+/* =========================================================================
+   TYPEWRITER CURSOR & ANIMATION
+========================================================================= */
+.tw-cursor {
+  display: inline-block;
+  color: var(--emerald);
+  font-weight: 900;
+  font-family: var(--font-mono);
+  animation: tw-blink 0.75s infinite;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+@keyframes tw-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.tw-typing-active {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4) !important;
+  border-color: var(--emerald) !important;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 /* =========================================================================
@@ -358,6 +524,8 @@ main {
   border-bottom: 1px solid var(--surface-border);
   padding-bottom: 16px;
   margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 .cascade-lead-tag {
   font-family: var(--font-mono);
@@ -371,6 +539,47 @@ main {
   font-weight: 800;
   color: #fff;
   margin-top: 4px;
+}
+.cascade-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tw-rerun-btn {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+  border: 1px solid var(--emerald);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tw-rerun-btn:hover {
+  background: var(--emerald);
+  color: #000;
+  box-shadow: 0 0 15px var(--emerald-glow);
+}
+.tw-speed-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--surface-border);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tw-speed-btn:hover {
+  color: #fff;
+  border-color: var(--gold);
 }
 
 /* 4 Step Timeline Chain */
@@ -411,6 +620,7 @@ main {
   font-size: 0.95rem;
   color: #fff;
   box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+  transition: all 0.3s ease;
 }
 .ripple-step:nth-child(1) .step-node { border-color: var(--crimson-hks); box-shadow: 0 0 15px rgba(165, 28, 48, 0.5); }
 .ripple-step:nth-child(2) .step-node { border-color: var(--cyan); box-shadow: 0 0 15px rgba(6, 182, 212, 0.5); }
@@ -426,6 +636,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  transition: all 0.3s ease;
 }
 .step-order-badge {
   font-family: var(--font-mono);
@@ -439,12 +650,15 @@ main {
   font-weight: 800;
   color: #fff;
   line-height: 1.35;
+  min-height: 2.7em;
 }
 .step-desc {
   font-size: 0.82rem;
   color: #cbd5e1;
   line-height: 1.5;
   flex: 1;
+  min-height: 5em;
+  font-family: var(--font-sans);
 }
 .step-stats-pill {
   font-family: var(--font-mono);
@@ -455,6 +669,7 @@ main {
   border: 1px solid var(--surface-border);
   color: var(--emerald);
   margin-top: 6px;
+  transition: all 0.3s ease;
 }
 .step-media-preview {
   width: 100%;
@@ -505,24 +720,24 @@ main {
   border-right: 1px solid var(--surface-border);
 }
 .badge-score {
+  display: inline-block;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
   font-weight: 800;
+  font-size: 0.78rem;
   padding: 3px 8px;
   border-radius: 4px;
-  display: inline-block;
   margin-bottom: 4px;
 }
-.badge-score.green { background: rgba(16, 185, 129, 0.18); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
-.badge-score.yellow { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-.badge-score.red { background: rgba(244, 63, 94, 0.18); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); }
+.badge-score.green { background: rgba(16, 185, 129, 0.18); color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.35); }
+.badge-score.yellow { background: rgba(245, 158, 11, 0.18); color: var(--gold); border: 1px solid rgba(245, 158, 11, 0.35); }
+.badge-score.red { background: rgba(244, 63, 94, 0.18); color: var(--rose); border: 1px solid rgba(244, 63, 94, 0.35); }
 
 /* =========================================================================
-   TAB 3: WHAT-IF LEVER SIMULATOR
+   TAB 3: INTERACTIVE WHAT-IF LEVER SIMULATOR
 ========================================================================= */
 .calculator-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1.2fr;
   gap: 28px;
   margin-bottom: 36px;
 }
@@ -530,13 +745,15 @@ main {
   background: var(--surface-card);
   border: 1px solid var(--surface-border);
   border-radius: 18px;
-  padding: 28px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 .lever-control-group {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  margin-top: 20px;
+  gap: 18px;
 }
 .lever-item {
   display: flex;
@@ -546,52 +763,47 @@ main {
 .lever-label-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  font-size: 0.86rem;
-  font-weight: 700;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #e2e8f0;
 }
 .lever-val-display {
   font-family: var(--font-mono);
-  color: var(--gold);
-  font-size: 0.95rem;
+  color: var(--emerald);
   font-weight: 800;
 }
 input[type="range"] {
   width: 100%;
-  accent-color: var(--gold);
-  height: 6px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
+  accent-color: var(--emerald);
   cursor: pointer;
+  background: rgba(255, 255, 255, 0.1);
+  height: 6px;
+  border-radius: 3px;
 }
-.calc-results-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.metric-highlight-grid {
+
+.output-metrics-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
 }
 .metric-box {
-  background: rgba(30, 41, 59, 0.5);
+  background: rgba(15, 23, 42, 0.8);
   border: 1px solid var(--surface-border);
   border-radius: 12px;
   padding: 16px;
-  text-align: center;
 }
 .metric-box-label {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   color: var(--text-muted);
-  margin-bottom: 6px;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
 }
 .metric-box-num {
   font-family: var(--font-mono);
   font-size: 1.6rem;
-  font-weight: 900;
-  color: var(--emerald);
+  font-weight: 800;
+  color: #fff;
 }
 .metric-box-sub {
   font-size: 0.72rem;
@@ -600,16 +812,17 @@ input[type="range"] {
 }
 #chart-lever-radar {
   width: 100%;
-  height: 280px;
+  height: 380px;
 }
 
 /* =========================================================================
-   TAB 4: 19 DOCUMENTARY PHOTOGRAPHS
+   TAB 4: 19 REAL-LIFE PHOTOGRAPHS ARCHIVE
 ========================================================================= */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
+  margin-bottom: 40px;
 }
 .gallery-card {
   background: var(--surface-card);
@@ -618,23 +831,30 @@ input[type="range"] {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  transition: all 0.25s;
+}
+.gallery-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
 }
 .gallery-img {
   width: 100%;
-  height: 220px;
+  height: 200px;
   object-fit: cover;
+  display: block;
 }
-.gallery-caption-box {
-  padding: 16px 18px;
+.gallery-content {
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 .gallery-tag {
   font-family: var(--font-mono);
   font-size: 0.65rem;
-  font-weight: 700;
   color: var(--gold);
+  text-transform: uppercase;
 }
 .gallery-title {
   font-size: 0.95rem;
@@ -642,13 +862,26 @@ input[type="range"] {
   color: #fff;
 }
 .gallery-desc {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
   line-height: 1.45;
 }
 
+/* Tab Management */
 .tab-content { display: none; }
 .tab-content.active { display: block; }
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .pathway-selector-grid, .ripple-chain { grid-template-columns: repeat(2, 1fr); }
+  .calculator-grid { grid-template-columns: 1fr; }
+  .ripple-chain::before { display: none; }
+}
+@media (max-width: 640px) {
+  .pathway-selector-grid, .ripple-chain { grid-template-columns: 1fr; }
+  header { flex-direction: column; gap: 12px; }
+  .hero-executive-brief { flex-direction: column; }
+}
 </style>
 </head>
 <body>
@@ -657,12 +890,13 @@ input[type="range"] {
   <div class="brand-group">
     <div class="brand-crest">H</div>
     <div>
-      <div class="brand-title">THE HARVARD CARE MATRIX & SIMULATION</div>
-      <div class="brand-subtitle">EXECUTIVE BRANCH 2-MINUTE MASTER & CAUSE-AND-EFFECT ENGINE</div>
+      <div class="brand-title">HARVARD KENNEDY SCHOOL</div>
+      <div class="brand-subtitle">EXECUTIVE SIMULATION & CAUSE-AND-EFFECT MATRIX // CARE ECONOMY PAKISTAN</div>
     </div>
   </div>
+
   <div class="nav-tabs">
-    <button class="nav-tab-btn active" onclick="switchTab('cascade')">🌊 CAUSE & EFFECT CASCADE</button>
+    <button class="nav-tab-btn active" onclick="switchTab('cascade')">⚡ CAUSE-AND-EFFECT CASCADE</button>
     <button class="nav-tab-btn" onclick="switchTab('matrix')">📊 FULL DECISION MATRIX</button>
     <button class="nav-tab-btn" onclick="switchTab('calculator')">🎛 WHAT-IF LEVER SIMULATOR</button>
     <button class="nav-tab-btn" onclick="switchTab('gallery')">📸 19 REAL-LIFE PHOTOS</button>
@@ -670,6 +904,31 @@ input[type="range"] {
 </header>
 
 <main>
+  <!-- Hero Briefing -->
+  <div class="hero-executive-brief">
+    <div class="brief-left">
+      <div class="brief-badge">● HIGH COMMAND DIRECTIVE // TOP SECRET POLICY SIMULATION</div>
+      <h1 class="brief-heading">Pakistan Care Economy: Executive Decision Matrix</h1>
+      <p class="brief-desc">
+        You are the Chief Economic Advisor to Prime Minister Shehbaz Sharif. At midnight inside the Federal Cabinet War Room, you must decide the national care policy: will you invest PKR 142B in 4,200 rural Roshni Care Hubs, pilot a 60/40 provincial compact, adopt corporate PPPs, or default to austerity cash handouts? Every choice cascades across fiscal ceilings, IMF covenants, and 8.94 million unpaid mothers.
+      </p>
+    </div>
+    <div class="brief-stats">
+      <div class="stat-chip">
+        <div class="stat-chip-num">120.0s</div>
+        <div class="stat-chip-lbl">Sim Duration</div>
+      </div>
+      <div class="stat-chip">
+        <div class="stat-chip-num">8.94M</div>
+        <div class="stat-chip-lbl">Care Workers</div>
+      </div>
+      <div class="stat-chip">
+        <div class="stat-chip-num">&epsilon; = -0.35</div>
+        <div class="stat-chip-lbl">Labor Elasticity</div>
+      </div>
+    </div>
+  </div>
+
   <!-- 2-MINUTE MASTER CINEMATIC VIDEO SIMULATION PLAYER -->
   <div class="video-stage-card">
     <div class="video-wrapper">
@@ -698,6 +957,20 @@ input[type="range"] {
             <button class="vc-icon-btn" onclick="toggleFullScreen()">⛶ FULLSCREEN</button>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Live Cyber Telemetry Ticker with Typewriter Effect -->
+    <div class="video-terminal-ticker">
+      <div class="terminal-prefix-col">
+        <span class="terminal-live-dot"></span>
+        <span class="terminal-prefix-tag" id="hud-status-badge">TELEMETRY SCAN</span>
+      </div>
+      <div class="terminal-body-col">
+        <span class="terminal-content" id="hud-typewriter-text">Approaching Constitution Avenue Gate 01. Scanning biometric clearance...</span><span class="tw-cursor" id="hud-cursor">█</span>
+      </div>
+      <div class="terminal-action-col">
+        <button class="terminal-sfx-toggle" id="btn-sfx-toggle" onclick="toggleTypewriterSound()">🔊 KEY SFX: ON</button>
       </div>
     </div>
 
@@ -749,20 +1022,24 @@ input[type="range"] {
       </div>
     </div>
 
-    <!-- The Animated Cascade Timeline -->
+    <!-- The Animated Cascade Timeline with Typewriter Engine -->
     <div class="cascade-container">
       <div class="cascade-header">
         <div>
           <div class="cascade-lead-tag" id="cas-tag">PATHWAY 1 CASCADE ANALYSIS</div>
           <div class="cascade-lead-title" id="cas-title">The Ripple Chain: Full National Roshni Hubs</div>
         </div>
+        <div class="cascade-actions">
+          <button class="tw-rerun-btn" onclick="rerunCascadeTypewriter()">⌨ RE-RUN TYPEWRITER CASCADE</button>
+          <button class="tw-speed-btn" id="tw-speed-toggle" onclick="toggleTypewriterSpeed()">⚡ SPEED: FAST</button>
+        </div>
       </div>
 
       <div class="ripple-chain">
         <!-- Step 1: Immediate Action -->
-        <div class="ripple-step">
-          <div class="step-node">1</div>
-          <div class="step-card">
+        <div class="ripple-step" id="step-col-1">
+          <div class="step-node" id="step-node-1">1</div>
+          <div class="step-card" id="step-card-1">
             <div class="step-order-badge">IF THEY DO THIS [ACTION]</div>
             <div class="step-title" id="s1-title">Deploy 4,200 Solar Care Hubs</div>
             <div class="step-desc" id="s1-desc">
@@ -774,9 +1051,9 @@ input[type="range"] {
         </div>
 
         <!-- Step 2: 1st Order Effect -->
-        <div class="ripple-step">
-          <div class="step-node">2</div>
-          <div class="step-card">
+        <div class="ripple-step" id="step-col-2">
+          <div class="step-node" id="step-node-2">2</div>
+          <div class="step-card" id="step-card-2">
             <div class="step-order-badge">THEN THIS HAPPENS [1ST ORDER]</div>
             <div class="step-title" id="s2-title">Direct Time Poverty Relief</div>
             <div class="step-desc" id="s2-desc">
@@ -788,9 +1065,9 @@ input[type="range"] {
         </div>
 
         <!-- Step 3: 2nd Order Effect -->
-        <div class="ripple-step">
-          <div class="step-node">3</div>
-          <div class="step-card">
+        <div class="ripple-step" id="step-col-3">
+          <div class="step-node" id="step-node-3">3</div>
+          <div class="step-card" id="step-card-3">
             <div class="step-order-badge">THEN THIS FOLLOWS [2ND ORDER]</div>
             <div class="step-title" id="s3-title">Labor Elasticity Activates</div>
             <div class="step-desc" id="s3-desc">
@@ -802,9 +1079,9 @@ input[type="range"] {
         </div>
 
         <!-- Step 4: 3rd Order Result -->
-        <div class="ripple-step">
-          <div class="step-node">4</div>
-          <div class="step-card">
+        <div class="ripple-step" id="step-col-4">
+          <div class="step-node" id="step-node-4">4</div>
+          <div class="step-card" id="step-card-4">
             <div class="step-order-badge">MULTIPLE RESULTS [3RD ORDER]</div>
             <div class="step-title" id="s4-title">Macroeconomic & Political Outcome</div>
             <div class="step-desc" id="s4-desc">
@@ -939,30 +1216,33 @@ input[type="range"] {
 
           <div class="lever-item">
             <div class="lever-label-row">
-              <span>4. Male Household Agriculture Incentive (%)</span>
-              <span class="lever-val-display" id="val-incentive">80% Tractor/Fertilizer Vouchers</span>
+              <span>4. Targeted Care Worker Cash Subsidies (%)</span>
+              <span class="lever-val-display" id="val-incentive">50% Subsidies</span>
             </div>
-            <input type="range" id="input-incentive" min="0" max="100" value="80" oninput="recalculateModel()"/>
+            <input type="range" id="input-incentive" min="0" max="100" value="50" oninput="recalculateModel()"/>
           </div>
         </div>
       </div>
 
-      <div class="calc-results-panel">
-        <div class="metric-highlight-grid">
+      <div class="calculator-panel">
+        <h3 style="font-family: var(--font-serif); font-size: 1.2rem; color: #fff; margin-bottom: 6px;">Simulated Macro Dividends</h3>
+        <p style="font-size: 0.8rem; color: var(--text-muted);">Live econometric projections from Dr. Fareeha's LFS elasticity equation:</p>
+
+        <div class="output-metrics-grid">
           <div class="metric-box">
-            <div class="metric-box-label">WOMEN FREED FROM WATER DRUDGERY</div>
-            <div class="metric-box-num" id="out-women">2,140,000</div>
-            <div class="metric-box-sub">Direct Care Beneficiaries</div>
+            <div class="metric-box-label">EST. WOMEN UNBURDENED</div>
+            <div class="metric-box-num" id="out-women" style="color: var(--emerald);">2,140,165</div>
+            <div class="metric-box-sub">Direct access to care + water</div>
           </div>
           <div class="metric-box">
-            <div class="metric-box-label">DAILY TIME FREED PER HOUSEHOLD</div>
-            <div class="metric-box-num" id="out-hours" style="color: var(--gold);">3.2 Hours</div>
-            <div class="metric-box-sub">Redirected into Income & Learning</div>
+            <div class="metric-box-label">TIME FREED PER MOTHER</div>
+            <div class="metric-box-num" id="out-hours" style="color: var(--cyan);">3.2 Hours</div>
+            <div class="metric-box-sub">Daily unpaid reduction</div>
           </div>
           <div class="metric-box">
-            <div class="metric-box-label">PROJECTED 3-YR GDP EXPANSION</div>
-            <div class="metric-box-num" id="out-gdp">+PKR 3.02T</div>
-            <div class="metric-box-sub">National Economic Dividend</div>
+            <div class="metric-box-label">EST. 3-YR GDP GAIN</div>
+            <div class="metric-box-num" id="out-gdp" style="color: var(--gold);">+PKR 3.01T</div>
+            <div class="metric-box-sub">Formal market multiplier</div>
           </div>
           <div class="metric-box">
             <div class="metric-box-label">IMF DEFICIT RISK STATUS</div>
@@ -992,28 +1272,142 @@ input[type="range"] {
 
 <script>
 /* =========================================================================
-   2-MINUTE MASTER CINEMATIC VIDEO CONTROLLER
+   WEB AUDIO API: SYNTHESIZED TYPEWRITER CLICK SFX
+========================================================================= */
+let audioCtx = null;
+let soundEnabled = true;
+
+function toggleTypewriterSound() {
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById('btn-sfx-toggle');
+  btn.textContent = soundEnabled ? '🔊 KEY SFX: ON' : '🔇 KEY SFX: OFF';
+  btn.style.color = soundEnabled ? 'var(--gold)' : 'var(--text-muted)';
+}
+
+function playKeyClick() {
+  if (!soundEnabled) return;
+  try {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    // Frequency between 450Hz and 750Hz with natural micro-variations
+    osc.frequency.setValueAtTime(500 + Math.random() * 250, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.012, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.03);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.035);
+  } catch (e) {}
+}
+
+/* =========================================================================
+   TYPEWRITER CORE ENGINE
+========================================================================= */
+let typewriterSpeedMode = 'fast'; // 'fast', 'normal', 'instant'
+const activeTimeouts = {};
+
+function toggleTypewriterSpeed() {
+  const btn = document.getElementById('tw-speed-toggle');
+  if (typewriterSpeedMode === 'fast') {
+    typewriterSpeedMode = 'instant';
+    btn.textContent = '⚡ SPEED: INSTANT';
+    btn.style.color = 'var(--emerald)';
+  } else if (typewriterSpeedMode === 'instant') {
+    typewriterSpeedMode = 'normal';
+    btn.textContent = '⚡ SPEED: NORMAL';
+    btn.style.color = 'var(--gold)';
+  } else {
+    typewriterSpeedMode = 'fast';
+    btn.textContent = '⚡ SPEED: FAST';
+    btn.style.color = 'var(--cyan)';
+  }
+}
+
+function getCharDelay() {
+  if (typewriterSpeedMode === 'instant') return 0;
+  if (typewriterSpeedMode === 'fast') return 12; // ~12ms per char
+  return 28; // normal: ~28ms per char
+}
+
+/**
+ * Types text into a DOM element character-by-character.
+ * Cleans up any existing interval on that element.
+ */
+function typeIntoElement(elementId, text, onComplete = null) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+
+  if (activeTimeouts[elementId]) {
+    clearTimeout(activeTimeouts[elementId]);
+    delete activeTimeouts[elementId];
+  }
+
+  const delay = getCharDelay();
+  if (delay === 0) {
+    el.textContent = text;
+    if (onComplete) onComplete();
+    return;
+  }
+
+  el.textContent = '';
+  let i = 0;
+
+  function step() {
+    if (i < text.length) {
+      el.textContent += text.charAt(i);
+      if (i % 2 === 0) playKeyClick();
+      i++;
+      activeTimeouts[elementId] = setTimeout(step, delay);
+    } else {
+      delete activeTimeouts[elementId];
+      if (onComplete) onComplete();
+    }
+  }
+
+  step();
+}
+
+/* =========================================================================
+   2-MINUTE MASTER CINEMATIC VIDEO CONTROLLER & TELEMETRY SYNC
 ========================================================================= */
 const video = document.getElementById('master-video');
 const playBtn = document.getElementById('btn-play-pause');
 const timeDisplay = document.getElementById('vc-time-display');
 const scrubberFill = document.getElementById('scrubber-fill');
 const sceneBadge = document.getElementById('scene-title-badge');
+const hudStatusBadge = document.getElementById('hud-status-badge');
 
 const SCENE_SCHEDULE = [
-  { t: 0, label: 'ACT I : CONSTITUTION AVE GATE 01' },
-  { t: 12, label: 'ACT I : PRIME MINISTER HOUSE CITADEL' },
-  { t: 24, label: 'ACT I : FEDERAL CABINET HALL' },
-  { t: 34, label: 'ACT II : GUY 1 (PM SHEHBAZ SHARIF)' },
-  { t: 42, label: 'ACT II : GUY 2 (FINANCE MIN AURANGZEB)' },
-  { t: 50, label: 'ACT II : GUY 3 (DR. FAREEHA ARMUGHAN)' },
-  { t: 58, label: 'ACT II : GUY 4 (BAKHTAWAR BIBI)' },
-  { t: 66, label: 'ACT II : GUY 5 (CHIEF ADVISOR / YOU)' },
-  { t: 74, label: 'ACT III : PATHWAY 1 (PKR 142B ROSHNI HUBS)' },
-  { t: 86, label: 'ACT III : PATHWAY 2 (60/40 COMPACT)' },
-  { t: 98, label: 'ACT III : PATHWAY 3 (AUSTERITY HANDOUTS)' },
-  { t: 108, label: 'ACT IV : THE MIDNIGHT EXECUTIVE SIGNATURE' }
+  { t: 0, label: 'ACT I : CONSTITUTION AVE GATE 01', badge: 'PERIMETER SCAN', text: 'Advisor approaches Constitution Ave Gate 01 at night. High security clearance scanning biometric credential...' },
+  { t: 12, label: 'ACT I : PRIME MINISTER CITADEL', badge: 'CITADEL RED-ALERT', text: 'PM Secretariat illuminated under floodlights. Emergency midnight session convened under Red Alert protocol.' },
+  { t: 24, label: 'ACT I : FEDERAL CABINET HALL', badge: 'INNER SANCTUM', text: 'Double mahogany doors part into the tense Federal Cabinet War Room under crystal chandeliers.' },
+  { t: 34, label: 'ACT II : GUY 1 (PM SHEHBAZ SHARIF)', badge: 'EXECUTIVE DECIDER', text: 'PM Shehbaz Sharif: "Advisor, 38% food inflation is tearing us apart. Show me tangible economic relief before elections."' },
+  { t: 42, label: 'ACT II : GUY 2 (FINMIN AURANGZEB)', badge: 'FISCAL GUARDIAN', text: 'FinMin Aurangzeb: "Deficit ceiling 0.4% GDP is non-negotiable. Breach it, and the IMF freezes credit. Unbudgeted care is dead on arrival."' },
+  { t: 50, label: 'ACT II : GUY 3 (DR. FAREEHA ARMUGHAN)', badge: 'CHIEF ECONOMETRICIAN', text: 'Dr. Fareeha Armughan: "8.94M mothers endure 8.2 hours daily drudgery. Elasticity ε = -0.35 proves care investment pays for itself in 26mo."' },
+  { t: 58, label: 'ACT II : GUY 4 (BAKHTAWAR BIBI)', badge: 'RURAL SPOKESPERSON', text: 'Bakhtawar Bibi: "Every dawn we carry 25kg water pots for 4 kilometers. Free our daughters so they can attend school."' },
+  { t: 66, label: 'ACT II : GUY 5 (CHIEF ADVISOR / YOU)', badge: 'THE AUDIENCE (YOU)', text: 'Chief Advisor (You): "Opening the Sovereign Decision Matrix. Presenting the 4 competing pathways and empirical trade-offs."' },
+  { t: 74, label: 'ACT III : PATHWAY 1 (PKR 142B ROSHNI HUBS)', badge: 'MATRIX PATHWAY 1', text: 'Pathway 1: Deploy 4,200 Roshni Hubs (PKR 142B) ➔ 2.14M women freed ➔ +PKR 3.02T GDP gain, self-funding in 26mo.' },
+  { t: 86, label: 'ACT III : PATHWAY 2 (60/40 COMPACT)', badge: 'MATRIX PATHWAY 2', text: 'Pathway 2: 60/40 Phased Provincial Pilot (PKR 28B) ➔ 100% IMF compliant, but 4.1M women excluded for 4 years.' },
+  { t: 98, label: 'ACT III : PATHWAY 3 (AUSTERITY HANDOUTS)', badge: 'MATRIX PATHWAY 3', text: 'Pathway 3: Austerity cash handouts (PKR 30B) ➔ 35% inflation swallows cash within 75 days; 0 hours saved.' },
+  { t: 108, label: 'ACT IV : THE MIDNIGHT EXECUTIVE SIGNATURE', badge: 'SOVEREIGN DECREE', text: 'The Prime Minister fountain pen hovers over the sovereign executive order. Pakistan economic trajectory locked.' }
 ];
+
+let lastSceneIndex = -1;
+
+function updateTelemetryTypewriter(sceneIdx) {
+  if (sceneIdx === lastSceneIndex) return;
+  lastSceneIndex = sceneIdx;
+  const sc = SCENE_SCHEDULE[sceneIdx];
+  hudStatusBadge.textContent = sc.badge;
+  typeIntoElement('hud-typewriter-text', sc.text);
+}
 
 function togglePlayPause() {
   if (video.paused) {
@@ -1067,10 +1461,11 @@ video.addEventListener('timeupdate', () => {
   timeDisplay.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs} / ${tMins}:${tSecs < 10 ? '0' : ''}${tSecs}`;
   scrubberFill.style.width = (cur / total * 100) + '%';
 
-  // Update scene badge
+  // Update scene badge & trigger typewriter telemetry
   for (let i = SCENE_SCHEDULE.length - 1; i >= 0; i--) {
     if (cur >= SCENE_SCHEDULE[i].t) {
       sceneBadge.textContent = SCENE_SCHEDULE[i].label;
+      updateTelemetryTypewriter(i);
       break;
     }
   }
@@ -1204,34 +1599,88 @@ const PATHWAYS = [
 
 let activePathwayIdx = 0;
 
+/* =========================================================================
+   CASCADING TYPEWRITER ENGINE FOR PATHWAY RIPPLE EFFECT
+========================================================================= */
 function selectPathway(idx) {
   activePathwayIdx = idx;
   for (let i = 0; i < 4; i++) {
     document.getElementById(`pw-card-${i}`).classList.toggle('active', i === idx);
   }
+  executeCascadingTypewriter(idx);
+}
+
+function rerunCascadeTypewriter() {
+  executeCascadingTypewriter(activePathwayIdx);
+}
+
+function executeCascadingTypewriter(idx) {
   const p = PATHWAYS[idx];
+
+  // Update headers immediately
   document.getElementById('cas-tag').textContent = p.tag;
-  document.getElementById('cas-title').textContent = p.title;
+  typeIntoElement('cas-title', p.title);
 
-  document.getElementById('s1-title').textContent = p.s1.title;
-  document.getElementById('s1-desc').textContent = p.s1.desc;
-  document.getElementById('s1-stat').textContent = p.s1.stat;
+  // Update images and stats immediately
   document.getElementById('s1-img').src = p.s1.img;
-
-  document.getElementById('s2-title').textContent = p.s2.title;
-  document.getElementById('s2-desc').textContent = p.s2.desc;
-  document.getElementById('s2-stat').textContent = p.s2.stat;
   document.getElementById('s2-img').src = p.s2.img;
-
-  document.getElementById('s3-title').textContent = p.s3.title;
-  document.getElementById('s3-desc').textContent = p.s3.desc;
-  document.getElementById('s3-stat').textContent = p.s3.stat;
   document.getElementById('s3-img').src = p.s3.img;
-
-  document.getElementById('s4-title').textContent = p.s4.title;
-  document.getElementById('s4-desc').textContent = p.s4.desc;
-  document.getElementById('s4-stat').textContent = p.s4.stat;
   document.getElementById('s4-img').src = p.s4.img;
+
+  document.getElementById('s1-stat').textContent = p.s1.stat;
+  document.getElementById('s2-stat').textContent = p.s2.stat;
+  document.getElementById('s3-stat').textContent = p.s3.stat;
+  document.getElementById('s4-stat').textContent = p.s4.stat;
+
+  // Highlight Step 1 and type out sequentially
+  highlightStepNode(1);
+  typeIntoElement('s1-title', p.s1.title, () => {
+    typeIntoElement('s1-desc', p.s1.desc, () => {
+      // Step 1 complete -> Start Step 2
+      highlightStepNode(2);
+      typeIntoElement('s2-title', p.s2.title, () => {
+        typeIntoElement('s2-desc', p.s2.desc, () => {
+          // Step 2 complete -> Start Step 3
+          highlightStepNode(3);
+          typeIntoElement('s3-title', p.s3.title, () => {
+            typeIntoElement('s3-desc', p.s3.desc, () => {
+              // Step 3 complete -> Start Step 4
+              highlightStepNode(4);
+              typeIntoElement('s4-title', p.s4.title, () => {
+                typeIntoElement('s4-desc', p.s4.desc, () => {
+                  clearStepHighlight();
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+}
+
+function highlightStepNode(stepNum) {
+  for (let s = 1; s <= 4; s++) {
+    const card = document.getElementById(`step-card-${s}`);
+    const node = document.getElementById(`step-node-${s}`);
+    if (s === stepNum) {
+      card.classList.add('tw-typing-active');
+      node.style.transform = 'scale(1.2)';
+      node.style.boxShadow = '0 0 25px var(--emerald)';
+    } else {
+      card.classList.remove('tw-typing-active');
+      node.style.transform = 'scale(1)';
+    }
+  }
+}
+
+function clearStepHighlight() {
+  for (let s = 1; s <= 4; s++) {
+    const card = document.getElementById(`step-card-${s}`);
+    const node = document.getElementById(`step-node-${s}`);
+    card.classList.remove('tw-typing-active');
+    node.style.transform = 'scale(1)';
+  }
 }
 
 function switchTab(tabId) {
@@ -1284,84 +1733,107 @@ function recalculateModel() {
     imfEl.style.color = 'var(--emerald)';
   }
 
-  updateRadarData(budget, rural, matching, incentive);
+  updateRadarChart(budget, rural, matching, incentive);
 }
 
 function initRadarChart() {
   const dom = document.getElementById('chart-lever-radar');
   if (!dom) return;
-  if (!radarChart) radarChart = echarts.init(dom);
+  if (radarChart) {
+    radarChart.resize();
+    return;
+  }
+  radarChart = echarts.init(dom, 'dark');
   recalculateModel();
 }
 
-function updateRadarData(budget, rural, matching, incentive) {
+function updateRadarChart(budget, rural, matching, incentive) {
   if (!radarChart) return;
-  const ecoScore = Math.min(100, Math.round((budget / 250) * 85 + 15));
-  const timeScore = Math.min(100, Math.round((rural / 100) * 60 + (budget / 250) * 40));
-  const fiscalScore = Math.min(100, Math.round(100 - (budget / 250) * 50 + (matching / 60) * 35));
-  const socialScore = Math.min(100, Math.round((incentive / 100) * 50 + (rural / 100) * 50));
-  const equityScore = Math.min(100, Math.round((rural / 100) * 70 + (matching / 60) * 30));
 
   const option = {
+    backgroundColor: 'transparent',
+    tooltip: { trigger: 'item' },
     radar: {
+      shape: 'polygon',
       indicator: [
         { name: 'GDP Multiplier', max: 100 },
-        { name: 'Time Poverty Relief', max: 100 },
-        { name: 'Fiscal Sustainability', max: 100 },
-        { name: 'Social Cohesion', max: 100 },
-        { name: 'Rural Gender Equity', max: 100 }
+        { name: 'FLFP Expansion', max: 100 },
+        { name: 'IMF Deficit Safety', max: 100 },
+        { name: 'Rural Inclusion', max: 100 },
+        { name: 'Provincial Harmony', max: 100 }
       ],
-      axisName: { color: '#94a3b8', fontFamily: 'JetBrains Mono', fontSize: 10 },
-      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
-      splitArea: { show: false }
+      axisName: {
+        color: '#94a3b8',
+        fontFamily: 'JetBrains Mono',
+        fontSize: 10
+      },
+      splitLine: { lineStyle: { color: 'rgba(255,255,255,0.08)' } },
+      splitArea: { show: false },
+      axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } }
     },
     series: [{
+      name: 'Scenario Comparison',
       type: 'radar',
-      data: [{
-        value: [ecoScore, timeScore, fiscalScore, socialScore, equityScore],
-        name: 'Simulated National Outcome',
-        itemStyle: { color: '#10b981' },
-        areaStyle: { color: 'rgba(16, 185, 129, 0.3)' }
-      }]
+      data: [
+        {
+          value: [
+            Math.min(100, Math.round((budget / 250) * 100)),
+            Math.min(100, Math.round((budget / 250) * 85 + (incentive / 100) * 15)),
+            Math.max(10, Math.round(100 - (budget / 250) * 80 + (matching / 60) * 35)),
+            Math.round(rural),
+            Math.round(matching * 1.6)
+          ],
+          name: 'Your Policy Lever Settings',
+          itemStyle: { color: '#10b981' },
+          areaStyle: { color: 'rgba(16, 185, 129, 0.35)' }
+        },
+        {
+          value: [85, 90, 65, 80, 75],
+          name: 'Harvard Optimal Target',
+          itemStyle: { color: '#f59e0b' },
+          areaStyle: { color: 'rgba(245, 158, 11, 0.15)' }
+        }
+      ]
     }]
   };
   radarChart.setOption(option);
 }
 
 /* =========================================================================
-   19 REAL-LIFE DOCUMENTARY PHOTOGRAPHS
+   19 REAL-LIFE PHOTOGRAPHS GALLERY
 ========================================================================= */
-const REAL_PHOTOS = [
-  { file: 'assets/images/pakistan_women_water.jpg', tag: 'HUMAN BURDEN', title: 'The 4km Dawn Walk', desc: 'Rural Pakistani women in Sindh/Punjab carrying 25L metal water vessels across arid terrain.' },
-  { file: 'assets/images/imf_negotiation_meeting.jpg', tag: 'FISCAL ULTIMATUM', title: 'IMF Delegation vs Treasury', desc: 'High-stakes negotiations in Islamabad over the 0.4% deficit ceiling constraint.' },
-  { file: 'assets/images/provincial_cci_meeting.jpg', tag: 'CONSTITUTIONAL WAR', title: 'Council of Common Interests', desc: 'Prime Minister Shehbaz Sharif and four Provincial Chief Ministers debating 18th Amendment.' },
-  { file: 'assets/images/bisp_rural_daycare_hub.jpg', tag: 'TRANSFORMATION', title: 'Solar Daycare & Water Center', desc: 'Rural Pakistani mothers and children inside a newly constructed community care hub.' },
-  { file: 'assets/images/feudal_cleric_dialogue.jpg', tag: 'CULTURAL DIALOGUE', title: 'Village Elders Council (Jirga)', desc: 'Community leaders and religious scholars under a banyan tree negotiating care reforms.' },
-  { file: 'assets/images/lady_health_workers_assembly.jpg', tag: 'FRONT-LINE CARE', title: 'Lady Health Workers Assembly', desc: '120,000 LHWs assemble peacefully outside Parliament demanding civil servant status.' },
-  { file: 'assets/images/bisp_biometric_queue.jpg', tag: 'SOCIAL PROTECTION', title: 'Biometric Verification Queue', desc: 'Rural women with CNIC cards waiting at a digital social welfare disbursement center.' },
-  { file: 'assets/images/pm_signing_order.jpg', tag: 'THE SIGNATURE', title: 'Executive Order Enactment', desc: 'Prime Minister Shehbaz Sharif signing the historic National Care Economy Directive.' },
-  { file: 'assets/images/dr_fareeha_portrait.jpg', tag: 'THE SCIENTIST', title: 'Dr. Fareeha Armughan (Harvard PhD)', desc: 'Lead Care Econometrician providing empirical proof of labor elasticity (ε = -0.35).' },
-  { file: 'assets/images/bakhtawar_portrait.jpg', tag: 'THE GRASSROOTS', title: 'Bakhtawar Bibi', desc: 'Spokesperson for 8.94 million unpaid care workers from rural Sindh.' },
-  { file: 'assets/images/pm_shehbaz_portrait.jpg', tag: 'THE DECIDER', title: 'Prime Minister Shehbaz Sharif', desc: 'Head of Government balancing coalition survival against generational transformation.' },
-  { file: 'assets/images/finance_minister_portrait.jpg', tag: 'FISCAL HAWK', title: 'Muhammad Aurangzeb', desc: 'Federal Finance Minister guarding the strict IMF Extended Fund Facility agreement.' },
-  { file: 'assets/images/advisor_player_portrait.jpg', tag: 'THE STRATEGIST', title: 'Chief Economic Advisor (You)', desc: 'The decisive voice delivering macro synthesis and strategic counsel.' },
-  { file: 'assets/images/economic_war_room.jpg', tag: 'COMMAND CENTER', title: 'Economic War Room', desc: 'Late-night state telemetry room where emergency policy scenarios are resolved.' },
-  { file: 'assets/images/pm_cabinet_room.jpg', tag: 'THE INNER SANCTUM', title: 'Federal Cabinet Chamber', desc: 'Crystal chandeliers and mahogany conference table where ministers deliberate.' },
-  { file: 'assets/images/pm_gate_advisor_entry.jpg', tag: 'ARRIVAL', title: 'Constitution Avenue Gate 01', desc: 'Midnight arrival of the economic advisor under monsoon rains.' },
-  { file: 'assets/images/pm_house_exterior.jpg', tag: 'THE SEAT OF POWER', title: 'Prime Minister House', desc: 'Neoclassical facade under sweeping security floodlights at midnight.' },
-  { file: 'assets/images/rural_care_hub.jpg', tag: 'INFRASTRUCTURE', title: 'Solar Powered Filtration Unit', desc: 'Village clean drinking water station eliminating waterborne diseases.' },
-  { file: 'assets/images/women_empowerment.jpg', tag: 'THE DIVIDEND', title: 'Women in Formal Workforce', desc: 'Pakistani women earning independent wages in micro-enterprises and light manufacturing.' }
+const PHOTOS = [
+  { img: 'assets/images/pm_gate_advisor_entry.jpg', tag: 'Midnight Arrival', title: 'Advisor Enters PM Secretariat Gate', desc: 'Constitution Avenue checkpoint in Islamabad as emergency session is called.' },
+  { img: 'assets/images/pm_house_exterior.jpg', tag: 'The Executive Citadel', title: 'Prime Minister House Exterior', desc: 'The seat of federal sovereign power floodlit against the Margalla Hills.' },
+  { img: 'assets/images/pm_cabinet_room.jpg', tag: 'The Inner Sanctum', title: 'Federal Cabinet Meeting Hall', desc: 'Mahogany briefing table and national flags under cold crystal chandeliers.' },
+  { img: 'assets/images/pm_shehbaz_portrait.jpg', tag: 'Executive Decider', title: 'Prime Minister Shehbaz Sharif', desc: 'Balancing 18-month electoral survival against systemic labor transformation.' },
+  { img: 'assets/images/finance_minister_portrait.jpg', tag: 'Treasury Command', title: 'FinMin Muhammad Aurangzeb', desc: 'Enforcing the strict 0.4% GDP fiscal deficit cap mandated by the IMF.' },
+  { img: 'assets/images/dr_fareeha_portrait.jpg', tag: 'Chief Econometrician', title: 'Dr. Fareeha Armughan', desc: 'Lead economist proving the -0.35 labor elasticity coefficient from LFS data.' },
+  { img: 'assets/images/bakhtawar_portrait.jpg', tag: 'Rural Spokesperson', title: 'Bakhtawar Bibi (Sindh)', desc: 'Mother walking 4km daily carrying 25kg water, advocating for community daycare.' },
+  { img: 'assets/images/advisor_player_portrait.jpg', tag: 'The Player (You)', title: 'Chief Economic Advisor', desc: 'The confidential advisor called to deliver the sovereign strategic recommendation.' },
+  { img: 'assets/images/pakistan_women_water.jpg', tag: 'Time Poverty Ground Truth', title: 'The 4-Kilometer Water Slog', desc: 'Rural women hauling 25kg clay pots across arid Thar, losing 4 productive hours daily.' },
+  { img: 'assets/images/bisp_rural_daycare_hub.jpg', tag: 'Physical Solution', title: 'Roshni Community Solar Hub', desc: 'Combined solar water filtration pump and integrated early childhood daycare center.' },
+  { img: 'assets/images/provincial_cci_meeting.jpg', tag: 'Federal Friction', title: 'Council of Common Interests', desc: 'Federal ministers negotiating 60/40 matching grants with provincial chief ministers.' },
+  { img: 'assets/images/imf_negotiation_meeting.jpg', tag: 'Multilateral Leverage', title: 'IMF Mission Negotiations', desc: 'Securing the $1.2B tranche while negotiating care infrastructure fiscal carve-outs.' },
+  { img: 'assets/images/feudal_cleric_dialogue.jpg', tag: 'Socio-Cultural Consensus', title: 'Jirga & Religious Engagement', desc: 'Securing clerical endorsement for female employment centers on cultural grounds.' },
+  { img: 'assets/images/lady_health_workers_assembly.jpg', tag: 'Frontline Cadre', title: 'Lady Health Workers Assembly', desc: '26,000 community health workers mobilizing village mothers for nutrition and childcare.' },
+  { img: 'assets/images/bisp_biometric_queue.jpg', tag: 'Austerity Limit', title: 'Biometric Cash Handout Queue', desc: 'Women waiting hours for cash handouts that are rapidly erased by 35% inflation.' },
+  { img: 'assets/images/economic_war_room.jpg', tag: 'Econometric Modeling', title: 'Planning Commission War Room', desc: 'Economists tracking real-time labor market indicators and provincial fiscal flows.' },
+  { img: 'assets/images/women_empowerment.jpg', tag: 'Labor Dividend', title: 'Formal Manufacturing Workforce', desc: 'Women stepping into export garments and agro-processing once freed from water burdens.' },
+  { img: 'assets/images/rural_care_hub.jpg', tag: 'Community Village Center', title: 'Rural Micro-Care Facility', desc: 'Grassroots village crèche enabling mothers to work while infants receive care.' },
+  { img: 'assets/images/pm_signing_order.jpg', tag: 'Sovereign Ratification', title: 'Executive Order Promulgation', desc: 'The Prime Minister fountain pen signing the National Care Economy Framework.' }
 ];
 
 function populateGallery() {
   const container = document.getElementById('photo-gallery-grid');
+  if (!container) return;
   let html = '';
-  REAL_PHOTOS.forEach(p => {
+  PHOTOS.forEach(p => {
     html += `
       <div class="gallery-card">
-        <img class="gallery-img" src="${p.file}" alt="${p.title}" loading="lazy"/>
-        <div class="gallery-caption-box">
-          <div class="gallery-tag">${p.tag}</div>
+        <img class="gallery-img" src="${p.img}" alt="${p.title}" loading="lazy"/>
+        <div class="gallery-content">
+          <span class="gallery-tag">${p.tag}</span>
           <div class="gallery-title">${p.title}</div>
           <div class="gallery-desc">${p.desc}</div>
         </div>
@@ -1371,7 +1843,12 @@ function populateGallery() {
   container.innerHTML = html;
 }
 
+// Initializations
 populateGallery();
+// Run initial typewriter cascade on load
+window.addEventListener('DOMContentLoaded', () => {
+  executeCascadingTypewriter(0);
+});
 </script>
 </body>
 </html>
