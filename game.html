@@ -667,6 +667,7 @@ canvas {
   </div>
   <div class="hud-right">
     <div class="hud-time" id="hud-clock">23:45 PKT</div>
+    <a href="sim.html" class="hud-btn" style="text-decoration:none; color:#fbbf24; border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.15);">📊 HARVARD MATRIX &amp; VIDEOS</a>
     <button class="hud-btn" onclick="toggleAutoWalk()" id="btn-autowalk">🚶 AUTO-WALK: ON</button>
     <button class="hud-btn" onclick="toggleAudio()" id="btn-sound">🔊 SOUND: ON</button>
     <button class="hud-btn" onclick="restartSimulation()">↺ RESTART</button>
@@ -766,7 +767,7 @@ resizeCanvas();
    ASSET PRELOADING
 ========================================================================= */
 const ASSET_PATHS = {
-  gate: 'assets/images/pm_gate_advisor_entry.jpg',
+  gate: 'assets/images/pm_gate_clean_night.jpg',
   pmH: 'assets/images/pm_house_exterior.jpg',
   cab: 'assets/images/pm_cabinet_room.jpg',
   pm: 'assets/images/pm_shehbaz_portrait.jpg',
@@ -786,6 +787,16 @@ Object.entries(ASSET_PATHS).forEach(([key, src]) => {
   img.src = src;
   images[key] = img;
 });
+
+// Preload 7 Aligned Walking Sprites
+const walkSprites = [];
+let walkSpritesLoaded = 0;
+for (let i = 0; i < 7; i++) {
+  const img = new Image();
+  img.onload = () => { walkSpritesLoaded++; };
+  img.src = `assets/sprites/walk_aligned/walk_${i}.png`;
+  walkSprites.push(img);
+}
 
 /* =========================================================================
    WEB AUDIO SYNTHESIZER (CINEMATIC SFX & AMBIENCE)
@@ -964,99 +975,87 @@ function drawPlayer(c, time) {
   if (!player.facingRight) c.scale(-1, 1);
   c.rotate(lean * Math.PI / 180);
 
-  // Soft Ground Shadow & Wet Puddle Reflection
-  c.fillStyle = 'rgba(0, 0, 0, 0.45)';
-  c.beginPath();
-  c.ellipse(0, 52, 22, 6, 0, 0, Math.PI * 2);
-  c.fill();
+  if (walkSpritesLoaded >= 7) {
+    const spriteIdx = player.isWalking 
+      ? Math.floor(((((wp % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) / (Math.PI * 2)) * walkSprites.length) % walkSprites.length 
+      : 0;
+    const sp = walkSprites[Math.abs(spriteIdx)];
+    const spW = 96;
+    const spH = (spW * sp.height) / sp.width;
 
-  // Wet pavement mirror reflection
-  c.save();
-  c.scale(1, -0.3);
-  c.translate(0, -180);
-  c.globalAlpha = 0.18;
-  c.fillStyle = '#0f172a';
-  c.fillRect(-14, -20, 28, 55);
-  c.restore();
+    // Soft Ground Shadow
+    c.fillStyle = 'rgba(0, 0, 0, 0.48)';
+    c.beginPath();
+    c.ellipse(0, spH / 2 - 6, spW * 0.38, 8, 0, 0, Math.PI * 2);
+    c.fill();
 
-  // Tailored Overcoat / Trench coat
-  c.fillStyle = '#111827';
-  c.beginPath();
-  c.moveTo(-14, -24);
-  c.lineTo(14, -24);
-  c.lineTo(18, 28);
-  c.lineTo(-18, 28);
-  c.closePath();
-  c.fill();
+    // Inverted Puddle Reflection
+    c.save();
+    c.scale(1, -0.30);
+    c.translate(0, -spH / 2 + 12);
+    c.globalAlpha = 0.16;
+    c.drawImage(sp, -spW / 2, -spH / 2, spW, spH);
+    c.restore();
 
-  // Inner Suit & Silk Tie
-  c.fillStyle = '#0f172a';
-  c.fillRect(-8, -20, 16, 32);
-  c.fillStyle = '#10b981'; // Emerald policy tie
-  c.beginPath();
-  c.moveTo(0, -16);
-  c.lineTo(3, 4);
-  c.lineTo(0, 12);
-  c.lineTo(-3, 4);
-  c.closePath();
-  c.fill();
+    // Draw diplomat walking sprite
+    c.drawImage(sp, -spW / 2, -spH / 2, spW, spH);
+  } else {
+    // Soft Ground Shadow & Wet Puddle Reflection
+    c.fillStyle = 'rgba(0, 0, 0, 0.45)';
+    c.beginPath();
+    c.ellipse(0, 52, 22, 6, 0, 0, Math.PI * 2);
+    c.fill();
 
-  // Advisor Head & Hair
-  c.fillStyle = '#d4a373';
-  c.beginPath();
-  c.arc(0, -38, 13, 0, Math.PI * 2);
-  c.fill();
+    // Tailored Overcoat / Trench coat
+    c.fillStyle = '#111827';
+    c.beginPath();
+    c.moveTo(-14, -24);
+    c.lineTo(14, -24);
+    c.lineTo(18, 28);
+    c.lineTo(-18, 28);
+    c.closePath();
+    c.fill();
 
-  // Neat Professional Hair
-  c.fillStyle = '#1f2937';
-  c.beginPath();
-  c.arc(0, -42, 13, Math.PI, 0);
-  c.fill();
+    // Inner Suit & Silk Tie
+    c.fillStyle = '#0f172a';
+    c.fillRect(-8, -20, 16, 32);
+    c.fillStyle = '#10b981';
+    c.beginPath();
+    c.moveTo(0, -16);
+    c.lineTo(3, 4);
+    c.lineTo(0, 12);
+    c.lineTo(-3, 4);
+    c.closePath();
+    c.fill();
 
-  // Face Collar
-  c.fillStyle = '#f8fafc';
-  c.beginPath();
-  c.moveTo(-6, -24);
-  c.lineTo(0, -17);
-  c.lineTo(6, -24);
-  c.stroke();
+    // Head
+    c.fillStyle = '#d4a373';
+    c.beginPath();
+    c.arc(0, -38, 13, 0, Math.PI * 2);
+    c.fill();
 
-  // Left & Right Legs Animation
-  const legSwing = Math.sin(wp) * 0.45;
-  // Back leg
-  c.save();
-  c.translate(-4, 26);
-  c.rotate(-legSwing);
-  c.fillStyle = '#0b0f19';
-  c.fillRect(-3, 0, 7, 24);
-  // Shoe
-  c.fillStyle = '#030712';
-  c.fillRect(-2, 22, 12, 6);
-  c.restore();
+    // Hair
+    c.fillStyle = '#1f2937';
+    c.beginPath();
+    c.arc(0, -42, 13, Math.PI, 0);
+    c.fill();
 
-  // Front leg
-  c.save();
-  c.translate(4, 26);
-  c.rotate(legSwing);
-  c.fillStyle = '#111827';
-  c.fillRect(-3, 0, 7, 24);
-  // Shoe
-  c.fillStyle = '#030712';
-  c.fillRect(-2, 22, 12, 6);
-  c.restore();
+    // Legs
+    const legSwing = Math.sin(wp) * 0.45;
+    c.save();
+    c.translate(-4, 26);
+    c.rotate(-legSwing);
+    c.fillStyle = '#0b0f19';
+    c.fillRect(-3, 0, 7, 24);
+    c.restore();
 
-  // Arm & Leather Diplomatic Briefcase
-  const armSwing = Math.sin(wp) * 10;
-  c.fillStyle = '#1f2937';
-  c.fillRect(8, -12, 6, 20);
-
-  // Briefcase
-  c.fillStyle = '#451a03'; // Rich brown leather
-  c.fillRect(12, 6 + armSwing, 14, 12);
-  c.fillStyle = '#f59e0b'; // Brass lock
-  c.fillRect(17, 10 + armSwing, 4, 3);
-  c.strokeStyle = '#78350f';
-  c.strokeRect(12, 6 + armSwing, 14, 12);
+    c.save();
+    c.translate(4, 26);
+    c.rotate(legSwing);
+    c.fillStyle = '#111827';
+    c.fillRect(-3, 0, 7, 24);
+    c.restore();
+  }
 
   c.restore();
 }
