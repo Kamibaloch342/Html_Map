@@ -882,6 +882,127 @@ input[type="range"] {
   header { flex-direction: column; gap: 12px; }
   .hero-executive-brief { flex-direction: column; }
 }
+
+/* Video Edition Cut Switcher */
+.video-edition-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid var(--surface-border);
+  border-radius: 12px;
+  padding: 8px 16px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.edition-label-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.edition-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold);
+}
+.edition-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.edition-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--surface-border);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.edition-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+.edition-btn.active {
+  background: var(--crimson-hks);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  box-shadow: 0 0 15px var(--crimson-glow);
+}
+
+/* Modular 5-Second Shot Drawer */
+.modular-segments-drawer {
+  background: #060913;
+  border-top: 1px solid var(--surface-border);
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.segments-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.drawer-title {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+}
+.drawer-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+.segments-chips-scroll {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.seg-chip {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid var(--surface-border);
+  color: #cbd5e1;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.seg-chip:hover {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--emerald);
+  color: #fff;
+}
+.seg-chip.active {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: var(--emerald);
+  color: var(--emerald);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
 </style>
 </head>
 <body>
@@ -926,6 +1047,23 @@ input[type="range"] {
         <div class="stat-chip-num">&epsilon; = -0.35</div>
         <div class="stat-chip-lbl">Labor Elasticity</div>
       </div>
+    </div>
+  </div>
+
+
+  <!-- Video Edition Cut Switcher -->
+  <div class="video-edition-bar">
+    <div class="edition-label-group">
+      <span class="edition-dot"></span>
+      <span>SELECT CINEMATIC CUT:</span>
+    </div>
+    <div class="edition-btn-group">
+      <button class="edition-btn active" id="btn-cut-2min" onclick="switchVideoEdition('2min')">
+        🎞 2-MINUTE EXTENDED CUT (120s)
+      </button>
+      <button class="edition-btn" id="btn-cut-10seg" onclick="switchVideoEdition('10seg')">
+        🎬 10 COMBINED 5-SEC SHOTS (50s)
+      </button>
     </div>
   </div>
 
@@ -988,6 +1126,26 @@ input[type="range"] {
       <div class="jump-chip" onclick="jumpToTime(86)" style="border-color: var(--gold);">1:26 Pathway 2 (60/40)</div>
       <div class="jump-chip" onclick="jumpToTime(98)" style="border-color: var(--rose);">1:38 Pathway 3 (Austerity)</div>
       <div class="jump-chip" onclick="jumpToTime(108)" style="border-color: var(--emerald);">1:48 Midnight Decree</div>
+    </div>
+
+    <!-- Modular 5-Second Shot Drawer (10 Individual Clips) -->
+    <div class="modular-segments-drawer">
+      <div class="segments-drawer-header">
+        <span class="drawer-title">MODULAR 5-SECOND SHOT REEL (CLICK TO PLAY STANDALONE SHOT):</span>
+        <span class="drawer-subtitle">10 Independent Shots x 5.0 Seconds (Instant Play)</span>
+      </div>
+      <div class="segments-chips-scroll">
+        <button class="seg-chip" id="chip-seg_01_gate" onclick="playSegmentClip('seg_01_gate')">▶ Shot 01: Gate Entry (5s)</button>
+        <button class="seg-chip" id="chip-seg_02_citadel" onclick="playSegmentClip('seg_02_citadel')">▶ Shot 02: PM Citadel (5s)</button>
+        <button class="seg-chip" id="chip-seg_03_cabinet" onclick="playSegmentClip('seg_03_cabinet')">▶ Shot 03: Cabinet Room (5s)</button>
+        <button class="seg-chip" id="chip-seg_04_shehbaz" onclick="playSegmentClip('seg_04_shehbaz')">▶ Shot 04: PM Shehbaz (5s)</button>
+        <button class="seg-chip" id="chip-seg_05_aurangzeb" onclick="playSegmentClip('seg_05_aurangzeb')">▶ Shot 05: FinMin (5s)</button>
+        <button class="seg-chip" id="chip-seg_06_fareeha" onclick="playSegmentClip('seg_06_fareeha')">▶ Shot 06: Dr. Fareeha (5s)</button>
+        <button class="seg-chip" id="chip-seg_07_bakhtawar" onclick="playSegmentClip('seg_07_bakhtawar')">▶ Shot 07: Bakhtawar (5s)</button>
+        <button class="seg-chip" id="chip-seg_08_advisor" onclick="playSegmentClip('seg_08_advisor')">▶ Shot 08: Advisor (5s)</button>
+        <button class="seg-chip" id="chip-seg_09_matrix_cascade" onclick="playSegmentClip('seg_09_matrix_cascade')">▶ Shot 09: Matrix Cascade (5s)</button>
+        <button class="seg-chip" id="chip-seg_10_signature" onclick="playSegmentClip('seg_10_signature')">▶ Shot 10: Decree Signing (5s)</button>
+      </div>
     </div>
   </div>
 
@@ -1849,6 +2007,77 @@ populateGallery();
 window.addEventListener('DOMContentLoaded', () => {
   executeCascadingTypewriter(0);
 });
+
+/* =========================================================================
+   VIDEO EDITION & MODULAR 5-SECOND SEGMENT SWITCHER
+========================================================================= */
+const SEGMENT_METADATA = {
+  'seg_01_gate': { num: '01', title: 'Gate 01 Arrival', line: 'Surveillance feed verified. Midnight arrival at Constitution Avenue.' },
+  'seg_02_citadel': { num: '02', title: 'PM Citadel', line: 'Floodlights sweep neoclassical facade. Red Alert emergency protocol.' },
+  'seg_03_cabinet': { num: '03', title: 'Cabinet Chamber', line: 'Mahogany doors part under chandeliers. War room seated in silence.' },
+  'seg_04_shehbaz': { num: '04', title: 'PM Shehbaz Sharif', line: '"Advisor, I inherited 38% inflation. Show me visible economic relief."' },
+  'seg_05_aurangzeb': { num: '05', title: 'FinMin Aurangzeb', line: '"Breach our 0.4% deficit target, and the IMF freezes sovereign credit."' },
+  'seg_06_fareeha': { num: '06', title: 'Dr. Fareeha', line: '"8.94M women spend 8.2 hrs in unpaid care. Elasticity ε = -0.35 proves ROI."' },
+  'seg_07_bakhtawar': { num: '07', title: 'Bakhtawar Bibi', line: '"We walk 4km daily carrying 25kg water. Free our daughters for school."' },
+  'seg_08_advisor': { num: '08', title: 'Chief Advisor (You)', line: '"Opening the Decision Matrix. Presenting the 4 competing pathways."' },
+  'seg_09_matrix_cascade': { num: '09', title: 'Matrix Cascade', line: '4,200 Roshni Hubs ➔ 2.14M women freed ➔ +PKR 3.02T GDP growth in 36mo.' },
+  'seg_10_signature': { num: '10', title: 'Midnight Decree', line: 'The Prime Minister fountain pen signs the National Care Economy Framework.' }
+};
+
+let currentEdition = '2min';
+
+function switchVideoEdition(edition) {
+  currentEdition = edition;
+  const btn2min = document.getElementById('btn-cut-2min');
+  const btn10seg = document.getElementById('btn-cut-10seg');
+  
+  // Clear any active chips
+  document.querySelectorAll('.seg-chip').forEach(c => c.classList.remove('active'));
+  
+  if (edition === '2min') {
+    btn2min.classList.add('active');
+    btn10seg.classList.remove('active');
+    video.src = 'care_economy_cinematic_sim.mp4';
+    video.load();
+    video.play();
+    playBtn.textContent = '⏸ PAUSE SIMULATION';
+    hudStatusBadge.textContent = '2-MIN MASTER';
+    typeIntoElement('hud-typewriter-text', 'Loaded 2-Minute Extended Master Cut (120.0s). Full 12 scenes active.');
+  } else if (edition === '10seg') {
+    btn10seg.classList.add('active');
+    btn2min.classList.remove('active');
+    video.src = 'segments/master_combined_10seg.mp4';
+    video.load();
+    video.play();
+    playBtn.textContent = '⏸ PAUSE SIMULATION';
+    hudStatusBadge.textContent = '10-SHOT REEL';
+    typeIntoElement('hud-typewriter-text', 'Loaded 10 Combined 5-Second Shots (50.0s total). Seamless multi-shot cut.');
+  }
+}
+
+function playSegmentClip(segId) {
+  // Clear cut buttons active state
+  document.getElementById('btn-cut-2min').classList.remove('active');
+  document.getElementById('btn-cut-10seg').classList.remove('active');
+  
+  // Highlight active chip
+  document.querySelectorAll('.seg-chip').forEach(c => c.classList.remove('active'));
+  const activeChip = document.getElementById(`chip-${segId}`);
+  if (activeChip) activeChip.classList.add('active');
+  
+  video.src = `segments/${segId}.mp4`;
+  video.load();
+  video.play();
+  playBtn.textContent = '⏸ PAUSE SIMULATION';
+  
+  const meta = SEGMENT_METADATA[segId];
+  if (meta) {
+    hudStatusBadge.textContent = `5s SHOT ${meta.num}`;
+    sceneBadge.textContent = `STANDALONE SHOT ${meta.num} : ${meta.title.toUpperCase()} (5.0s)`;
+    typeIntoElement('hud-typewriter-text', `[STANDALONE SHOT ${meta.num}/10] ${meta.title} — ${meta.line}`);
+  }
+}
+
 </script>
 </body>
 </html>
