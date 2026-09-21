@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Harvard Executive Policy Matrix — Pakistan Care Economy</title>
+<title>Harvard Executive Simulation & Policy Matrix — Pakistan Care Crisis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -15,7 +15,7 @@
   --surface-hover: #1e293b;
   --surface-border: rgba(255, 255, 255, 0.1);
   --crimson-hks: #a51c30;
-  --crimson-light: #e11d48;
+  --crimson-glow: rgba(165, 28, 48, 0.4);
   --emerald: #10b981;
   --emerald-glow: rgba(16, 185, 129, 0.25);
   --gold: #f59e0b;
@@ -23,7 +23,6 @@
   --cyan: #06b6d4;
   --cyan-glow: rgba(6, 182, 212, 0.25);
   --rose: #f43f5e;
-  --rose-glow: rgba(244, 63, 94, 0.25);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --font-serif: 'Cinzel', Georgia, serif;
@@ -39,12 +38,12 @@ body {
   overflow-x: hidden;
 }
 
-/* Header & Navigation Bar */
+/* Header Bar */
 header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(7, 10, 18, 0.92);
+  background: rgba(7, 10, 18, 0.94);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--surface-border);
   padding: 12px 28px;
@@ -67,9 +66,9 @@ header {
   justify-content: center;
   font-family: var(--font-serif);
   font-weight: 900;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: #fff;
-  box-shadow: 0 0 15px rgba(165, 28, 48, 0.5);
+  box-shadow: 0 0 15px var(--crimson-glow);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 .brand-title {
@@ -86,7 +85,7 @@ header {
   letter-spacing: 0.08em;
 }
 
-/* Navigation Tabs */
+/* Nav Tabs */
 .nav-tabs {
   display: flex;
   align-items: center;
@@ -111,70 +110,167 @@ header {
   align-items: center;
   gap: 8px;
 }
-.nav-tab-btn:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.06);
-}
+.nav-tab-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
 .nav-tab-btn.active {
   background: var(--crimson-hks);
   color: #fff;
-  box-shadow: 0 4px 15px rgba(165, 28, 48, 0.4);
+  box-shadow: 0 4px 15px var(--crimson-glow);
 }
 
 /* Main Container */
 main {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 28px 24px 80px;
+  padding: 24px 24px 80px;
 }
 
-/* Hero Section */
-.hero-banner {
-  background: radial-gradient(ellipse at top left, rgba(165, 28, 48, 0.25) 0%, rgba(15, 23, 42, 0.6) 60%, transparent 100%);
+/* =========================================================================
+   2-MINUTE MASTER CINEMATIC VIDEO PLAYER SECTION
+========================================================================= */
+.video-stage-card {
+  background: #000;
   border: 1px solid var(--surface-border);
   border-radius: 20px;
-  padding: 36px 40px;
-  margin-bottom: 32px;
-  position: relative;
   overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(165, 28, 48, 0.25);
+  margin-bottom: 36px;
+  position: relative;
 }
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--gold);
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  padding: 4px 12px;
-  border-radius: 99px;
-  margin-bottom: 14px;
-  letter-spacing: 0.08em;
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  background: #030712;
 }
-.hero-title {
-  font-family: var(--font-serif);
-  font-size: 2.3rem;
-  font-weight: 900;
-  line-height: 1.2;
-  margin-bottom: 12px;
-  color: #fff;
-}
-.hero-title span {
-  color: var(--gold);
-}
-.hero-lead {
-  font-size: 0.98rem;
-  color: #cbd5e1;
-  max-width: 860px;
-  line-height: 1.65;
+#master-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-/* Section Header */
-.section-header {
-  margin-bottom: 22px;
+/* Custom Cinema HUD Bar over Video */
+.video-hud-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(0deg, rgba(7, 10, 18, 0.95) 0%, rgba(7, 10, 18, 0.7) 60%, transparent 100%);
+  padding: 16px 24px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
 }
+.scrubber-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+}
+#scrubber-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--crimson-hks), var(--emerald));
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+}
+.video-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.vc-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.play-btn {
+  background: linear-gradient(135deg, var(--crimson-hks), #dc2626);
+  border: none;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px var(--crimson-glow);
+  transition: all 0.2s;
+}
+.play-btn:hover { transform: scale(1.03); }
+.vc-time {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--gold);
+}
+.scene-marker-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--emerald);
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.vc-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.vc-icon-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--surface-border);
+  color: #cbd5e1;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.vc-icon-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
+
+/* Timeline Scene Jump Buttons */
+.scene-jump-bar {
+  background: var(--surface-card);
+  border-top: 1px solid var(--surface-border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+}
+.jump-chip {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid var(--surface-border);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.jump-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-color: var(--gold);
+}
+
+/* =========================================================================
+   TAB 1: CAUSE-AND-EFFECT CASCADE ENGINE ("IF THIS -> THEN THIS -> THEN THIS")
+========================================================================= */
+.section-header { margin-bottom: 22px; }
 .section-tag {
   font-family: var(--font-mono);
   font-size: 0.7rem;
@@ -195,9 +291,6 @@ main {
   margin-top: 4px;
 }
 
-/* =========================================================================
-   TAB 1: CAUSE-AND-EFFECT CASCADE ENGINE ("IF THIS -> THEN THIS -> THEN THIS")
-========================================================================= */
 .pathway-selector-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -214,18 +307,15 @@ main {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  position: relative;
-  overflow: hidden;
 }
 .pathway-card:hover {
   transform: translateY(-3px);
   border-color: rgba(255, 255, 255, 0.3);
-  background: var(--surface-hover);
 }
 .pathway-card.active {
   border-color: var(--crimson-hks);
-  background: linear-gradient(180deg, rgba(165, 28, 48, 0.15) 0%, var(--surface-card) 100%);
-  box-shadow: 0 10px 30px rgba(165, 28, 48, 0.3);
+  background: linear-gradient(180deg, rgba(165, 28, 48, 0.18) 0%, var(--surface-card) 100%);
+  box-shadow: 0 10px 30px rgba(165, 28, 48, 0.35);
 }
 .pathway-tag {
   font-family: var(--font-mono);
@@ -366,8 +456,6 @@ main {
   color: var(--emerald);
   margin-top: 6px;
 }
-
-/* Image Showcase in Step 1 */
 .step-media-preview {
   width: 100%;
   height: 120px;
@@ -408,9 +496,7 @@ main {
   vertical-align: top;
   line-height: 1.5;
 }
-.matrix-table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
-}
+.matrix-table tr:hover td { background: rgba(255, 255, 255, 0.02); }
 .matrix-table .criteria-col {
   font-weight: 700;
   color: #fff;
@@ -432,7 +518,7 @@ main {
 .badge-score.red { background: rgba(244, 63, 94, 0.18); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); }
 
 /* =========================================================================
-   TAB 3: INTERACTIVE "WHAT-IF" POLICY LEVER CALCULATOR
+   TAB 3: WHAT-IF LEVER SIMULATOR
 ========================================================================= */
 .calculator-grid {
   display: grid;
@@ -478,8 +564,6 @@ input[type="range"] {
   border-radius: 4px;
   cursor: pointer;
 }
-
-/* Calculator Output Results Cards */
 .calc-results-panel {
   display: flex;
   flex-direction: column;
@@ -520,7 +604,7 @@ input[type="range"] {
 }
 
 /* =========================================================================
-   TAB 4: 19 REAL-LIFE DOCUMENTARY PHOTOGRAPHY GALLERY
+   TAB 4: 19 DOCUMENTARY PHOTOGRAPHS
 ========================================================================= */
 .gallery-grid {
   display: grid;
@@ -534,11 +618,6 @@ input[type="range"] {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s;
-}
-.gallery-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.3);
 }
 .gallery-img {
   width: 100%;
@@ -568,7 +647,6 @@ input[type="range"] {
   line-height: 1.45;
 }
 
-/* Utility Hidden */
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 </style>
@@ -579,26 +657,65 @@ input[type="range"] {
   <div class="brand-group">
     <div class="brand-crest">H</div>
     <div>
-      <div class="brand-title">HARVARD POLICY MATRIX & CONSEQUENCE ENGINE</div>
-      <div class="brand-subtitle">EXECUTIVE BRANCH DECISION SIMULATOR // PAKISTAN CARE CRISIS</div>
+      <div class="brand-title">THE HARVARD CARE MATRIX & SIMULATION</div>
+      <div class="brand-subtitle">EXECUTIVE BRANCH 2-MINUTE MASTER & CAUSE-AND-EFFECT ENGINE</div>
     </div>
   </div>
   <div class="nav-tabs">
     <button class="nav-tab-btn active" onclick="switchTab('cascade')">🌊 CAUSE & EFFECT CASCADE</button>
     <button class="nav-tab-btn" onclick="switchTab('matrix')">📊 FULL DECISION MATRIX</button>
     <button class="nav-tab-btn" onclick="switchTab('calculator')">🎛 WHAT-IF LEVER SIMULATOR</button>
-    <button class="nav-tab-btn" onclick="switchTab('gallery')">📸 19 DOCUMENTARY PHOTOS</button>
+    <button class="nav-tab-btn" onclick="switchTab('gallery')">📸 19 REAL-LIFE PHOTOS</button>
   </div>
 </header>
 
 <main>
-  <!-- Hero Banner -->
-  <div class="hero-banner">
-    <div class="hero-badge">● HARVARD KENNEDY SCHOOL EXECUTIVE METHOD</div>
-    <h1 class="hero-title">"If They Do This ➔ <span>Then This Will Happen</span> ➔ Then This Follows"</h1>
-    <p class="hero-lead">
-      Move beyond simplistic binary choices. Every executive decision triggers a multi-stage cascade of first-order physical impacts, second-order socio-economic ripples, and third-order macroeconomic and political repercussions. Explore multiple options, test competing pathways, and inspect the multiple divergent results.
-    </p>
+  <!-- 2-MINUTE MASTER CINEMATIC VIDEO SIMULATION PLAYER -->
+  <div class="video-stage-card">
+    <div class="video-wrapper">
+      <video id="master-video" playsinline preload="auto">
+        <source src="care_economy_cinematic_sim.mp4" type="video/mp4"/>
+        Your browser does not support high-definition MP4 video playback.
+      </video>
+
+      <!-- Custom Cinema HUD Overlay -->
+      <div class="video-hud-overlay">
+        <div class="scrubber-track" id="scrubber-track" onclick="seekVideo(event)">
+          <div id="scrubber-fill"></div>
+        </div>
+
+        <div class="video-controls-row">
+          <div class="vc-left">
+            <button class="play-btn" id="btn-play-pause" onclick="togglePlayPause()">
+              ▶ PLAY 2-MIN SIMULATION
+            </button>
+            <div class="vc-time" id="vc-time-display">0:00 / 2:00</div>
+            <div class="scene-marker-badge" id="scene-title-badge">ACT I : ARRIVAL AT GATE 01</div>
+          </div>
+          <div class="vc-right">
+            <button class="vc-icon-btn" onclick="toggleMute()" id="btn-mute">🔊 SOUND: ON</button>
+            <button class="vc-icon-btn" onclick="restartVideo()">↺ RESTART</button>
+            <button class="vc-icon-btn" onclick="toggleFullScreen()">⛶ FULLSCREEN</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene Jump Bar (0:00 to 2:00) -->
+    <div class="scene-jump-bar">
+      <div class="jump-chip" onclick="jumpToTime(0)">0:00 Gate Arrival</div>
+      <div class="jump-chip" onclick="jumpToTime(12)">0:12 PM Citadel</div>
+      <div class="jump-chip" onclick="jumpToTime(24)">0:24 Cabinet Hall</div>
+      <div class="jump-chip" onclick="jumpToTime(34)">0:34 Guy 1 (PM)</div>
+      <div class="jump-chip" onclick="jumpToTime(42)">0:42 Guy 2 (Finance)</div>
+      <div class="jump-chip" onclick="jumpToTime(50)">0:50 Guy 3 (Dr. Fareeha)</div>
+      <div class="jump-chip" onclick="jumpToTime(58)">0:58 Guy 4 (Bakhtawar)</div>
+      <div class="jump-chip" onclick="jumpToTime(66)">1:06 Guy 5 (You)</div>
+      <div class="jump-chip" onclick="jumpToTime(74)" style="border-color: var(--emerald);">1:14 Pathway 1 (PKR 142B)</div>
+      <div class="jump-chip" onclick="jumpToTime(86)" style="border-color: var(--gold);">1:26 Pathway 2 (60/40)</div>
+      <div class="jump-chip" onclick="jumpToTime(98)" style="border-color: var(--rose);">1:38 Pathway 3 (Austerity)</div>
+      <div class="jump-chip" onclick="jumpToTime(108)" style="border-color: var(--emerald);">1:48 Midnight Decree</div>
+    </div>
   </div>
 
   <!-- TAB 1: CAUSE-AND-EFFECT CASCADE FLOW -->
@@ -606,7 +723,7 @@ input[type="range"] {
     <div class="section-header">
       <div class="section-tag">STEP 1: SELECT A STRATEGIC POLICY PATHWAY</div>
       <h2 class="section-title">The Four Competing Executive Interventions</h2>
-      <p class="section-desc">Click any of the four pathways below to trigger the live cause-and-effect cascade.</p>
+      <p class="section-desc">Click any of the four pathways below to trigger the live cause-and-effect cascade: "If they do this ➔ then this will happen ➔ then this will follow: multiple options, multiple results."</p>
     </div>
 
     <div class="pathway-selector-grid">
@@ -649,7 +766,7 @@ input[type="range"] {
             <div class="step-order-badge">IF THEY DO THIS [ACTION]</div>
             <div class="step-title" id="s1-title">Deploy 4,200 Solar Care Hubs</div>
             <div class="step-desc" id="s1-desc">
-              Federal government enacts emergency decree committing PKR 142B over 3 years. Rapid fabrication of solar water filtration pumps and community crèches.
+              Federal government enacts emergency decree committing PKR 142B over 3 years. Rapid fabrication of solar water filtration pumps and community crèches across all 134 districts.
             </div>
             <img class="step-media-preview" id="s1-img" src="assets/images/bisp_rural_daycare_hub.jpg" alt="Center"/>
             <div class="step-stats-pill" id="s1-stat">COST: PKR 142B | TIME: 18 MONTHS</div>
@@ -663,7 +780,7 @@ input[type="range"] {
             <div class="step-order-badge">THEN THIS HAPPENS [1ST ORDER]</div>
             <div class="step-title" id="s2-title">Direct Time Poverty Relief</div>
             <div class="step-desc" id="s2-desc">
-              2.14 Million rural women immediately save 2.5 hours per day from carrying water pots. 890,000 young girls re-enroll in primary school as care duties diminish.
+              2.14 Million rural women immediately save 2.5 to 4 hours per day from carrying water pots. 890,000 young girls re-enroll in primary school as care duties diminish.
             </div>
             <img class="step-media-preview" id="s2-img" src="assets/images/pakistan_women_water.jpg" alt="Water"/>
             <div class="step-stats-pill" id="s2-stat">BENEFICIARIES: 2.14M WOMEN FREED</div>
@@ -701,7 +818,7 @@ input[type="range"] {
     </div>
   </section>
 
-  <!-- TAB 2: HARVARD MULTI-OPTION DECISION MATRIX GRID -->
+  <!-- TAB 2: HARVARD SIDE-BY-SIDE MATRIX COMPARISON TABLE -->
   <section id="tab-matrix" class="tab-content">
     <div class="section-header">
       <div class="section-tag">HARVARD CROSS-IMPACT EVALUATION GRID</div>
@@ -782,7 +899,7 @@ input[type="range"] {
     </div>
   </section>
 
-  <!-- TAB 3: INTERACTIVE "WHAT-IF" POLICY LEVER CALCULATOR -->
+  <!-- TAB 3: INTERACTIVE WHAT-IF LEVER SIMULATOR -->
   <section id="tab-calculator" class="tab-content">
     <div class="section-header">
       <div class="section-tag">REAL-TIME ECONOMETRIC ENGINE</div>
@@ -791,7 +908,6 @@ input[type="range"] {
     </div>
 
     <div class="calculator-grid">
-      <!-- Left Panel: Sliders -->
       <div class="calculator-panel">
         <h3 style="font-family: var(--font-serif); font-size: 1.2rem; color: #fff; margin-bottom: 6px;">Policy Input Levers</h3>
         <p style="font-size: 0.8rem; color: var(--text-muted);">Tweak executive budget, provincial matching, and cultural incentives live:</p>
@@ -831,7 +947,6 @@ input[type="range"] {
         </div>
       </div>
 
-      <!-- Right Panel: Dynamic Results -->
       <div class="calc-results-panel">
         <div class="metric-highlight-grid">
           <div class="metric-box">
@@ -856,7 +971,6 @@ input[type="range"] {
           </div>
         </div>
 
-        <!-- Radar Chart Panel -->
         <div style="background: var(--surface-card); border: 1px solid var(--surface-border); border-radius: 14px; padding: 16px;">
           <div id="chart-lever-radar"></div>
         </div>
@@ -877,6 +991,95 @@ input[type="range"] {
 </main>
 
 <script>
+/* =========================================================================
+   2-MINUTE MASTER CINEMATIC VIDEO CONTROLLER
+========================================================================= */
+const video = document.getElementById('master-video');
+const playBtn = document.getElementById('btn-play-pause');
+const timeDisplay = document.getElementById('vc-time-display');
+const scrubberFill = document.getElementById('scrubber-fill');
+const sceneBadge = document.getElementById('scene-title-badge');
+
+const SCENE_SCHEDULE = [
+  { t: 0, label: 'ACT I : CONSTITUTION AVE GATE 01' },
+  { t: 12, label: 'ACT I : PRIME MINISTER HOUSE CITADEL' },
+  { t: 24, label: 'ACT I : FEDERAL CABINET HALL' },
+  { t: 34, label: 'ACT II : GUY 1 (PM SHEHBAZ SHARIF)' },
+  { t: 42, label: 'ACT II : GUY 2 (FINANCE MIN AURANGZEB)' },
+  { t: 50, label: 'ACT II : GUY 3 (DR. FAREEHA ARMUGHAN)' },
+  { t: 58, label: 'ACT II : GUY 4 (BAKHTAWAR BIBI)' },
+  { t: 66, label: 'ACT II : GUY 5 (CHIEF ADVISOR / YOU)' },
+  { t: 74, label: 'ACT III : PATHWAY 1 (PKR 142B ROSHNI HUBS)' },
+  { t: 86, label: 'ACT III : PATHWAY 2 (60/40 COMPACT)' },
+  { t: 98, label: 'ACT III : PATHWAY 3 (AUSTERITY HANDOUTS)' },
+  { t: 108, label: 'ACT IV : THE MIDNIGHT EXECUTIVE SIGNATURE' }
+];
+
+function togglePlayPause() {
+  if (video.paused) {
+    video.play();
+    playBtn.textContent = '⏸ PAUSE SIMULATION';
+  } else {
+    video.pause();
+    playBtn.textContent = '▶ PLAY 2-MIN SIMULATION';
+  }
+}
+
+function toggleMute() {
+  video.muted = !video.muted;
+  document.getElementById('btn-mute').textContent = video.muted ? '🔇 SOUND: OFF' : '🔊 SOUND: ON';
+}
+
+function restartVideo() {
+  video.currentTime = 0;
+  video.play();
+  playBtn.textContent = '⏸ PAUSE SIMULATION';
+}
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.querySelector('.video-stage-card').requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+function jumpToTime(sec) {
+  video.currentTime = sec;
+  video.play();
+  playBtn.textContent = '⏸ PAUSE SIMULATION';
+}
+
+function seekVideo(e) {
+  const rect = document.getElementById('scrubber-track').getBoundingClientRect();
+  const pos = (e.clientX - rect.left) / rect.width;
+  const total = video.duration || 120.0;
+  video.currentTime = pos * total;
+}
+
+video.addEventListener('timeupdate', () => {
+  const cur = video.currentTime;
+  const total = video.duration || 120.0;
+  const mins = Math.floor(cur / 60);
+  const secs = Math.floor(cur % 60);
+  const tMins = Math.floor(total / 60);
+  const tSecs = Math.floor(total % 60);
+  timeDisplay.textContent = `${mins}:${secs < 10 ? '0' : ''}${secs} / ${tMins}:${tSecs < 10 ? '0' : ''}${tSecs}`;
+  scrubberFill.style.width = (cur / total * 100) + '%';
+
+  // Update scene badge
+  for (let i = SCENE_SCHEDULE.length - 1; i >= 0; i--) {
+    if (cur >= SCENE_SCHEDULE[i].t) {
+      sceneBadge.textContent = SCENE_SCHEDULE[i].label;
+      break;
+    }
+  }
+});
+
+video.addEventListener('ended', () => {
+  playBtn.textContent = '↺ REPLAY SIMULATION';
+});
+
 /* =========================================================================
    PATHWAYS DATA (THE CAUSE-AND-EFFECT CASCADE ENGINE)
 ========================================================================= */
@@ -981,7 +1184,7 @@ const PATHWAYS = [
     s2: {
       title: 'Inflation Erodes Relief',
       desc: 'Initial +5% polling bump for the PM. But within 75 days, 35% food inflation completely swallows the cash handout. Families have no remaining savings.',
-      img: 'assets/images/queue_alt.jpg',
+      img: 'assets/images/bisp_biometric_queue.jpg',
       stat: 'RELIEF DURATION: 75 DAYS BEFORE EXPIRING'
     },
     s3: {
@@ -1031,9 +1234,6 @@ function selectPathway(idx) {
   document.getElementById('s4-img').src = p.s4.img;
 }
 
-/* =========================================================================
-   TAB SWITCHING LOGIC
-========================================================================= */
 function switchTab(tabId) {
   const tabs = ['cascade', 'matrix', 'calculator', 'gallery'];
   tabs.forEach(t => {
@@ -1064,12 +1264,8 @@ function recalculateModel() {
   document.getElementById('val-matching').textContent = `${matching}% Provincial`;
   document.getElementById('val-incentive').textContent = `${incentive}% Subsidies`;
 
-  // Harvard Econometric Formulas
-  // Women reached: budget / 66,000 PKR per beneficiary * (rural/75)
   const womenCount = Math.round((budget * 1000000000) / 66350 * (rural / 70));
-  // Daily time saved
   const hoursSaved = (2.0 + (budget / 250) * 1.8 + (rural / 100) * 0.5).toFixed(1);
-  // GDP multiplier: elasticity -0.35 gives ~ 2.1x * budget scale
   const gdpTrillion = ((budget * 2.12) / 100).toFixed(2);
 
   document.getElementById('out-women').textContent = womenCount.toLocaleString();
@@ -1133,7 +1329,7 @@ function updateRadarData(budget, rural, matching, incentive) {
 }
 
 /* =========================================================================
-   19 REAL-LIFE DOCUMENTARY PHOTOGRAPHY GALLERY SETUP
+   19 REAL-LIFE DOCUMENTARY PHOTOGRAPHS
 ========================================================================= */
 const REAL_PHOTOS = [
   { file: 'assets/images/pakistan_women_water.jpg', tag: 'HUMAN BURDEN', title: 'The 4km Dawn Walk', desc: 'Rural Pakistani women in Sindh/Punjab carrying 25L metal water vessels across arid terrain.' },
