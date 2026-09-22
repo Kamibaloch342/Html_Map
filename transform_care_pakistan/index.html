@@ -1,0 +1,1927 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Uncounted Hour</title>
+<style>
+/* ============================================================
+   THE UNCOUNTED HOUR
+   A care economy simulation for Pakistan
+   UN Women Pakistan x SDPI - National Forum on TransformCare
+   Committed single-theme: a darkened auditorium. Designed to be
+   projected, so the ground stays dark and the type stays bright.
+   ============================================================ */
+:root{
+  --ink:        #110F0C;
+  --ink-2:      #191612;
+  --ink-3:      #231E18;
+  --ink-4:      #2E2820;
+  --paper:      #F1E9DA;
+  --paper-dim:  #BCB2A0;
+  --ash:        #857B6C;
+  --brass:      #D9A94F;
+  --brass-dim:  #8A6C2E;
+  --clay:       #CB6038;
+  --clay-dim:   #7E3A21;
+  --indigo:     #5B8EB8;
+  --indigo-dim: #2F4D66;
+  --sage:       #86A76E;
+  --line:       rgba(241,233,218,.13);
+  --line-2:     rgba(241,233,218,.07);
+
+  --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  --sans:  "Avenir Next","Avenir","Segoe UI",system-ui,-apple-system,"Helvetica Neue",sans-serif;
+  --mono:  ui-monospace,"SF Mono","SFMono-Regular","Cascadia Mono",Menlo,Consolas,"Liberation Mono",monospace;
+
+  --gutter: clamp(18px, 4vw, 64px);
+  --rail-h: 54px;
+  color-scheme: dark;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html,body{ height:100%; }
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--serif);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow:hidden;
+}
+body.is-scroll{ overflow:auto; }
+
+img{ max-width:100%; }
+[hidden]{ display:none !important; }
+button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer; }
+:focus-visible{ outline:2px solid var(--brass); outline-offset:3px; }
+
+/* ---------- grain + vignette, very light ---------- */
+.grain{
+  position:fixed; inset:0; pointer-events:none; z-index:60; opacity:.5;
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% 50%, transparent 40%, rgba(0,0,0,.55) 100%);
+}
+
+/* ============================================================
+   STAGE
+   ============================================================ */
+.stage{
+  position:relative;
+  height:100%;
+  display:flex; flex-direction:column;
+  overflow:hidden;
+}
+
+.deck{
+  position:relative; flex:1 1 auto; min-height:0;
+}
+
+.scene{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  padding:calc(var(--rail-h) + 10px) var(--gutter) calc(var(--rail-h) + 10px);
+  opacity:0; visibility:hidden;
+  transition:opacity .62s cubic-bezier(.4,0,.2,1), visibility .62s;
+  overflow:hidden;
+}
+.scene.is-live{ opacity:1; visibility:visible; }
+.scene__inner{
+  width:100%; max-width:1240px; margin:0 auto;
+  flex:1 1 auto; min-height:0;
+  display:flex; flex-direction:column; justify-content:center; gap:clamp(14px,2.2vh,26px);
+}
+
+/* ============================================================
+   RAILS
+   ============================================================ */
+.rail{
+  position:absolute; left:0; right:0; z-index:30;
+  height:var(--rail-h);
+  display:flex; align-items:center; gap:14px;
+  padding:0 var(--gutter);
+  font-family:var(--mono);
+  font-size:11px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ash);
+  pointer-events:none;
+}
+.rail > *{ pointer-events:auto; }
+.rail--top{ top:0; padding-top:env(safe-area-inset-top,0px); border-bottom:1px solid var(--line-2); }
+.rail--bot{ bottom:0; padding-bottom:env(safe-area-inset-bottom,0px); border-top:1px solid var(--line-2); }
+
+.rail__mark{ color:var(--brass); }
+.rail__sep{ color:var(--line); }
+.rail__spacer{ flex:1 1 auto; }
+.rail__src{
+  flex:1 1 auto; min-width:0;
+  text-transform:none; letter-spacing:.02em; font-size:10.5px;
+  color:var(--ash); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  transition:opacity .4s;
+}
+.rail__btn{
+  padding:5px 11px; border:1px solid var(--line); border-radius:2px;
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--paper-dim); transition:border-color .18s, color .18s, background .18s;
+}
+.rail__btn:hover{ border-color:var(--brass-dim); color:var(--brass); }
+.rail__btn[aria-pressed="true"]{ background:var(--ink-3); border-color:var(--brass-dim); color:var(--brass); }
+
+.progress{
+  position:absolute; left:0; bottom:0; height:2px; width:100%;
+  background:var(--line-2); z-index:31;
+}
+.progress__fill{ height:100%; width:0; background:var(--brass); transition:width .45s linear; }
+
+/* ============================================================
+   TYPE
+   ============================================================ */
+.eyebrow{
+  font-family:var(--mono); font-size:clamp(10px,1.05vw,12px);
+  letter-spacing:.2em; text-transform:uppercase; color:var(--brass);
+  display:flex; align-items:center; gap:10px;
+}
+.eyebrow::before{
+  content:""; width:22px; height:1px; background:var(--brass-dim); flex:0 0 auto;
+}
+.eyebrow--plain::before{ display:none; }
+
+h1.display{
+  font-size:clamp(36px,7.2vw,88px); line-height:.98; margin:0;
+  font-weight:400; letter-spacing:-.022em; text-wrap:balance;
+}
+h2.head{
+  font-size:clamp(25px,4.2vw,52px); line-height:1.04; margin:0;
+  font-weight:400; letter-spacing:-.017em; text-wrap:balance;
+}
+h3.sub{
+  font-size:clamp(17px,2.2vw,27px); line-height:1.2; margin:0;
+  font-weight:400; letter-spacing:-.01em; color:var(--paper);
+}
+.lede{
+  font-size:clamp(15px,1.75vw,21px); line-height:1.55; margin:0;
+  color:var(--paper-dim); max-width:62ch;
+}
+.fine{
+  font-family:var(--mono); font-size:clamp(10px,1.05vw,11.5px);
+  line-height:1.6; letter-spacing:.03em; color:var(--ash); margin:0;
+}
+.kicker{
+  font-family:var(--mono); font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ash);
+}
+
+/* narration = the typewriter line */
+.narr{
+  font-size:clamp(18px,2.55vw,32px); line-height:1.42;
+  letter-spacing:-.011em; margin:0; max-width:26ch;
+  min-height:1.42em;
+}
+.narr--wide{ max-width:40ch; }
+.narr em{ font-style:normal; color:var(--brass); }
+.caret{
+  display:inline-block; width:.5ch; height:1.05em; vertical-align:-.16em;
+  background:var(--brass); margin-left:.12em;
+  animation:blink 1.05s steps(1) infinite;
+}
+@keyframes blink{ 0%,49%{opacity:1} 50%,100%{opacity:0} }
+.caret.is-done{ animation:none; opacity:0; }
+
+/* ============================================================
+   LAYOUT BLOCKS
+   ============================================================ */
+.split{
+  display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  gap:clamp(20px,3.4vw,54px); align-items:center;
+  flex:1 1 auto; min-height:0;
+}
+.split--rev{ grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); }
+.split__art{ min-width:0; min-height:0; display:flex; align-items:center; justify-content:center; }
+.split__art svg{ width:100%; height:auto; max-height:100%; display:block; }
+.split__txt{ min-width:0; display:flex; flex-direction:column; gap:clamp(12px,1.9vh,22px); }
+
+.stack{ display:flex; flex-direction:column; gap:clamp(12px,2vh,24px); }
+.row{ display:flex; flex-wrap:wrap; gap:clamp(12px,1.6vw,22px); }
+
+/* ============================================================
+   FIGURE TILES
+   ============================================================ */
+.figs{ display:grid; gap:1px; background:var(--line-2); border:1px solid var(--line-2); }
+.figs--2{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+.figs--3{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+.figs--4{ grid-template-columns:repeat(4,minmax(0,1fr)); }
+.fig{
+  background:var(--ink); padding:clamp(13px,1.9vw,24px);
+  display:flex; flex-direction:column; gap:7px; min-width:0;
+}
+.fig__n{
+  font-family:var(--mono); font-variant-numeric:tabular-nums;
+  font-size:clamp(20px,3.3vw,42px); line-height:1; letter-spacing:-.025em;
+  color:var(--paper);
+}
+.fig__n--brass{ color:var(--brass); }
+.fig__n--clay{ color:var(--clay); }
+.fig__n--sage{ color:var(--sage); }
+.fig__n--indigo{ color:var(--indigo); }
+.fig__n small{ font-size:.46em; letter-spacing:.02em; color:var(--ash); margin-left:.3em; }
+.fig__l{
+  font-family:var(--sans); font-size:clamp(10.5px,1.05vw,12.5px);
+  line-height:1.4; letter-spacing:.055em; text-transform:uppercase; color:var(--paper-dim);
+}
+.fig__s{ font-family:var(--mono); font-size:10px; line-height:1.45; color:var(--ash); letter-spacing:.02em; }
+
+/* ============================================================
+   THE DAY CLOCK
+   ============================================================ */
+.clockwrap{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(18px,3vw,48px); align-items:center; flex:1 1 auto; min-height:0;
+}
+.clockwrap svg{ width:100%; height:auto; max-height:62vh; display:block; }
+.tasklog{ display:flex; flex-direction:column; gap:0; font-family:var(--sans); }
+.tasklog__row{
+  display:grid; grid-template-columns:52px minmax(0,1fr) auto;
+  gap:12px; align-items:baseline;
+  padding:7px 0; border-bottom:1px solid var(--line-2);
+  opacity:.22; transition:opacity .5s ease;
+}
+.tasklog__row.is-on{ opacity:1; }
+.tasklog__t{ font-family:var(--mono); font-size:11.5px; color:var(--brass); font-variant-numeric:tabular-nums; }
+.tasklog__n{ font-size:clamp(12.5px,1.25vw,15px); color:var(--paper); }
+.tasklog__h{ font-family:var(--mono); font-size:11px; color:var(--ash); font-variant-numeric:tabular-nums; white-space:nowrap; }
+
+.tally{ display:flex; gap:clamp(18px,3vw,44px); flex-wrap:wrap; }
+.tally__i{ display:flex; flex-direction:column; gap:4px; }
+.tally__n{
+  font-family:var(--mono); font-variant-numeric:tabular-nums;
+  font-size:clamp(26px,4.4vw,52px); line-height:1; letter-spacing:-.03em;
+}
+.tally__l{ font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ash); }
+
+/* ============================================================
+   DOT CARTOGRAM
+   ============================================================ */
+.cartowrap{ display:flex; flex-direction:column; gap:14px; flex:1 1 auto; min-height:0; justify-content:center; }
+.carto{ width:100%; height:auto; max-height:54vh; display:block; }
+.artband{ display:flex; justify-content:center; align-items:center; min-height:0; }
+.artband svg{ width:auto; height:auto; max-width:100%; max-height:var(--h,30vh); display:block; }
+.carto__key{ display:flex; flex-wrap:wrap; gap:16px 26px; font-family:var(--mono); font-size:10.5px; color:var(--ash); letter-spacing:.04em; }
+.carto__key span{ display:inline-flex; align-items:center; gap:7px; }
+.carto__sw{ width:9px; height:9px; border-radius:50%; display:inline-block; }
+
+/* ============================================================
+   BARS
+   ============================================================ */
+.bars{ display:flex; flex-direction:column; gap:clamp(14px,2.4vh,26px); }
+.bar__top{ display:flex; justify-content:space-between; align-items:baseline; gap:14px; margin-bottom:8px; }
+.bar__lab{ font-family:var(--sans); font-size:clamp(12px,1.3vw,15px); letter-spacing:.05em; text-transform:uppercase; color:var(--paper-dim); }
+.bar__val{ font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:clamp(16px,2.4vw,26px); }
+.bar__track{ height:clamp(14px,2.2vh,26px); background:var(--ink-3); position:relative; overflow:hidden; }
+.bar__fill{ position:absolute; inset:0 auto 0 0; width:0; transition:width 1.15s cubic-bezier(.22,1,.36,1); }
+.bar__fill--clay{ background:linear-gradient(90deg,var(--clay-dim),var(--clay)); }
+.bar__fill--indigo{ background:linear-gradient(90deg,var(--indigo-dim),var(--indigo)); }
+.bar__fill--brass{ background:linear-gradient(90deg,var(--brass-dim),var(--brass)); }
+.bar__fill--sage{ background:linear-gradient(90deg,#3E5533,var(--sage)); }
+
+/* ============================================================
+   LEDGER / EQUATION
+   ============================================================ */
+.ledger{
+  border:1px solid var(--line); background:var(--ink-2);
+  padding:clamp(16px,2.4vw,30px);
+  font-family:var(--mono); font-variant-numeric:tabular-nums;
+}
+.ledger__eq{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 12px;
+  font-size:clamp(12px,1.5vw,18px); color:var(--paper-dim); margin-bottom:16px;
+}
+.ledger__term{ color:var(--paper); }
+.ledger__term b{ font-weight:400; color:var(--brass); }
+.ledger__op{ color:var(--ash); }
+.ledger__rule{ height:1px; background:var(--line); margin:14px 0; }
+.ledger__out{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 18px;
+}
+.ledger__big{
+  font-size:clamp(28px,5.4vw,68px); line-height:1; letter-spacing:-.035em; color:var(--brass);
+}
+.ledger__unit{ font-size:clamp(12px,1.4vw,17px); color:var(--paper-dim); letter-spacing:.04em; }
+
+/* ============================================================
+   ROLE CARDS (the room)
+   ============================================================ */
+.roles{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; background:var(--line-2); border:1px solid var(--line-2); }
+.role{
+  background:var(--ink); padding:clamp(14px,1.9vw,22px);
+  display:flex; flex-direction:column; gap:10px; min-width:0;
+  opacity:.25; transition:opacity .55s ease, background .55s ease;
+}
+.role.is-on{ opacity:1; background:var(--ink-2); }
+.role__seat{
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--indigo);
+}
+.role__seat i{ width:7px; height:7px; border-radius:50%; background:var(--indigo); flex:0 0 auto; font-style:normal; }
+.role__t{ font-family:var(--sans); font-size:clamp(11.5px,1.15vw,13.5px); line-height:1.35; letter-spacing:.055em; text-transform:uppercase; color:var(--paper); }
+.role__q{ font-size:clamp(13.5px,1.5vw,17.5px); line-height:1.42; color:var(--paper-dim); font-style:italic; }
+
+/* ============================================================
+   BRANCH CHOICE
+   ============================================================ */
+.paths{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(10px,1.3vw,18px); flex:0 0 auto; align-items:stretch; }
+.path{
+  position:relative; text-align:left;
+  background:var(--ink-2); border:1px solid var(--line);
+  padding:clamp(14px,1.8vw,22px);
+  display:flex; flex-direction:column; gap:11px; min-width:0;
+  transition:border-color .22s, background .22s, transform .22s;
+}
+.path:hover,.path:focus-visible{ border-color:var(--brass-dim); background:var(--ink-3); transform:translateY(-3px); }
+.path.is-picked{ border-color:var(--brass); background:var(--ink-3); }
+.path.is-done::after{
+  content:"REVIEWED"; position:absolute; top:9px; right:10px;
+  font-family:var(--mono); font-size:8.5px; letter-spacing:.14em; color:var(--brass-dim);
+}
+.path__k{ font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--brass); }
+.path__t{ font-family:var(--sans); font-size:clamp(13px,1.4vw,17px); line-height:1.25; letter-spacing:.01em; color:var(--paper); }
+.path__d{ font-size:clamp(12.5px,1.25vw,15px); line-height:1.45; color:var(--paper-dim); flex:1 1 auto; }
+.path__cost{ font-family:var(--mono); font-size:11px; color:var(--ash); letter-spacing:.03em; border-top:1px solid var(--line-2); padding-top:9px; }
+
+/* ============================================================
+   CASCADE
+   ============================================================ */
+.cascade{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1px; background:var(--line-2); border:1px solid var(--line-2); }
+.casc{
+  background:var(--ink); padding:clamp(13px,1.8vw,22px);
+  display:flex; flex-direction:column; gap:9px; min-width:0;
+  opacity:.18; transform:translateY(6px);
+  transition:opacity .55s ease, transform .55s ease, background .55s;
+}
+.casc.is-on{ opacity:1; transform:none; background:var(--ink-2); }
+.casc__n{ font-family:var(--mono); font-size:10px; letter-spacing:.15em; color:var(--brass); }
+.casc__t{ font-family:var(--sans); font-size:clamp(11.5px,1.15vw,13.5px); letter-spacing:.05em; text-transform:uppercase; line-height:1.3; color:var(--paper); }
+.casc__v{ font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:clamp(19px,2.9vw,34px); line-height:1; letter-spacing:-.025em; color:var(--brass); }
+.casc__d{ font-size:clamp(12.5px,1.2vw,14.5px); line-height:1.45; color:var(--paper-dim); }
+
+.caveat{
+  border-left:2px solid var(--clay); background:rgba(203,96,56,.07);
+  padding:clamp(12px,1.7vw,20px) clamp(14px,2vw,24px);
+  display:flex; flex-direction:column; gap:7px;
+}
+.caveat__h{ font-family:var(--mono); font-size:10px; letter-spacing:.17em; text-transform:uppercase; color:var(--clay); }
+.caveat__b{ font-size:clamp(13.5px,1.45vw,17px); line-height:1.48; color:var(--paper-dim); max-width:80ch; }
+
+/* ============================================================
+   COMPARISON TABLE
+   ============================================================ */
+.cmpwrap{ overflow-x:auto; flex:0 0 auto; max-width:100%; }
+table.cmp{ width:100%; border-collapse:collapse; font-family:var(--sans); min-width:700px; }
+table.cmp th,table.cmp td{
+  text-align:left; padding:clamp(8px,1.2vh,14px) clamp(8px,1vw,16px);
+  border-bottom:1px solid var(--line-2); vertical-align:top;
+}
+table.cmp thead th{
+  font-family:var(--mono); font-size:10px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--brass); border-bottom:1px solid var(--line); white-space:nowrap;
+}
+table.cmp tbody th{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--ash); font-weight:400; white-space:nowrap; width:1%;
+}
+table.cmp td{
+  font-family:var(--mono); font-variant-numeric:tabular-nums;
+  font-size:clamp(12px,1.25vw,15px); color:var(--paper);
+}
+table.cmp td.txt{ font-family:var(--sans); font-size:clamp(11.5px,1.15vw,13.5px); line-height:1.4; color:var(--paper-dim); }
+table.cmp td.best{ color:var(--brass); }
+table.cmp td.poor{ color:var(--clay); }
+table.cmp td.na{ color:var(--ash); }
+table.cmp tr.is-hl td,table.cmp tr.is-hl th{ background:var(--ink-2); }
+
+/* ============================================================
+   SOURCES / CLOSING
+   ============================================================ */
+.srcgrid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(12px,2vw,30px); }
+.srcgrid ol{ margin:0; padding-left:1.35em; display:flex; flex-direction:column; gap:9px; }
+.srcgrid li{ font-family:var(--mono); font-size:clamp(10px,1.02vw,11.5px); line-height:1.55; color:var(--ash); letter-spacing:.02em; }
+.srcgrid li b{ color:var(--paper-dim); font-weight:400; }
+
+.pillars{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:1px; background:var(--line-2); border:1px solid var(--line-2); }
+.pillar{ background:var(--ink); padding:clamp(13px,1.7vw,20px); display:flex; flex-direction:column; gap:9px; min-width:0; }
+.pillar__k{ font-family:var(--mono); font-size:10px; letter-spacing:.16em; color:var(--brass); }
+.pillar__t{ font-family:var(--sans); font-size:clamp(11.5px,1.15vw,13.5px); letter-spacing:.04em; text-transform:uppercase; line-height:1.3; color:var(--paper); }
+.pillar__d{ font-size:clamp(12px,1.18vw,14px); line-height:1.45; color:var(--paper-dim); }
+
+/* ============================================================
+   OVERVIEW / SCENE JUMP
+   ============================================================ */
+.overview{
+  position:fixed; inset:0; z-index:50; background:rgba(17,15,12,.97);
+  padding:calc(var(--rail-h) + 16px) var(--gutter);
+  overflow:auto;
+}
+.ov__grid{ max-width:1240px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:1px; background:var(--line-2); border:1px solid var(--line-2); }
+.ov__i{ background:var(--ink); padding:14px 16px; text-align:left; display:flex; flex-direction:column; gap:6px; transition:background .18s; }
+.ov__i:hover{ background:var(--ink-3); }
+.ov__i.is-cur{ background:var(--ink-3); box-shadow:inset 2px 0 0 var(--brass); }
+.ov__n{ font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; color:var(--brass); }
+.ov__t{ font-family:var(--sans); font-size:13px; line-height:1.3; color:var(--paper); }
+.ov__a{ font-family:var(--mono); font-size:9.5px; color:var(--ash); letter-spacing:.06em; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1000px){
+  .roles{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .paths{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .cascade{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .pillars{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .figs--4{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:760px){
+  body{ overflow:auto; }
+  .stage{ height:auto; min-height:100%; }
+  .deck{ position:static; }
+  .scene{
+    position:static; opacity:1; visibility:visible; display:none;
+    min-height:100svh; padding:calc(var(--rail-h) + 14px) var(--gutter) calc(var(--rail-h) + 22px);
+  }
+  .scene.is-live{ display:flex; }
+  .split,.split--rev,.clockwrap{ grid-template-columns:minmax(0,1fr); }
+  .split__art{ max-height:34vh; }
+  .split__art svg,.clockwrap svg{ max-height:34vh; }
+  .narr{ max-width:none; }
+  .figs--3,.figs--4,.figs--2{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .roles,.paths,.cascade,.pillars,.srcgrid{ grid-template-columns:minmax(0,1fr); }
+  .rail{ font-size:9.5px; gap:9px; }
+  .rail__src{ display:none; }
+}
+@media (max-width:420px){
+  .figs--3,.figs--4,.figs--2{ grid-template-columns:minmax(0,1fr); }
+  .tally{ gap:18px; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+  .caret{ display:none; }
+}
+</style>
+
+</head>
+<body>
+<div class="stage">
+
+  <div class="rail rail--top">
+    <span class="rail__mark" id="rActNo">ACT I</span>
+    <span class="rail__sep">/</span>
+    <span id="rActName">One Day</span>
+    <span class="rail__spacer"></span>
+    <span id="rClock">—</span>
+  </div>
+
+  <div class="deck" id="deck"></div>
+
+  <div class="rail rail--bot">
+    <button class="rail__btn" id="bPrev" title="Previous (←)">Prev</button>
+    <button class="rail__btn" id="bNext" title="Next (→ or Space)">Next</button>
+    <button class="rail__btn" id="bAuto" aria-pressed="false" title="Auto-advance (A)">Auto</button>
+    <span class="rail__src" id="rSrc"></span>
+    <span class="rail__spacer"></span>
+    <span id="rNum">01 / 01</span>
+    <button class="rail__btn" id="bMap" title="All scenes (M)">Scenes</button>
+  </div>
+
+  <div class="progress"><div class="progress__fill" id="rProg"></div></div>
+</div>
+
+<div class="overview" id="overview" hidden>
+  <div style="max-width:1240px;margin:0 auto 18px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <span class="eyebrow eyebrow--plain">Scene index</span>
+    <span class="fine">Click any scene to jump. Esc closes.</span>
+  </div>
+  <div class="ov__grid" id="ovGrid"></div>
+</div>
+
+<div class="grain"></div>
+
+<script>
+/* =============================================================
+   1. CONSTANTS, SOURCES AND THE POLICY MODEL
+   Every figure rendered on screen is computed from this block,
+   so the arithmetic on stage is reproducible from the sources.
+   ============================================================= */
+"use strict";
+
+var K = {
+  /* --- statutory anchors ----------------------------------- */
+  wMonthly : 40700,          // PKR/month, statutory minimum wage FY2024-25
+  hMonthly : 208,            // 26 workdays x 8 hours
+  wStat    : 40700 / 208,    // = 195.673 PKR/hour
+  usdRate  : 280,            // PKR per USD
+  gdp      : 106.1e12,       // PKR nominal GDP, Economic Survey 2024-25
+
+  /* --- methodological parameters --------------------------- */
+  alpha    : 0.35,           // labour conversion elasticity, rural informal
+  alphaUrb : 0.60,           // labour conversion, urban formal (creche path)
+  weeks    : 52,
+  npv5     : 3.7908,         // sum of 1/(1.10)^t for t = 1..5
+  maint    : 0.10,           // annual maintenance, share of capex
+  realize  : 0.52,           // informal realization discount
+  mpc      : 0.90,           // fiscal multiplier, transfers to liquidity-constrained households
+
+  /* --- national populations, LFS 2024-25 Chapter 12 -------- */
+  workingAge : 179.6e6,
+  femaleAge  : 87.6e6,
+  maleAge    : 92.0e6,
+  ucwAll     : 117.4e6,
+  ucwWomen   : 66.7e6,
+  ucwMen     : 50.7e6,
+  ucwWomenSh : 0.771,
+  ucwMenSh   : 0.550,
+
+  /* --- SDG 5.4.1 headline, LFS 2024-25 --------------------- */
+  hrsWomen : 15.2,           // hours per week, unpaid domestic + care work
+  hrsMen   : 8.1,
+  flfp     : 22.7,           // % labour force participation, women
+  mlfp     : 68.7,
+  cfwWomen : 49.7,           // % of employed women who are contributing family workers
+  informal : 80.8,           // % of total employment that is informal
+
+  /* --- BISP DFLT-2 verified micro-dataset ------------------ */
+  bispSample  : 254648,
+  bispHH      : 12e6,
+  housewives  : 8942084,
+  hwShare     : 0.74517,
+  willingHW   : 0.692,
+  willing     : 6184524,
+  ruralWill   : 75.1,
+  urbanWill   : 64.2,
+  noSavings   : 68.2,        // % with savings under PKR 500
+  banked      : 8.9,         // % with a formal bank account
+  wallet      : 29.0,        // % with a mobile money wallet
+  inDebt      : 30.0,
+
+  /* --- ILO Care Policy Investment Simulator, Pakistan ------ */
+  iloJobs   : 9152927,
+  iloWomen  : 85.01,
+  iloInvest : 7.90,          // % of GDP, gross additional annual investment
+  iloRoi    : 3.25,          // USD GDP per USD spent
+  iloGap    : -7.45,         // percentage point change, gender employment gap
+
+  /* --- the decision ---------------------------------------- */
+  envelope : 30e9            // PKR, one financial year
+};
+
+K.valueCare   = K.ucwWomen * 15.30 * K.weeks * K.wStat;   // replacement cost, PKR/yr
+K.careShare   = K.valueCare / K.gdp * 100;                 // % of GDP
+K.foregone    = K.willing * K.wMonthly * 12;               // PKR/yr
+K.iloAnnual   = K.gdp * K.iloInvest / 100;                 // PKR/yr implied by ILO scenario
+K.iloMultiple = K.iloAnnual / K.envelope;
+
+/* --- the day, from LFS 2024-25 Table 12.2 ------------------ */
+var DAY = [
+  { t:"04:50", k:"hearth",    n:"Lights the hearth",           h:null, p:null,  note:"Before the light." },
+  { t:"05:30", k:"water",     n:"Fetching water",              h:4.3,  p:5.4,   note:"The nearest working hand pump is a twenty-minute walk." },
+  { t:"07:10", k:"fuel",      n:"Collecting firewood and fuel",h:7.4,  p:5.4,   note:"Before the heat comes up." },
+  { t:"08:15", k:"children",  n:"Children fed and watched",    h:7.5,  p:31.1,  note:"There is no daycare centre in the union council." },
+  { t:"09:40", k:"livestock", n:"Livestock and dairy",         h:10.1, p:24.8,  note:"Fodder cut, water carried, animals milked." },
+  { t:"12:20", k:"house",     n:"Cooking, cleaning, laundry",  h:15.3, p:59.7,  note:"Washed by hand, at the pump, in cold water." },
+  { t:"15:00", k:"elder",     n:"Caring for the elderly",      h:7.5,  p:31.1,  note:"Her mother-in-law has not left the charpai in two years." },
+  { t:"17:30", k:"homework",  n:"Helping children with school",h:8.7,  p:12.2,  note:"She did not finish school herself. She checks the work anyway." },
+  { t:"20:00", k:"house2",    n:"The second cooking shift",    h:null, p:null,  note:"The evening meal. Then the dishes." },
+  { t:"22:40", k:"end",       n:"The day ends",                h:null, p:null,  note:"Recorded in the national accounts as nothing at all." }
+];
+
+/* =============================================================
+   2. THE FOUR PATHS
+   ============================================================= */
+var PATHS = [
+  {
+    id:"A", key:"PATH A",
+    title:"Universal Time Infrastructure",
+    blurb:"Combined energy and care package: shared solar micro-grid, mechanised flour mill, community laundry drums and a clean cookstove kit, costed per household.",
+    cost:"PKR 7,500 per household · 6.0 hrs/week returned",
+    kind:"infra", capex:7500, dh:6.0, cobenefit:0
+  },
+  {
+    id:"B", key:"PATH B",
+    title:"National Mill & Laundry Rollout",
+    blurb:"The single cheapest intervention, taken to every BISP household in the country: an electric chakki and shared washing drums per village cluster of 200–250 homes.",
+    cost:"PKR 3,000 per household · 2.5 hrs/week returned",
+    kind:"infra", capex:3000, dh:2.5, cobenefit:870
+  },
+  {
+    id:"C", key:"PATH C",
+    title:"Formal Crèche Network",
+    blurb:"Day Care Centres Act 2023 enforcement with public–private co-funding: purpose-built 40-place centres in industrial and urban clusters, staffed to ILO ratios.",
+    cost:"PKR 2.5 m per 40-place centre · 20 hrs/week of cover",
+    kind:"creche", centreCost:2.5e6, places:40, ratio:6.4, hoursCover:20, mothersPerPlace:0.83
+  },
+  {
+    id:"D", key:"PATH D",
+    title:"Unconditional Cash Top-Up",
+    blurb:"No construction, no procurement, no delivery risk. The entire envelope added to the existing BISP transfer and disbursed through rails that already work.",
+    cost:"PKR 280 per household per month · no hours returned",
+    kind:"cash"
+  }
+];
+
+function runPath(p){
+  var r = { id:p.id, title:p.title, kind:p.kind };
+  var E = K.envelope;
+
+  if (p.kind === "infra"){
+    var afford  = Math.floor(E / p.capex);
+    r.reached   = Math.min(afford, K.housewives);
+    r.capped    = afford > K.housewives;
+    r.spent     = r.reached * p.capex;
+    r.residual  = E - r.spent;
+    r.coverage  = r.reached / K.housewives * 100;
+    r.dh        = p.dh;
+    r.hrsYear   = r.reached * p.dh * K.weeks;
+    r.dYhh      = p.dh * K.weeks * K.alpha * K.wStat;
+    r.output    = r.reached * r.dYhh;
+    r.cobenefit = r.reached * (p.cobenefit || 0);
+    r.outputAll = r.output + r.cobenefit;
+    r.payback   = p.capex / r.dYhh * 12;
+    var pvB     = r.dYhh * K.npv5;
+    var pvC     = p.capex + p.capex * K.maint * K.npv5;
+    r.bcr       = pvB / pvC * K.realize;
+    r.ptJobs    = r.reached * p.dh * K.alpha * K.weeks / (25 * K.weeks);
+    r.formal    = 0;
+  }
+
+  if (p.kind === "creche"){
+    r.centres  = Math.floor(E / p.centreCost);
+    r.spent    = r.centres * p.centreCost;
+    r.residual = E - r.spent;
+    r.places   = r.centres * p.places;
+    r.formal   = r.centres * (p.places / p.ratio);
+    r.mothers  = Math.round(r.places * p.mothersPerPlace);
+    r.reached  = r.mothers;
+    r.coverage = r.mothers / K.housewives * 100;
+    r.dh       = p.hoursCover;
+    r.hrsYear  = r.mothers * p.hoursCover * K.weeks;
+    r.dYhh     = p.hoursCover * K.weeks * K.alphaUrb * K.wStat;
+    r.output   = r.mothers * r.dYhh;
+    r.outputAll= r.output;
+    r.recurrent= r.formal * K.wMonthly * 12;
+    r.net      = r.output - r.recurrent;
+    r.payback  = E / r.output * 12;
+    r.paybackNet = r.net > 0 ? E / r.net * 12 : null;
+    r.bcr      = null;
+    r.ptJobs   = 0;
+  }
+
+  if (p.kind === "cash"){
+    r.reached   = K.housewives;
+    r.spent     = E;
+    r.residual  = 0;
+    r.coverage  = 100;
+    r.perHHYear = E / K.housewives;
+    r.perHHMon  = r.perHHYear / 12;
+    r.dh        = 0;
+    r.hrsYear   = 0;
+    r.output    = E * K.mpc;
+    r.outputAll = r.output;
+    r.payback   = null;
+    r.bcr       = null;
+    r.ptJobs    = 0;
+    r.formal    = 0;
+  }
+  return r;
+}
+
+var R = {};
+PATHS.forEach(function(p){ R[p.id] = runPath(p); });
+
+/* =============================================================
+   3. FORMATTERS
+   ============================================================= */
+function nf(n, dp){
+  return Number(n).toLocaleString("en-US",{ minimumFractionDigits:dp||0, maximumFractionDigits:dp||0 });
+}
+function pkrBig(n){
+  var a = Math.abs(n);
+  if (a >= 1e12) return "PKR " + (n/1e12).toFixed(2) + " tn";
+  if (a >= 1e9)  return "PKR " + (n/1e9 ).toFixed(1) + " bn";
+  if (a >= 1e6)  return "PKR " + (n/1e6 ).toFixed(1) + " m";
+  return "PKR " + nf(n);
+}
+function usdBig(n){
+  var u = n / K.usdRate, a = Math.abs(u);
+  if (a >= 1e9) return "USD " + (u/1e9).toFixed(2) + " bn";
+  if (a >= 1e6) return "USD " + (u/1e6).toFixed(1) + " m";
+  return "USD " + nf(u);
+}
+function mils(n){ return (n/1e6).toFixed(n/1e6 >= 10 ? 1 : 2) + " m"; }
+function hrsBig(n){
+  if (n >= 1e9) return (n/1e9).toFixed(2) + " bn";
+  if (n >= 1e6) return (n/1e6).toFixed(0) + " m";
+  return nf(n);
+}
+
+/* --- source lines, one per scene --------------------------- */
+var SRC = {
+  bisp   : "BISP DFLT-2 verified beneficiary micro-dataset, N = 254,648 · NSER Census 2025–26",
+  lfs12  : "Pakistan Bureau of Statistics, Labour Force Survey 2024–25 (37th Round), Chapter 12, Tables 12.1–12.3",
+  sdg    : "SDG Indicator 5.4.1, hours on unpaid domestic and care work, age 10+ · PBS Labour Force Survey 2024–25",
+  lfsLab : "PBS Labour Force Survey 2024–25 · labour force participation and status in employment, 21st ICLS definitions",
+  method : "Input Replacement Cost Method (SNA 2008 general production boundary) · statutory wage anchor PKR 40,700/month, Pakistan Gazette FY2024–25",
+  gap    : "PBS LFS 2024–25 Chapter 12 · measurement commentary after 19th ICLS resolution standards",
+  both   : "PBS LFS 2024–25 · SDPI, PIDE and UN Women qualitative field studies",
+  model  : "Capital and time-saving parameters from the Targeted Care Infrastructure Quartile Simulator · α = 0.35 after Duflo (2012), Field et al. (2016)",
+  ilo    : "ILO Care Policy Investment Simulator, Pakistan high-investment scenario to 2035 · UN Women estimates",
+  forum  : "National Forum on TransformCare Pakistan, Islamabad, 2–3 October 2026 · UN Women Pakistan × SDPI"
+};
+</script>
+
+<script>
+/* =============================================================
+   4. THE DRAWN SCENES
+   Everything is generated here as inline SVG: no photographs,
+   no external files, no faces. Figures are silhouettes so the
+   piece depicts a statistical composite rather than a person.
+   ============================================================= */
+"use strict";
+
+var C = {
+  ink:"#110F0C", ink2:"#191612", ink3:"#231E18", ink4:"#2E2820",
+  paper:"#F1E9DA", dim:"#BCB2A0", ash:"#857B6C",
+  brass:"#D9A94F", brassD:"#8A6C2E",
+  clay:"#CB6038",  clayD:"#7E3A21",
+  indigo:"#5B8EB8",indigoD:"#2F4D66",
+  sage:"#86A76E",  sageD:"#3E5533"
+};
+
+/* ---------- polar helpers for the day clock ---------------- */
+function pol(cx,cy,r,deg){
+  var a = (deg-90) * Math.PI/180;
+  return [ cx + r*Math.cos(a), cy + r*Math.sin(a) ];
+}
+function ringArc(cx,cy,rOut,rIn,d0,d1){
+  var big = (d1-d0) > 180 ? 1 : 0;
+  var a = pol(cx,cy,rOut,d0), b = pol(cx,cy,rOut,d1),
+      c = pol(cx,cy,rIn ,d1), d = pol(cx,cy,rIn ,d0);
+  return "M"+a[0].toFixed(2)+" "+a[1].toFixed(2)+
+         "A"+rOut+" "+rOut+" 0 "+big+" 1 "+b[0].toFixed(2)+" "+b[1].toFixed(2)+
+         "L"+c[0].toFixed(2)+" "+c[1].toFixed(2)+
+         "A"+rIn +" "+rIn +" 0 "+big+" 0 "+d[0].toFixed(2)+" "+d[1].toFixed(2)+"Z";
+}
+function h2deg(h){ return h/24*360; }
+
+/* ---------- the working day, as arcs ----------------------- */
+/* Colour encodes which kind of policy releases the hour:
+   brass  = physical infrastructure (water, fuel, milling)
+   indigo = care services (childcare, eldercare, schooling)
+   clay   = household labour, only partly mechanisable
+   sage   = subsistence production, counted elsewhere in the LFS */
+var ARCS = [
+  { s:4.833, e:5.500, c:"clay",   n:"Hearth lit",        fam:"Household labour" },
+  { s:5.500, e:6.833, c:"brass",  n:"Water fetched",     fam:"Physical infrastructure" },
+  { s:7.083, e:8.167, c:"brass",  n:"Fuel collected",    fam:"Physical infrastructure" },
+  { s:8.167, e:9.500, c:"indigo", n:"Children",          fam:"Care services" },
+  { s:9.500, e:11.667,c:"sage",   n:"Livestock",         fam:"Subsistence production" },
+  { s:12.167,e:14.667,c:"clay",   n:"Cooking, cleaning, laundry", fam:"Household labour" },
+  { s:15.167,e:17.167,c:"indigo", n:"Eldercare",         fam:"Care services" },
+  { s:17.167,e:18.333,c:"indigo", n:"Schoolwork",        fam:"Care services" },
+  { s:18.667,e:21.167,c:"clay",   n:"Second cooking shift", fam:"Household labour" },
+  { s:21.167,e:21.667,c:"indigo", n:"Children settled",  fam:"Care services" }
+];
+var DAY_TOTAL = ARCS.reduce(function(a,x){ return a + (x.e-x.s); }, 0);
+
+function svgDayClock(opts){
+  opts = opts || {};
+  var cx=270, cy=270, rO=212, rI=146, s=[];
+  s.push('<svg viewBox="0 0 540 540" role="img" aria-label="A twenty-four hour dial showing one woman\'s working day">');
+
+  s.push('<defs><radialGradient id="dcG" cx="50%" cy="50%" r="50%">'+
+         '<stop offset="55%" stop-color="'+C.ink+'" stop-opacity="0"/>'+
+         '<stop offset="100%" stop-color="'+C.brassD+'" stop-opacity="0.12"/></radialGradient></defs>');
+  s.push('<circle cx="270" cy="270" r="250" fill="url(#dcG)"/>');
+
+  // sleep / off band
+  s.push('<circle cx="'+cx+'" cy="'+cy+'" r="'+((rO+rI)/2)+'" fill="none" stroke="'+C.ink3+'" stroke-width="'+(rO-rI)+'"/>');
+
+  // hour ticks
+  for (var h=0; h<24; h++){
+    var maj = (h%6===0), r1 = rO+7, r2 = rO + (maj?20:13);
+    var p1 = pol(cx,cy,r1,h2deg(h)), p2 = pol(cx,cy,r2,h2deg(h));
+    s.push('<line x1="'+p1[0].toFixed(1)+'" y1="'+p1[1].toFixed(1)+'" x2="'+p2[0].toFixed(1)+'" y2="'+p2[1].toFixed(1)+
+           '" stroke="'+(maj?C.ash:C.ink4)+'" stroke-width="'+(maj?1.4:1)+'"/>');
+  }
+  ["00","06","12","18"].forEach(function(lab,i){
+    var p = pol(cx,cy,rO+30,h2deg(i*6));
+    s.push('<text x="'+p[0].toFixed(1)+'" y="'+p[1].toFixed(1)+'" fill="'+C.ash+
+           '" font-family="ui-monospace,Menlo,monospace" font-size="15" letter-spacing="1.5" text-anchor="middle" dominant-baseline="middle">'+lab+'</text>');
+  });
+
+  // task arcs
+  ARCS.forEach(function(a,i){
+    s.push('<path class="dc-arc" data-i="'+i+'" d="'+ringArc(cx,cy,rO,rI,h2deg(a.s),h2deg(a.e))+
+           '" fill="'+C[a.c]+'" opacity="'+(opts.lit?0.92:0)+'"/>');
+  });
+
+  // inner readout
+  s.push('<circle cx="'+cx+'" cy="'+cy+'" r="'+(rI-12)+'" fill="'+C.ink+'" stroke="'+C.ink4+'" stroke-width="1"/>');
+  s.push('<text x="'+cx+'" y="'+(cy-46)+'" fill="'+C.ash+'" font-family="ui-monospace,Menlo,monospace" font-size="12" letter-spacing="3.2" text-anchor="middle">HOURS WORKED</text>');
+  s.push('<text id="dcHours" x="'+cx+'" y="'+(cy+12)+'" fill="'+C.brass+'" font-family="ui-monospace,Menlo,monospace" font-size="68" letter-spacing="-3" text-anchor="middle">0.00</text>');
+  s.push('<line x1="'+(cx-66)+'" y1="'+(cy+34)+'" x2="'+(cx+66)+'" y2="'+(cy+34)+'" stroke="'+C.ink4+'" stroke-width="1"/>');
+  s.push('<text x="'+cx+'" y="'+(cy+56)+'" fill="'+C.ash+'" font-family="ui-monospace,Menlo,monospace" font-size="12" letter-spacing="3.2" text-anchor="middle">WAGE EARNED</text>');
+  s.push('<text id="dcWage" x="'+cx+'" y="'+(cy+90)+'" fill="'+C.dim+'" font-family="ui-monospace,Menlo,monospace" font-size="30" letter-spacing="-1" text-anchor="middle">PKR 0</text>');
+  s.push('</svg>');
+  return s.join("");
+}
+
+/* ---------- pre-dawn courtyard ----------------------------- */
+function svgCourtyard(){
+  var s=[];
+  s.push('<svg viewBox="0 0 900 520" role="img" aria-label="A village courtyard before dawn">');
+  s.push('<defs>'+
+    '<linearGradient id="skyA" x1="0" y1="0" x2="0" y2="1">'+
+      '<stop offset="0%" stop-color="#0C0A08"/>'+
+      '<stop offset="62%" stop-color="#191411"/>'+
+      '<stop offset="100%" stop-color="#2A1E16"/>'+
+    '</linearGradient>'+
+    '<radialGradient id="emb" cx="50%" cy="50%" r="50%">'+
+      '<stop offset="0%" stop-color="'+C.brass+'" stop-opacity=".85"/>'+
+      '<stop offset="45%" stop-color="'+C.clay+'" stop-opacity=".30"/>'+
+      '<stop offset="100%" stop-color="'+C.clay+'" stop-opacity="0"/>'+
+    '</radialGradient>'+
+  '</defs>');
+  s.push('<rect width="900" height="520" fill="url(#skyA)"/>');
+
+  // stars
+  var st=[[80,54],[164,92],[232,42],[318,76],[402,38],[470,96],[556,58],[640,88],[716,46],[806,80],[858,120],[124,132],[286,124],[596,132],[672,150]];
+  st.forEach(function(p,i){
+    s.push('<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(i%3===0?1.5:1)+'" fill="'+C.paper+'" opacity="'+(0.10+(i%4)*0.06)+'"/>');
+  });
+
+  // far ridge
+  s.push('<path d="M0 306 L96 288 L188 300 L276 274 L372 296 L470 268 L566 292 L664 276 L764 298 L860 282 L900 292 L900 520 L0 520Z" fill="#14100D"/>');
+  // treeline
+  ["#17120E","#1A1410"].forEach(function(col,k){
+    var y = 316 + k*8, d = "M0 "+y;
+    for (var x=0; x<=900; x+=45){ d += " q22 -"+(13+((x/45+k)%3)*7)+" 45 0"; }
+    s.push('<path d="'+d+' L900 520 L0 520Z" fill="'+col+'"/>');
+  });
+
+  // ground
+  s.push('<rect x="0" y="352" width="900" height="168" fill="#120F0C"/>');
+  s.push('<path d="M0 352 Q450 342 900 352 L900 372 Q450 362 0 372Z" fill="#191411"/>');
+
+  // house block
+  s.push('<path d="M232 218 L232 372 L560 372 L560 218 L396 158Z" fill="#0D0B09"/>');
+  s.push('<path d="M232 218 L396 158 L560 218 L560 232 L396 172 L232 232Z" fill="#171310"/>');
+  // doorway, lit
+  s.push('<ellipse cx="404" cy="322" rx="132" ry="104" fill="url(#emb)"/>');
+  s.push('<path d="M364 372 L364 262 Q404 240 444 262 L444 372Z" fill="#241A12"/>');
+  s.push('<path d="M372 372 L372 268 Q404 250 436 268 L436 372Z" fill="'+C.clayD+'" opacity=".55"/>');
+  s.push('<path d="M382 372 L382 282 Q404 270 426 282 L426 372Z" fill="'+C.brass+'" opacity=".42"/>');
+  // small window
+  s.push('<rect x="486" y="258" width="38" height="44" fill="'+C.brassD+'" opacity=".38"/>');
+  s.push('<line x1="505" y1="258" x2="505" y2="302" stroke="#0D0B09" stroke-width="2.5"/>');
+
+  // charpai
+  s.push('<g opacity=".8"><rect x="622" y="316" width="146" height="9" fill="#1F1912"/>'+
+         '<rect x="628" y="325" width="6" height="36" fill="#1F1912"/>'+
+         '<rect x="756" y="325" width="6" height="36" fill="#1F1912"/>'+
+         '<rect x="628" y="306" width="134" height="10" fill="#262019"/></g>');
+
+  // water vessels
+  s.push('<g opacity=".92"><ellipse cx="200" cy="364" rx="21" ry="7" fill="#0C0A08"/>'+
+         '<path d="M181 362 Q178 334 190 326 Q200 320 210 326 Q222 334 219 362Z" fill="#241D16"/>'+
+         '<ellipse cx="200" cy="326" rx="12" ry="4" fill="#31281F"/></g>');
+  s.push('<g opacity=".78"><ellipse cx="152" cy="368" rx="16" ry="5.5" fill="#0C0A08"/>'+
+         '<path d="M138 366 Q136 346 145 340 Q152 336 159 340 Q168 346 166 366Z" fill="#221B15"/></g>');
+
+  // tree
+  s.push('<path d="M812 372 L812 286 Q806 268 818 254 Q826 244 834 252 Q846 266 838 288 L838 372Z" fill="#100D0B"/>');
+  s.push('<ellipse cx="826" cy="238" rx="62" ry="40" fill="#141010"/><ellipse cx="792" cy="252" rx="40" ry="26" fill="#161211"/>');
+
+  s.push('</svg>');
+  return s.join("");
+}
+
+/* ---------- the walk for water ----------------------------- */
+function svgWaterWalk(){
+  var s=[];
+  s.push('<svg viewBox="0 0 900 420" role="img" aria-label="The walk to the nearest working hand pump">');
+  s.push('<defs><linearGradient id="dawn" x1="0" y1="0" x2="0" y2="1">'+
+    '<stop offset="0%" stop-color="#15110E"/><stop offset="70%" stop-color="#241A14"/>'+
+    '<stop offset="100%" stop-color="#3A2718"/></linearGradient></defs>');
+  s.push('<rect width="900" height="420" fill="url(#dawn)"/>');
+  s.push('<circle cx="742" cy="286" r="54" fill="'+C.clay+'" opacity=".16"/>');
+  s.push('<circle cx="742" cy="290" r="30" fill="'+C.brass+'" opacity=".22"/>');
+
+  // horizon + field furrows
+  s.push('<rect x="0" y="288" width="900" height="132" fill="#15110D"/>');
+  for (var i=0;i<9;i++){
+    var y = 300 + i*14;
+    s.push('<path d="M0 '+y+' Q450 '+(y-7)+' 900 '+y+'" stroke="#1D1712" stroke-width="'+(1+i*0.25)+'" fill="none" opacity=".8"/>');
+  }
+
+  // the path
+  s.push('<path d="M40 412 Q300 372 470 340 Q620 312 700 300" stroke="#2A2119" stroke-width="26" fill="none" stroke-linecap="round" opacity=".7"/>');
+  s.push('<path d="M40 412 Q300 372 470 340 Q620 312 700 300" stroke="#332819" stroke-width="12" fill="none" stroke-linecap="round" stroke-dasharray="3 13" opacity=".8"/>');
+
+  // hand pump
+  s.push('<g transform="translate(712,236)">'+
+    '<rect x="-5" y="0" width="10" height="66" fill="#0E0C0A"/>'+
+    '<rect x="-22" y="62" width="44" height="9" fill="#0E0C0A"/>'+
+    '<path d="M-4 6 L-4 -14 L20 -14 L20 -6 L4 -6 L4 6Z" fill="#0E0C0A"/>'+
+    '<path d="M-6 -14 L-32 -26 L-32 -16 L-6 -6Z" fill="#0E0C0A"/>'+
+    '<ellipse cx="22" cy="72" rx="26" ry="6" fill="'+C.indigoD+'" opacity=".45"/></g>');
+
+  // walking silhouette, mid-stride, vessel on head
+  s.push('<g transform="translate(330,268) scale(1.16)">'+
+    '<ellipse cx="6" cy="102" rx="28" ry="5" fill="#000" opacity=".4"/>'+
+    '<path d="M-14 -34 Q-16 -46 0 -46 Q16 -46 14 -34 L12 -14 L-12 -14Z" fill="#0C0A08"/>'+  /* head + shawl */
+    '<path d="M-17 -16 Q0 -22 17 -16 L23 36 Q0 44 -23 36Z" fill="#0C0A08"/>'+               /* torso + chador */
+    '<path d="M-23 34 L-14 96 L-3 96 L-6 36Z" fill="#0C0A08"/>'+                            /* back leg */
+    '<path d="M6 36 L22 92 L32 88 L16 34Z" fill="#0C0A08"/>'+                               /* front leg */
+    '<path d="M16 -12 L30 22 L24 26 L9 -6Z" fill="#0C0A08"/>'+                              /* raised arm */
+    '<ellipse cx="0" cy="-52" rx="22" ry="7" fill="#161210"/>'+
+    '<path d="M-19 -54 Q-22 -76 0 -80 Q22 -76 19 -54Z" fill="#1E1813"/>'+
+    '<ellipse cx="0" cy="-80" rx="13" ry="4" fill="#2A2219"/></g>');
+
+  // distance marker
+  s.push('<line x1="360" y1="368" x2="700" y2="316" stroke="'+C.brassD+'" stroke-width="1" stroke-dasharray="4 5"/>');
+  s.push('<text x="500" y="356" fill="'+C.brass+'" font-family="ui-monospace,Menlo,monospace" font-size="15" letter-spacing="2.2">20 MIN EACH WAY</text>');
+  s.push('<text x="500" y="378" fill="'+C.ash+'" font-family="ui-monospace,Menlo,monospace" font-size="12.5" letter-spacing="1.4">4.3 HRS / WEEK · LFS 12.2</text>');
+  s.push('</svg>');
+  return s.join("");
+}
+
+/* ---------- the care hub (the after) ------------------------ */
+function svgHub(){
+  var s=[];
+  s.push('<svg viewBox="0 0 900 420" role="img" aria-label="A village care hub with shared mill, laundry and daylight">');
+  s.push('<defs><linearGradient id="hubSky" x1="0" y1="0" x2="0" y2="1">'+
+    '<stop offset="0%" stop-color="#161310"/><stop offset="100%" stop-color="#2B2118"/></linearGradient>'+
+    '<radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">'+
+      '<stop offset="0%" stop-color="'+C.brass+'" stop-opacity=".58"/>'+
+      '<stop offset="100%" stop-color="'+C.brass+'" stop-opacity="0"/></radialGradient></defs>');
+  s.push('<rect width="900" height="420" fill="url(#hubSky)"/>');
+  s.push('<ellipse cx="450" cy="292" rx="330" ry="150" fill="url(#hubGlow)"/>');
+  s.push('<rect x="0" y="322" width="900" height="98" fill="#13100D"/>');
+
+  // building
+  s.push('<rect x="270" y="196" width="360" height="128" fill="#0E0C0A"/>');
+  s.push('<path d="M258 196 L642 196 L618 172 L282 172Z" fill="#191411"/>');
+  // solar panels
+  s.push('<g transform="translate(318,150)">'+
+    '<path d="M0 22 L118 22 L136 0 L18 0Z" fill="'+C.indigoD+'"/>'+
+    '<path d="M18 0 L136 0 L130 8 L12 8Z" fill="'+C.indigo+'" opacity=".55"/>'+
+    '<line x1="30" y1="22" x2="48" y2="0" stroke="#0E0C0A" stroke-width="1.5"/>'+
+    '<line x1="62" y1="22" x2="80" y2="0" stroke="#0E0C0A" stroke-width="1.5"/>'+
+    '<line x1="94" y1="22" x2="112" y2="0" stroke="#0E0C0A" stroke-width="1.5"/></g>');
+  // windows lit
+  [304,368,432,496,560].forEach(function(x){
+    s.push('<rect x="'+x+'" y="226" width="42" height="52" fill="'+C.brass+'" opacity=".62"/>');
+    s.push('<line x1="'+(x+21)+'" y1="226" x2="'+(x+21)+'" y2="278" stroke="#0E0C0A" stroke-width="2.5"/>');
+  });
+  // door + spill of light
+  s.push('<path d="M420 324 L420 256 Q450 240 480 256 L480 324Z" fill="'+C.brass+'" opacity=".80"/>');
+  s.push('<path d="M416 324 L484 324 L534 400 L366 400Z" fill="'+C.brass+'" opacity=".16"/>');
+  // water tank
+  s.push('<g><rect x="680" y="234" width="9" height="90" fill="#100D0B"/><rect x="722" y="234" width="9" height="90" fill="#100D0B"/>'+
+         '<rect x="664" y="198" width="84" height="40" rx="5" fill="#1B1611"/>'+
+         '<rect x="664" y="198" width="84" height="9" rx="4" fill="'+C.indigoD+'" opacity=".7"/></g>');
+  // mill wheel
+  s.push('<g transform="translate(190,272)"><circle r="44" fill="#141110" stroke="'+C.brassD+'" stroke-width="2.5"/>'+
+         '<circle r="9" fill="'+C.brassD+'"/>');
+  for (var a=0;a<8;a++){ var ang=a*45*Math.PI/180;
+    s.push('<line x1="0" y1="0" x2="'+(Math.cos(ang)*40).toFixed(1)+'" y2="'+(Math.sin(ang)*40).toFixed(1)+'" stroke="'+C.brassD+'" stroke-width="2"/>'); }
+  s.push('</g>');
+  s.push('<rect x="146" y="316" width="88" height="8" fill="#100D0B"/>');
+
+  // three figures walking in, no faces
+  [[600,0.9],[660,0.78],[712,0.66]].forEach(function(f,i){
+    s.push('<g transform="translate('+f[0]+',324) scale('+f[1]+')" opacity="'+(0.95-i*0.16)+'">'+
+      '<path d="M-11 -30 Q-13 -41 0 -41 Q13 -41 11 -30 L9 -12 L-9 -12Z" fill="#0B0908"/>'+
+      '<path d="M-14 -14 Q0 -19 14 -14 L19 30 Q0 37 -19 30Z" fill="#0B0908"/>'+
+      '<path d="M-17 28 L-10 68 L-2 68 L-4 30Z" fill="#0B0908"/>'+
+      '<path d="M5 30 L14 68 L22 66 L10 28Z" fill="#0B0908"/></g>');
+  });
+  // two small figures
+  [[556,0.52],[528,0.46]].forEach(function(f){
+    s.push('<g transform="translate('+f[0]+',324) scale('+f[1]+')" opacity=".85">'+
+      '<circle cx="0" cy="-34" r="13" fill="#0B0908"/>'+
+      '<path d="M-13 -18 Q0 -23 13 -18 L16 28 Q0 33 -16 28Z" fill="#0B0908"/>'+
+      '<path d="M-13 26 L-8 66 L-1 66 L-3 28Z" fill="#0B0908"/>'+
+      '<path d="M4 28 L11 66 L18 64 L9 26Z" fill="#0B0908"/></g>');
+  });
+  s.push('</svg>');
+  return s.join("");
+}
+
+/* ---------- the room --------------------------------------- */
+function svgRoom(){
+  var s=[];
+  s.push('<svg viewBox="0 0 900 460" role="img" aria-label="A federal budget hearing room at night">');
+  s.push('<rect width="900" height="460" fill="#0F1114"/>');
+  // rear wall + window
+  s.push('<rect x="0" y="0" width="900" height="300" fill="#12151A"/>');
+  s.push('<rect x="588" y="46" width="272" height="188" fill="#0A0D11"/>');
+  // city at night beyond the glass
+  var bl=[[598,150,26,84],[630,128,20,106],[656,162,30,72],[692,116,22,118],[720,146,28,88],[754,132,24,102],[784,158,30,76],[820,140,26,94]];
+  bl.forEach(function(b,i){
+    s.push('<rect x="'+b[0]+'" y="'+b[1]+'" width="'+b[2]+'" height="'+b[3]+'" fill="#151A20"/>');
+    for (var r=0;r<Math.floor(b[3]/18);r++){ for(var c2=0;c2<Math.floor(b[2]/10);c2++){
+      if ((r+c2+i)%3===0) s.push('<rect x="'+(b[0]+4+c2*10)+'" y="'+(b[1]+8+r*18)+'" width="4" height="6" fill="'+C.brass+'" opacity=".30"/>');
+    }}
+  });
+  s.push('<line x1="724" y1="46" x2="724" y2="234" stroke="#0F1114" stroke-width="5"/>');
+  s.push('<line x1="588" y1="140" x2="860" y2="140" stroke="#0F1114" stroke-width="5"/>');
+  s.push('<rect x="588" y="46" width="272" height="188" fill="none" stroke="#1B2129" stroke-width="3"/>');
+
+  // wall screen with a faint chart
+  s.push('<rect x="58" y="54" width="392" height="184" fill="#0B0E12" stroke="#1B2129" stroke-width="2"/>');
+  s.push('<line x1="86" y1="206" x2="424" y2="206" stroke="#1E262F" stroke-width="1.5"/>');
+  s.push('<line x1="86" y1="80" x2="86" y2="206" stroke="#1E262F" stroke-width="1.5"/>');
+  var bars=[26,40,34,58,52,76,70,96,88,118];
+  bars.forEach(function(h,i){
+    s.push('<rect x="'+(100+i*32)+'" y="'+(206-h)+'" width="17" height="'+h+'" fill="'+C.indigo+'" opacity="'+(0.22+i*0.055)+'"/>');
+  });
+  s.push('<text x="86" y="72" fill="'+C.indigo+'" font-family="ui-monospace,Menlo,monospace" font-size="11" letter-spacing="2.4" opacity=".7">PROJECTED CARE COVERAGE 2026–2035</text>');
+
+  // table, in perspective
+  s.push('<path d="M120 460 L210 322 L690 322 L780 460Z" fill="#171B21"/>');
+  s.push('<path d="M210 322 L690 322 L698 334 L202 334Z" fill="#1F252D"/>');
+  s.push('<path d="M120 460 L210 322 L214 322 L128 460Z" fill="#101318" opacity=".8"/>');
+
+  // six seats: papers, water glass, a small lamp each
+  var seats=[[248,336],[356,336],[464,336],[572,336],[300,372],[560,372]];
+  seats.forEach(function(p,i){
+    s.push('<rect x="'+(p[0]-26)+'" y="'+p[1]+'" width="52" height="15" fill="#F1E9DA" opacity=".13" transform="skewX(-6)"/>');
+    s.push('<rect x="'+(p[0]-20)+'" y="'+(p[1]+5)+'" width="40" height="11" fill="#F1E9DA" opacity=".08" transform="skewX(-6)"/>');
+    s.push('<rect x="'+(p[0]+30)+'" y="'+(p[1]-8)+'" width="7" height="16" fill="'+C.indigo+'" opacity=".35"/>');
+    s.push('<circle cx="'+(p[0]-38)+'" cy="'+(p[1]+2)+'" r="3.4" fill="'+C.brass+'" opacity=".55"/>');
+  });
+
+  // six chair-back silhouettes
+  [[238,300],[348,300],[458,300],[568,300],[292,318],[556,318]].forEach(function(p,i){
+    s.push('<path d="M'+(p[0]-30)+' '+p[1]+' Q'+p[0]+' '+(p[1]-52)+' '+(p[0]+30)+' '+p[1]+' L'+(p[0]+30)+' '+(p[1]+26)+' L'+(p[0]-30)+' '+(p[1]+26)+'Z" fill="#0C0F13" opacity="'+(0.92-i*0.04)+'"/>');
+  });
+
+  s.push('</svg>');
+  return s.join("");
+}
+
+/* ---------- household dot cartogram ------------------------ */
+var CARTO = { perDot:12000, cols:40, rows:19 };
+var PROV = [
+  { n:"Punjab",      sh:54.4, c:C.brass  },
+  { n:"Khyber Pakhtunkhwa", sh:27.0, c:C.clay },
+  { n:"Sindh",       sh:12.6, c:C.indigo },
+  { n:"Balochistan", sh: 4.5, c:C.sage   },
+  { n:"Islamabad CT",sh: 1.5, c:C.dim    }
+];
+
+function svgCarto(){
+  var total = Math.round(K.housewives / CARTO.perDot);   // 745 dots
+  var gap = 22, r = 7.4, pad = 14, s = [];
+  var w = CARTO.cols*gap + pad*2, h = CARTO.rows*gap + pad*2;
+  s.push('<svg class="carto" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="Each dot is twelve thousand BISP households, coloured by province">');
+  var idx = 0, cum = 0, bands = [];
+  PROV.forEach(function(p){ cum += p.sh/100*total; bands.push({ upTo:Math.round(cum), c:p.c }); });
+
+  for (var row=0; row<CARTO.rows; row++){
+    for (var col=0; col<CARTO.cols; col++){
+      if (idx >= total) break;
+      var col2 = bands.find(function(b){ return idx < b.upTo; });
+      var fill = col2 ? col2.c : C.dim;
+      s.push('<circle class="cd" data-i="'+idx+'" cx="'+(pad+col*gap+gap/2)+'" cy="'+(pad+row*gap+gap/2)+
+             '" r="'+r+'" fill="'+fill+'" opacity="0.14"/>');
+      idx++;
+    }
+  }
+  s.push('</svg>');
+  return s.join("");
+}
+function cartoKey(){
+  return PROV.map(function(p){
+    return '<span><i class="carto__sw" style="background:'+p.c+'"></i>'+p.n+' · '+p.sh.toFixed(1)+'%</span>';
+  }).join("") + '<span style="color:var(--paper-dim)">1 dot = 12,000 households</span>';
+}
+</script>
+
+<script>
+/* =============================================================
+   5. THE SCRIPT
+   Each scene may carry internal steps. The presenter advances
+   with Space or the right arrow; steps run in order, then the
+   deck moves on to the next scene.
+   ============================================================= */
+"use strict";
+
+var SCENES = [];
+
+/* ---------- 01 TITLE --------------------------------------- */
+SCENES.push({
+  act:"", actName:"Opening", title:"The Uncounted Hour", src:SRC.forum, clock:"",
+  build:function(){ return ''+
+    '<div class="stack" style="gap:clamp(16px,3vh,34px)">'+
+      '<div class="eyebrow">A care economy simulation for Pakistan</div>'+
+      '<h1 class="display">The Uncounted<br>Hour</h1>'+
+      '<div class="lede" style="max-width:54ch">Fifteen hours a week of unpaid domestic and care work stand between 66.7 million Pakistani women and the labour market. This is what one financial year of public investment does to that number — and what it does not.</div>'+
+      '<div class="figs figs--3" style="margin-top:clamp(6px,1.4vh,16px)">'+
+        '<div class="fig"><div class="fig__l">Convening</div><div class="fig__s" style="font-size:11.5px;line-height:1.55;color:var(--paper-dim)">National Forum on TransformCare Pakistan<br>Islamabad · 2–3 October 2026</div></div>'+
+        '<div class="fig"><div class="fig__l">Prepared by</div><div class="fig__s" style="font-size:11.5px;line-height:1.55;color:var(--paper-dim)">Sustainable Development Policy Institute<br>with UN Women Pakistan</div></div>'+
+        '<div class="fig"><div class="fig__l">Evidence base</div><div class="fig__s" style="font-size:11.5px;line-height:1.55;color:var(--paper-dim)">PBS Labour Force Survey 2024–25<br>BISP DFLT-2, N = 254,648</div></div>'+
+      '</div>'+
+      '<p class="fine" style="max-width:96ch;border-top:1px solid var(--line-2);padding-top:14px">'+
+        'Every figure is computed on screen from published national statistics, and the source for whatever is displayed appears in the bar below. '+
+        'All individuals depicted are statistical composites. All speakers are institutional roles. No real person is portrayed and no statement is attributed to any named official.'+
+      '</p>'+
+      '<p class="fine" style="color:var(--brass-dim)">Space or → to advance · ← to go back · M for the scene index · A for auto-advance</p>'+
+    '</div>'; }
+});
+
+/* ---------- 02 COURTYARD ----------------------------------- */
+SCENES.push({
+  act:"ACT I", actName:"One Day", title:"Before the light", src:SRC.bisp, clock:"04:50",
+  build:function(){ return ''+
+    '<div class="split">'+
+      '<div class="split__art">'+svgCourtyard()+'</div>'+
+      '<div class="split__txt">'+
+        '<div class="eyebrow">04:50 · Rural Punjab</div>'+
+        '<p class="narr" id="n1"></p>'+
+        '<p class="lede" id="n2" style="opacity:0;transition:opacity .7s">She is a composite, assembled from 254,648 verified household records held by the Benazir Income Support Programme — a 2.12 per cent sample of the twelve million households on its roll.</p>'+
+        '<p class="lede" id="n3" style="opacity:0;transition:opacity .7s;color:var(--paper)">What follows is her day, set against what the national survey records of it.</p>'+
+      '</div>'+
+    '</div>'; },
+  steps:[
+    function(a){ a.tw("#n1","The day begins before the light does."); },
+    function(a){ a.show("#n2"); },
+    function(a){ a.show("#n3"); }
+  ]
+});
+
+/* ---------- 03 THE WALK ------------------------------------ */
+SCENES.push({
+  act:"ACT I", actName:"One Day", title:"The walk for water", src:SRC.lfs12, clock:"05:30",
+  build:function(){ return ''+
+    '<div class="stack" style="flex:1 1 auto;justify-content:center">'+
+      '<div class="eyebrow">05:30 · The first errand</div>'+
+      '<p class="narr narr--wide" id="w1"></p>'+
+      '<div class="artband" style="--h:38vh">'+svgWaterWalk()+'</div>'+
+      '<div class="figs figs--3" id="wF" style="opacity:0;transition:opacity .8s">'+
+        '<div class="fig"><div class="fig__n fig__n--brass">4.3<small>hrs / week</small></div><div class="fig__l">Time spent fetching water</div><div class="fig__s">Mean, women reporting the activity</div></div>'+
+        '<div class="fig"><div class="fig__n">4.7<small>million</small></div><div class="fig__l">Women doing it</div><div class="fig__s">5.4% of working-age women</div></div>'+
+        '<div class="fig"><div class="fig__n fig__n--brass">7.4<small>hrs / week</small></div><div class="fig__l">Collecting firewood and fuel</div><div class="fig__s">A further 4.7 million women</div></div>'+
+      '</div>'+
+    '</div>'; },
+  steps:[
+    function(a){ a.tw("#w1","The pump in her own street stopped working in March. The nearest one that still runs is a twenty-minute walk."); },
+    function(a){ a.show("#wF"); }
+  ]
+});
+
+/* ---------- 04 THE DAY CLOCK ------------------------------- */
+SCENES.push({
+  act:"ACT I", actName:"One Day", title:"The working day", src:SRC.lfs12, clock:"—",
+  build:function(){
+    var rows = ARCS.map(function(x,i){
+      var hh = Math.floor(x.s), mm = Math.round((x.s-hh)*60);
+      var t = (hh<10?"0":"")+hh+":"+(mm<10?"0":"")+mm;
+      return '<div class="tasklog__row" data-r="'+i+'">'+
+        '<span class="tasklog__t">'+t+'</span>'+
+        '<span class="tasklog__n">'+x.n+'</span>'+
+        '<span class="tasklog__h">'+(x.e-x.s).toFixed(2)+' h</span></div>';
+    }).join("");
+    return ''+
+    '<div class="stack" style="flex:1 1 auto;min-height:0;gap:clamp(10px,1.6vh,20px)">'+
+      '<div class="eyebrow">One working day, measured against LFS Table 12.2</div>'+
+      '<div class="clockwrap">'+
+        '<div>'+svgDayClock()+'</div>'+
+        '<div class="stack" style="gap:14px;min-width:0">'+
+          '<p class="narr" id="c1" style="font-size:clamp(15px,1.75vw,21px);max-width:34ch;min-height:0"></p>'+
+          '<div class="tasklog">'+rows+'</div>'+
+          '<div class="carto__key" style="margin-top:2px">'+
+            '<span><i class="carto__sw" style="background:'+C.brass+'"></i>Released by physical infrastructure</span>'+
+            '<span><i class="carto__sw" style="background:'+C.indigo+'"></i>Released by care services</span>'+
+            '<span><i class="carto__sw" style="background:'+C.clay+'"></i>Household labour</span>'+
+            '<span><i class="carto__sw" style="background:'+C.sage+'"></i>Subsistence production</span>'+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>'; },
+  steps:(function(){
+    var out = [ function(a){ a.tw("#c1","Every colour is a different kind of policy failure. Watch which ones a road, a pump or a mill could fix."); } ];
+    ARCS.forEach(function(arc,i){
+      out.push(function(a){
+        var el = a.el.querySelector('.dc-arc[data-i="'+i+'"]');
+        if (el){ el.style.transition = "opacity .55s ease"; el.style.opacity = ".92"; }
+        var row = a.el.querySelector('.tasklog__row[data-r="'+i+'"]');
+        if (row) row.classList.add("is-on");
+        var cum = 0; for (var j=0;j<=i;j++) cum += (ARCS[j].e - ARCS[j].s);
+        a.num("#dcHours", cum, 2, 900);
+        a.el.querySelector("#dcWage").textContent = "PKR 0";
+      });
+    });
+    out.push(function(a){
+      a.tw("#c1","Fifteen and a quarter hours of work. Nothing in the second line moves, because none of it is priced.");
+      var w = a.el.querySelector("#dcWage");
+      if (w){ w.style.color = C.clay; }
+    });
+    return out;
+  })()
+});
+
+/* ---------- 05 THE MEASUREMENT PARADOX --------------------- */
+SCENES.push({
+  act:"ACT I", actName:"One Day", title:"Fifteen", src:SRC.both, clock:"",
+  build:function(){ return ''+
+    '<div class="stack" style="flex:1 1 auto;justify-content:center;gap:clamp(14px,2.6vh,30px)">'+
+      '<div class="eyebrow">The number that means two different things</div>'+
+      '<div class="figs figs--2">'+
+        '<div class="fig" style="padding:clamp(18px,2.6vw,34px)">'+
+          '<div class="fig__n fig__n--indigo" style="font-size:clamp(34px,6vw,76px)">15.2<small>hrs / week</small></div>'+
+          '<div class="fig__l">What the survey records</div>'+
+          '<div class="fig__s">SDG 5.4.1, unpaid domestic and care work, women aged 10+ · PBS Labour Force Survey 2024–25. Men: 8.1 hours.</div>'+
+        '</div>'+
+        '<div class="fig" style="padding:clamp(18px,2.6vw,34px)">'+
+          '<div class="fig__n fig__n--clay" style="font-size:clamp(34px,6vw,76px)">15.3<small>hrs / day</small></div>'+
+          '<div class="fig__l">What the field studies describe</div>'+
+          '<div class="fig__s">A 14–16 hour working day, documented repeatedly by SDPI, PIDE and UN Women qualitative research in rural districts.</div>'+
+        '</div>'+
+      '</div>'+
+      '<p class="narr narr--wide" id="f1" style="font-size:clamp(17px,2.3vw,29px)"></p>'+
+      '<div id="f2" style="opacity:0;transition:opacity .8s">'+
+        '<p class="kicker" style="margin-bottom:12px">Four documented reasons the two diverge</p>'+
+        '<div class="figs figs--4">'+
+          '<div class="fig"><div class="fig__l" style="color:var(--brass)">Multi-tasking erasure</div><div class="fig__s" style="font-size:12px;line-height:1.5;color:var(--paper-dim)">Primary-activity coding records one task at a time. A woman baking bread while watching an infant and tending a bedridden parent is recorded as cooking.</div></div>'+
+          '<div class="fig"><div class="fig__l" style="color:var(--brass)">Boundary placement</div><div class="fig__s" style="font-size:12px;line-height:1.5;color:var(--paper-dim)">Livestock, fodder and field work sit under unpaid family labour in agriculture, not under care — 10.1 hours a week that never reaches the care column.</div></div>'+
+          '<div class="fig"><div class="fig__l" style="color:var(--brass)">Proxy respondent bias</div><div class="fig__s" style="font-size:12px;line-height:1.5;color:var(--paper-dim)">Enumerators interview whoever answers the door. That is overwhelmingly the male household head, who reports the work as ordinary chores.</div></div>'+
+          '<div class="fig"><div class="fig__l" style="color:var(--brass)">Demographic dilution</div><div class="fig__s" style="font-size:12px;line-height:1.5;color:var(--paper-dim)">The national mean averages across all 87.6 million women, including urban households with paid domestic staff and unmarried students.</div></div>'+
+        '</div>'+
+      '</div>'+
+      '<p class="lede" id="f3" style="opacity:0;transition:opacity .8s;color:var(--paper);max-width:84ch">Both measurements are defensible. They are answering different questions. Only one of them has ever been used to write a budget.</p>'+
+    '</div>'; },
+  steps:[
+    function(a){ a.tw("#f1","Same number. Different denominator."); },
+    function(a){ a.show("#f2"); },
+    function(a){ a.show("#f3"); }
+  ]
+});
+
+/* ---------- 06 MULTIPLICATION ------------------------------ */
+SCENES.push({
+  act:"ACT II", actName:"Sixty-Six Million", title:"The survey frame", src:SRC.lfs12, clock:"",
+  build:function(){ return ''+
+    '<div class="cartowrap">'+
+      '<div class="eyebrow">Every dot is 12,000 BISP households on the national roll</div>'+
+      '<p class="narr narr--wide" id="m1" style="font-size:clamp(16px,2.1vw,26px)"></p>'+
+      svgCarto()+
+      '<div class="carto__key">'+cartoKey()+'</div>'+
+      '<div class="figs figs--4" id="mF" style="opacity:0;transition:opacity .8s">'+
+        '<div class="fig"><div class="fig__n">179.6<small>m</small></div><div class="fig__l">Working-age population</div><div class="fig__s">Aged 10 and above</div></div>'+
+        '<div class="fig"><div class="fig__n">117.4<small>m</small></div><div class="fig__l">Perform unpaid care work</div><div class="fig__s">65% of the working-age population</div></div>'+
+        '<div class="fig"><div class="fig__n fig__n--clay">66.7<small>m</small></div><div class="fig__l">Women</div><div class="fig__s">77.1% of all working-age women</div></div>'+
+        '<div class="fig"><div class="fig__n fig__n--indigo">50.7<small>m</small></div><div class="fig__l">Men</div><div class="fig__s">55.0% of all working-age men</div></div>'+
+      '</div>'+
+    '</div>'; },
+  steps:[
+    function(a){ a.tw("#m1","She is 8,942,084 women."); a.dots(1.0, 1600); },
+    function(a){ a.show("#mF"); a.tw("#m1","And the BISP roll is only the poorest edge of a much larger frame."); }
+  ]
+});
+
+/* ---------- 07 THE TWO CHARTS ------------------------------ */
+SCENES.push({
+  act:"ACT II", actName:"Sixty-Six Million", title:"The two charts", src:SRC.sdg, clock:"",
+  build:function(){ return ''+
+    '<div class="split">'+
+      '<div class="split__txt">'+
+        '<div class="eyebrow">Unpaid domestic and care work · hours per week</div>'+
+        '<div class="bars">'+
+          '<div><div class="bar__top"><span class="bar__lab">Women</span><span class="bar__val" style="color:'+C.clay+'">15.2 h</span></div>'+
+            '<div class="bar__track"><div class="bar__fill bar__fill--clay" data-w="100"></div></div></div>'+
+          '<div><div class="bar__top"><span class="bar__lab">Men</span><span class="bar__val" style="color:'+C.indigo+'">8.1 h</span></div>'+
+            '<div class="bar__track"><div class="bar__fill bar__fill--indigo" data-w="53.3"></div></div></div>'+
+        '</div>'+
+        '<div class="eyebrow" style="margin-top:clamp(10px,2.4vh,26px)">Labour force participation · per cent</div>'+
+        '<div class="bars">'+
+          '<div><div class="bar__top"><span class="bar__lab">Women</span><span class="bar__val" style="color:'+C.clay+'">22.7%</span></div>'+
+            '<div class="bar__track"><div class="bar__fill bar__fill--clay" data-w="33"></div></div></div>'+
+          '<div><div class="bar__top"><span class="bar__lab">Men</span><span class="bar__val" style="color:'+C.indigo+'">68.7%</span></div>'+
+            '<div class="bar__track"><div class="bar__fill bar__fill--indigo" data-w="100"></div></div></div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="split__txt">'+
+        '<p class="narr" id="t1"></p>'+
+        '<p class="lede" id="t2" style="opacity:0;transition:opacity .7s">Women carry 1.9 times the unpaid hours and hold one third of the participation rate. The relationship is not a coincidence and it is not a preference: the first chart is the mechanism that produces the second.</p>'+
+        '<div class="caveat" id="t3" style="opacity:0;transition:opacity .7s">'+
+          '<div class="caveat__h">And for those who do enter</div>'+
+          '<div class="caveat__b"><b style="color:var(--paper);font-weight:400">49.7 per cent</b> of all employed women in Pakistan work as contributing family workers — almost half of the women the country counts as employed earn no independent wage at all. National informality stands at 80.8 per cent.</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>'; },
+  steps:[
+    function(a){ a.tw("#t1","These are two views of the same constraint."); a.bars(); },
+    function(a){ a.show("#t2"); },
+    function(a){ a.show("#t3"); }
+  ]
+});
+
+/* ---------- 08 THE LEDGER ---------------------------------- */
+SCENES.push({
+  act:"ACT III", actName:"The Price", title:"What it is worth", src:SRC.method, clock:"",
+  build:function(){ return ''+
+    '<div class="stack" style="flex:1 1 auto;justify-content:center;gap:clamp(14px,2.6vh,30px)">'+
+      '<div class="eyebrow">Input replacement cost · generalist domestic worker approach</div>'+
+      '<h2 class="head">If the country had to buy this labour, what would it pay?</h2>'+
+      '<div class="ledger">'+
+        '<div class="ledger__eq">'+
+          '<span class="ledger__term" data-e="0" style="opacity:.16">66,700,000 <b>women</b></span><span class="ledger__op" data-e="0" style="opacity:.16">×</span>'+
+          '<span class="ledger__term" data-e="1" style="opacity:.16">15.30 <b>hrs / week</b></span><span class="ledger__op" data-e="1" style="opacity:.16">×</span>'+
+          '<span class="ledger__term" data-e="2" style="opacity:.16">52 <b>weeks</b></span><span class="ledger__op" data-e="2" style="opacity:.16">×</span>'+
+          '<span class="ledger__term" data-e="3" style="opacity:.16">PKR 195.673 <b>/ hour</b></span>'+
+        '</div>'+
+        '<div class="ledger__rule"></div>'+
+        '<div class="ledger__out">'+
+          '<span class="ledger__big" id="lBig">PKR 0.00 tn</span>'+
+          '<span class="ledger__unit" id="lPct" style="opacity:0;transition:opacity .7s">= 9.8% of national GDP · approx. USD 37.1 bn a year</span>'+
+        '</div>'+
+      '</div>'+
+      '<p class="narr narr--wide" id="l1" style="font-size:clamp(16px,2.1vw,27px)"></p>'+
+      '<div class="figs figs--3" id="lF" style="opacity:0;transition:opacity .8s">'+
+        '<div class="fig"><div class="fig__l">The wage used</div><div class="fig__s" style="font-size:12px;line-height:1.5;color:var(--paper-dim)">PKR 40,700 a month, the statutory minimum, divided by 208 hours. The legal floor for a generalist domestic worker.</div></div>'+
+        '<div class="fig"><div class="fig__l">Why it is conservative</div><div class="fig__s" style="font-size:12px;line-height:1.5;color:var(--paper-dim)">Pricing infant care at nursing rates and schoolwork at tutoring rates would raise the total by a further 40 to 65 per cent.</div></div>'+
+        '<div class="fig"><div class="fig__l">Where it sits in the accounts</div><div class="fig__s" style="font-size:12px;line-height:1.5;color:var(--paper-dim)">Outside the SNA 2008 production boundary. Real output, excluded from GDP by convention rather than by measurement failure.</div></div>'+
+      '</div>'+
+      '<p class="lede" id="l2" style="opacity:0;transition:opacity .7s;color:var(--paper);max-width:82ch">This is not a cost the economy carries. It is a subsidy the economy receives — paid in full, every year, by women, and recorded nowhere.</p>'+
+    '</div>'; },
+  steps:[
+    function(a){ a.eq(0); },
+    function(a){ a.eq(1); },
+    function(a){ a.eq(2); },
+    function(a){ a.eq(3); a.tn("#lBig", K.valueCare, 1700); },
+    function(a){ a.show("#lPct"); a.tw("#l1","Ten point three eight trillion rupees. Close to one rupee in every ten the country produces."); },
+    function(a){ a.show("#lF"); },
+    function(a){ a.show("#l2"); }
+  ]
+});
+
+/* ---------- 09 THE LOCKED DOOR ----------------------------- */
+SCENES.push({
+  act:"ACT III", actName:"The Price", title:"The locked door", src:SRC.bisp, clock:"",
+  build:function(){ return ''+
+    '<div class="stack" style="flex:1 1 auto;justify-content:center;gap:clamp(14px,2.6vh,30px)">'+
+      '<div class="eyebrow">Opportunity cost · BISP DFLT-2, N = 254,648</div>'+
+      '<h2 class="head">They are not unwilling. They are unable.</h2>'+
+      '<div class="figs figs--4">'+
+        '<div class="fig"><div class="fig__n">12.0<small>m</small></div><div class="fig__l">BISP households</div><div class="fig__s">Transfers paid to the primary adult woman</div></div>'+
+        '<div class="fig"><div class="fig__n">8,942,084</div><div class="fig__l">Full-time housewives</div><div class="fig__s">74.5% of the roll</div></div>'+
+        '<div class="fig"><div class="fig__n fig__n--brass">6,184,524</div><div class="fig__l">Say they want to earn</div><div class="fig__s">69.2% of those housewives</div></div>'+
+        '<div class="fig"><div class="fig__n fig__n--clay" id="dQ">PKR 3.02 tn</div><div class="fig__l">Annual foregone output</div><div class="fig__s">At the statutory minimum wage · USD 10.79 bn</div></div>'+
+      '</div>'+
+      '<p class="narr narr--wide" id="d1" style="font-size:clamp(16px,2.1vw,27px)"></p>'+
+      '<div id="d2" style="opacity:0;transition:opacity .8s">'+
+        '<div class="figs figs--4">'+
+          '<div class="fig"><div class="fig__n fig__n--sage">75.1<small>%</small></div><div class="fig__l">Rural willingness to earn</div><div class="fig__s">Against 64.2% urban</div></div>'+
+          '<div class="fig"><div class="fig__n">8.9<small>%</small></div><div class="fig__l">Hold a bank account</div><div class="fig__s">29.0% hold a mobile wallet</div></div>'+
+          '<div class="fig"><div class="fig__n">68.2<small>%</small></div><div class="fig__l">Savings under PKR 500</div><div class="fig__s">No cushion against a care emergency</div></div>'+
+          '<div class="fig"><div class="fig__n">30.0<small>%</small></div><div class="fig__l">Currently in debt</div><div class="fig__s">Half of it to village shopkeepers</div></div>'+
+        '</div>'+
+      '</div>'+
+      '<p class="lede" id="d3" style="opacity:0;transition:opacity .7s;color:var(--paper);max-width:88ch">Willingness is <b style="font-weight:400;color:var(--brass)">eleven points higher</b> in exactly the districts where water, fuel and milling infrastructure is worst. The binding constraint is not ambition. It is hours.</p>'+
+    '</div>'; },
+  steps:[
+    function(a){ a.tw("#d1","Six point one nine million women, ready to work, held in place by unpaid hours."); },
+    function(a){ a.show("#d2"); },
+    function(a){ a.show("#d3"); }
+  ]
+});
+
+/* ---------- 10 THE ROOM ------------------------------------ */
+var ROLES = [
+  { s:"Seat 01", t:"Chair, National Multi-Sectoral Working Group on Care", q:"We have the evidence. What we do not yet have is a line in the Public Sector Development Programme with a number against it." },
+  { s:"Seat 02", t:"Secretary, Finance Division", q:"Thirty billion rupees. That is the envelope for this financial year, and it does not grow because the modelling is good." },
+  { s:"Seat 03", t:"Member (Social Sectors), Planning Commission", q:"Whatever is approved here, the provinces deliver. Since the Eighteenth Amendment that is not a detail — it is the delivery model." },
+  { s:"Seat 04", t:"Director General, Benazir Income Support Programme", q:"We already reach 8.9 million women by name, with biometrics and a payment rail. Whatever you choose, we can put it through existing plumbing." },
+  { s:"Seat 05", t:"Chief Economist, Provincial Planning & Development", q:"The worst care deficits and the weakest absorptive capacity are in the same districts. Design for that or the money will not move." },
+  { s:"Seat 06", t:"Representative, Development Partners", q:"Concessional capital is available at scale. It prices against a measurable return, not against a statement of intent." }
+];
+SCENES.push({
+  act:"ACT IV", actName:"The Room", title:"Six seats", src:SRC.forum, clock:"",
+  build:function(){ return ''+
+    '<div class="stack" style="flex:1 1 auto;justify-content:center;gap:clamp(12px,2.2vh,26px)">'+
+      '<div class="eyebrow">Institutional positions · no real individual is depicted</div>'+
+      '<div class="artband">'+svgRoom()+'</div>'+
+      '<div class="roles">'+ ROLES.map(function(r,i){ return ''+
+        '<div class="role" data-r="'+i+'">'+
+          '<div class="role__seat"><i></i>'+r.s+'</div>'+
+          '<div class="role__t">'+r.t+'</div>'+
+          '<div class="role__q">“'+r.q+'”</div>'+
+        '</div>'; }).join("") +'</div>'+
+    '</div>'; },
+  steps:ROLES.map(function(r,i){
+    return function(a){ var el = a.el.querySelector('.role[data-r="'+i+'"]'); if (el) el.classList.add("is-on"); };
+  })
+});
+
+/* ---------- 11 THE ALLOCATION ------------------------------ */
+SCENES.push({
+  act:"ACT IV", actName:"The Room", title:"The allocation", src:SRC.model, clock:"",
+  build:function(){ return ''+
+    '<div class="stack" style="flex:1 1 auto;justify-content:center;gap:clamp(14px,2.6vh,32px)">'+
+      '<div class="eyebrow">The decision on the table</div>'+
+      '<h1 class="display" style="font-size:clamp(30px,5.6vw,68px)">PKR 30 billion.<br>One financial year.<br>Four ways to spend it.</h1>'+
+      '<p class="lede" id="al1" style="opacity:0;transition:opacity .7s;max-width:78ch">Each path below is costed from published engineering and wage parameters. The model is deliberately austere: it prices only the market value of time returned to women, and it discounts that heavily.</p>'+
+      '<div class="figs figs--4" id="al2" style="opacity:0;transition:opacity .8s">'+
+        '<div class="fig"><div class="fig__n fig__n--brass">α = 0.35</div><div class="fig__l">Labour conversion</div><div class="fig__s">Only 35% of freed time is assumed to reach the market. The remainder goes to rest, child nutrition and schooling.</div></div>'+
+        '<div class="fig"><div class="fig__n fig__n--brass">PKR 195.67</div><div class="fig__l">Hourly wage anchor</div><div class="fig__s">The statutory minimum, not an estimated informal rate.</div></div>'+
+        '<div class="fig"><div class="fig__n fig__n--brass">r = 10%</div><div class="fig__l">Social discount rate</div><div class="fig__s">Five-year lifecycle, 10% annual maintenance, plus a further realisation discount for rural matching friction.</div></div>'+
+        '<div class="fig"><div class="fig__n fig__n--brass">0 pts</div><div class="fig__l">Unpriced benefits</div><div class="fig__s">Health, child development, reduced fuel expenditure and school attendance are all excluded. Every path is understated.</div></div>'+
+      '</div>'+
+    '</div>'; },
+  steps:[ function(a){ a.show("#al1"); }, function(a){ a.show("#al2"); } ]
+});
+
+/* ---------- 12 THE BRANCH ---------------------------------- */
+SCENES.push({
+  id:"branch",
+  act:"BRANCH", actName:"Choose a path", title:"Four paths", src:SRC.model, clock:"",
+  build:function(){ return ''+
+    '<div class="stack" style="flex:1 1 auto;min-height:0;gap:clamp(12px,2.2vh,26px)">'+
+      '<div class="eyebrow">Select a path — the consequences run in full, then you return here</div>'+
+      '<h2 class="head" style="font-size:clamp(21px,3.2vw,38px)">Where does the first rupee go?</h2>'+
+      '<div class="paths">'+ PATHS.map(function(p){ return ''+
+        '<button class="path" data-p="'+p.id+'">'+
+          '<span class="path__k">'+p.key+'</span>'+
+          '<span class="path__t">'+p.title+'</span>'+
+          '<span class="path__d">'+p.blurb+'</span>'+
+          '<span class="path__cost">'+p.cost+'</span>'+
+        '</button>'; }).join("") +'</div>'+
+      '<p class="fine" id="brHint">All four can be run. The comparison that follows fills in as you go.</p>'+
+    '</div>'; }
+});
+
+/* ---------- 13 THE CASCADE (rebuilt per path) -------------- */
+SCENES.push({
+  id:"cascade",
+  act:"BRANCH", actName:"Consequences", title:"Consequence cascade", src:SRC.model, clock:"",
+  build:function(){ return '<div class="stack" id="cscWrap" style="flex:1 1 auto;justify-content:center;gap:clamp(12px,2.2vh,26px)"></div>'; }
+});
+
+/* ---------- 14 COMPARISON ---------------------------------- */
+SCENES.push({
+  id:"compare",
+  act:"ACT V", actName:"Side by Side", title:"All four paths", src:SRC.model, clock:"",
+  build:function(){ return ''+
+    '<div class="stack" style="flex:1 1 auto;min-height:0;gap:clamp(10px,1.8vh,22px)">'+
+      '<div class="eyebrow">The same PKR 30 billion, four ways</div>'+
+      '<div class="cmpwrap" id="cmpWrap"></div>'+
+      '<p class="fine" style="max-width:104ch">Brass marks the leading value in each row, not the better policy — read every row against the limitation in the last one. Benefit–cost ratios are five-year lifecycle figures at a 10 per cent social discount rate with 10 per cent annual maintenance, then multiplied by a 0.52 realisation factor for informal labour matching, calibrated to reproduce the ratio published in the methodology note. Capital payback is capital divided by annual return. Paths C and D are not scored on this basis: C’s principal documented return is child development and D leaves no asset behind, and this model prices neither.</p>'+
+    '</div>'; }
+});
+
+/* ---------- 15 THE HORIZON --------------------------------- */
+SCENES.push({
+  act:"ACT V", actName:"Side by Side", title:"The 2035 horizon", src:SRC.ilo, clock:"",
+  build:function(){ return ''+
+    '<div class="stack" style="flex:1 1 auto;justify-content:center;gap:clamp(14px,2.6vh,30px)">'+
+      '<div class="eyebrow">ILO Care Policy Investment Simulator · Pakistan, high-investment scenario to 2035</div>'+
+      '<h2 class="head">And this decision is not the destination.</h2>'+
+      '<div class="figs figs--4">'+
+        '<div class="fig"><div class="fig__n fig__n--brass">9.15<small>million</small></div><div class="fig__l">New ECCE and long-term care jobs by 2035</div><div class="fig__s">9,152,927 posts · 85.01% assumed taken up by women</div></div>'+
+        '<div class="fig"><div class="fig__n">7.90<small>% of GDP</small></div><div class="fig__l">Required gross additional annual investment</div><div class="fig__s">Approximately PKR 8.38 trillion a year</div></div>'+
+        '<div class="fig"><div class="fig__n fig__n--sage">USD 3.25</div><div class="fig__l">GDP increase per dollar spent</div><div class="fig__s">ECCE and childcare-related leave</div></div>'+
+        '<div class="fig"><div class="fig__n fig__n--sage">−7.45<small>pts</small></div><div class="fig__l">Change in the gender employment gap</div><div class="fig__s">Percentage points, against baseline</div></div>'+
+      '</div>'+
+      '<div class="caveat" id="h2" style="opacity:0;transition:opacity .8s">'+
+        '<div class="caveat__h">Keep the two numbers apart</div>'+
+        '<div class="caveat__b">The ILO scenario is not the decision taken in this room. At 7.90 per cent of GDP it is roughly <b style="color:var(--paper);font-weight:400">280 times</b> the thirty-billion-rupee envelope. Quoting the 2035 headline as though this year’s allocation delivers it is the fastest way to lose a finance ministry. What was chosen here is where the first rupee goes — and whether the second one has a case to follow it.</div>'+
+      '</div>'+
+      '<p class="narr narr--wide" id="h1" style="font-size:clamp(16px,2.1vw,26px)"></p>'+
+    '</div>'; },
+  steps:[
+    function(a){ a.tw("#h1","A staircase, not a leap."); },
+    function(a){ a.show("#h2"); }
+  ]
+});
+
+/* ---------- 16 THE ASK ------------------------------------- */
+var PILLARS = [
+  { k:"A", t:"Universal care services", d:"Enforce and subsidise the Day Care Centres Act 2023. Attach community ECCE hubs to existing primary schools. Formalise a provincial eldercare and disability cadre." },
+  { k:"B", t:"Care-supporting physical infrastructure", d:"Piped water, clean cooking fuel, village milling and laundry. The cheapest hours to return are the ones a pump and a motor return." },
+  { k:"C", t:"Financing and development banks", d:"Mobilise concessional capital against a measured return. Structure blended facilities where employers co-fund community provision." },
+  { k:"D", t:"Budget tagging and gender-responsive budgeting", d:"A mandatory care expenditure tag in federal and provincial PSDP, so that next year this presentation can open with actuals rather than estimates." },
+  { k:"E", t:"Statistics and the evidence base", d:"Institutionalise the LFS Chapter 12 module, correct for proxy respondent bias, and move toward a standalone national time-use survey." }
+];
+SCENES.push({
+  act:"ACT VI", actName:"The Mandate", title:"What the Working Group does next", src:SRC.forum, clock:"",
+  build:function(){ return ''+
+    '<div class="stack" style="flex:1 1 auto;justify-content:center;gap:clamp(14px,2.6vh,30px)">'+
+      '<div class="eyebrow">For the National Multi-Sectoral Working Group on Care</div>'+
+      '<h2 class="head">Five pillars, and one decision that has to be made this financial year.</h2>'+
+      '<div class="pillars">'+ PILLARS.map(function(p){ return ''+
+        '<div class="pillar"><span class="pillar__k">PILLAR '+p.k+'</span>'+
+        '<span class="pillar__t">'+p.t+'</span><span class="pillar__d">'+p.d+'</span></div>'; }).join("") +'</div>'+
+      '<p class="lede" style="max-width:88ch;color:var(--paper)">The Forum does not need to choose the 2035 scenario today. It needs to put one costed care line into the next PSDP cycle, with a tag against it, so that the return can be measured and the case can compound.</p>'+
+    '</div>'; }
+});
+
+/* ---------- 17 CLOSE --------------------------------------- */
+SCENES.push({
+  act:"", actName:"Closing", title:"Thirteen days", src:SRC.model, clock:"22:40",
+  build:function(){ return ''+
+    '<div class="split split--rev">'+
+      '<div class="split__txt">'+
+        '<div class="eyebrow">What six hours a week actually is</div>'+
+        '<p class="narr" id="z1"></p>'+
+        '<p class="lede" id="z2" style="opacity:0;transition:opacity .7s">Six hours a week is 312 hours a year. Thirteen entire days, returned to a woman who did not have an hour of her own.</p>'+
+        '<p class="lede" id="z3" style="opacity:0;transition:opacity .7s;color:var(--paper)">Multiply it by four million households and it stops being a story about one woman and becomes a line in the national accounts — which is the only place it has ever needed to be.</p>'+
+      '</div>'+
+      '<div class="split__art">'+svgHub()+'</div>'+
+    '</div>'; },
+  steps:[
+    function(a){ a.tw("#z1","It is not liberation."); },
+    function(a){ a.show("#z2"); },
+    function(a){ a.show("#z3"); }
+  ]
+});
+
+/* ---------- 18 SOURCES ------------------------------------- */
+SCENES.push({
+  act:"", actName:"Sources", title:"Sources and method", src:SRC.forum, clock:"",
+  build:function(){ return ''+
+    '<div class="stack" style="flex:1 1 auto;justify-content:center;gap:clamp(14px,2.4vh,28px)">'+
+      '<div class="eyebrow">Sources and method</div>'+
+      '<div class="srcgrid">'+
+        '<ol>'+
+          '<li><b>Pakistan Bureau of Statistics, Labour Force Survey 2024–25 (37th Round), published August 2025.</b> Chapter 12, Tables 12.1–12.3, unpaid domestic and care work under 19th ICLS resolution standards. N = 99,900 households.</li>'+
+          '<li><b>BISP DFLT-2 verified beneficiary micro-dataset, N = 254,648</b> active female beneficiaries across four provinces and the federal capital; a 2.12% sample of the 12 million household universe. NSER Census 2025–26.</li>'+
+          '<li><b>Pakistan Economic Survey 2024–25</b>, Ministry of Finance. Nominal GDP PKR 106.1 trillion.</li>'+
+          '<li><b>Pakistan Gazette statutory minimum wage, FY2024–25.</b> PKR 40,700 per month; hourly equivalent PKR 195.673 on a 26-day, 8-hour schedule.</li>'+
+        '</ol>'+
+        '<ol start="5">'+
+          '<li><b>ILO Care Policy Investment Simulator</b>, Pakistan high-investment scenario to 2035, as modelled by UN Women. Headline results: 9,152,927 jobs; 85.01% female uptake; 7.90% of GDP; USD 3.25 ROI; −7.45 percentage points on the gender employment gap.</li>'+
+          '<li><b>System of National Accounts 2008</b>, general and SNA production boundaries. Input Replacement Cost Method (generalist domestic worker approach) as endorsed by the ILO, UN Women and the OECD.</li>'+
+          '<li><b>Labour conversion elasticity α = 0.35</b> after Duflo (2012) and Field et al. (2016); capital and time-saving parameters from the Targeted Care Infrastructure Quartile Simulator.</li>'+
+          '<li><b>Nepal comparative precedent:</b> UN Women–ILO Joint Programme, Public Investments in Nepal’s Care Economy, September 2023.</li>'+
+        '</ol>'+
+      '</div>'+
+      '<p class="fine" style="border-top:1px solid var(--line-2);padding-top:14px;max-width:104ch">'+
+        'Prepared for the National Forum on TransformCare Pakistan, Islamabad, 2–3 October 2026 · Sustainable Development Policy Institute with UN Women Pakistan. '+
+        'All individuals depicted are statistical composites and all speakers are institutional roles; no real person is portrayed and no statement is attributed to any named official. '+
+        'Figures are computed in the browser from the constants listed above and can be reproduced from the sources.'+
+      '</p>'+
+    '</div>'; }
+});
+</script>
+
+<script>
+/* =============================================================
+   6. THE ENGINE
+   ============================================================= */
+"use strict";
+(function(){
+
+var deck   = document.getElementById("deck");
+var rActNo = document.getElementById("rActNo");
+var rActNm = document.getElementById("rActName");
+var rClock = document.getElementById("rClock");
+var rSrc   = document.getElementById("rSrc");
+var rNum   = document.getElementById("rNum");
+var rProg  = document.getElementById("rProg");
+var ov     = document.getElementById("overview");
+var ovGrid = document.getElementById("ovGrid");
+
+var REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+var S = { i:0, step:0, steps:[], auto:false, timer:null, pick:null, done:{}, ret:null };
+var els = [];
+
+/* ---------- build every scene shell once ------------------- */
+SCENES.forEach(function(sc, i){
+  var d = document.createElement("section");
+  d.className = "scene";
+  d.setAttribute("aria-hidden","true");
+  d.innerHTML = '<div class="scene__inner">' + sc.build() + '</div>';
+  deck.appendChild(d);
+  els.push(d);
+});
+function idxOf(id){ for (var i=0;i<SCENES.length;i++) if (SCENES[i].id===id) return i; return -1; }
+var I_BRANCH = idxOf("branch"), I_CASC = idxOf("cascade"), I_CMP = idxOf("compare");
+
+/* =============================================================
+   ANIMATION HELPERS
+   ============================================================= */
+function api(el){
+  return {
+    el: el,
+    show: function(sel){ var t = el.querySelector(sel); if (t) t.style.opacity = "1"; },
+    set:  function(sel, html){ var t = el.querySelector(sel); if (t) t.innerHTML = html; },
+
+    /* typewriter — the walking label */
+    tw: function(sel, text){
+      var t = el.querySelector(sel); if (!t) return;
+      if (t._tw) clearInterval(t._tw);
+      if (REDUCE){ t.textContent = text; return; }
+      t.innerHTML = '<span class="tw-body"></span><span class="caret"></span>';
+      var body = t.querySelector(".tw-body"), car = t.querySelector(".caret"), k = 0;
+      t._tw = setInterval(function(){
+        k++;
+        body.textContent = text.slice(0,k);
+        if (k >= text.length){ clearInterval(t._tw); t._tw=null; setTimeout(function(){ car.classList.add("is-done"); }, 700); }
+      }, 26);
+    },
+
+    /* plain decimal counter, used by the day clock */
+    num: function(sel, to, dp, ms){
+      var t = el.querySelector(sel); if (!t) return;
+      var from = parseFloat(String(t.textContent).replace(/[^0-9.]/g,"")) || 0;
+      ramp(from, to, ms||800, function(v){ t.textContent = v.toFixed(dp); });
+    },
+
+    /* large currency counter */
+    tn: function(sel, to, ms){
+      var t = el.querySelector(sel); if (!t) return;
+      ramp(0, to, ms||1500, function(v){ t.textContent = pkrBig(v); });
+    },
+
+    /* reveal the household dot field */
+    dots: function(frac, ms){
+      var ds = el.querySelectorAll(".cd"); if (!ds.length) return;
+      var n = Math.floor(ds.length * frac), per = (ms||1500)/Math.max(n,1);
+      for (var j=0;j<n;j++){
+        (function(j){ setTimeout(function(){ ds[j].style.transition="opacity .35s"; ds[j].style.opacity=".95"; }, j*per); })(j);
+      }
+    },
+
+    bars: function(){
+      el.querySelectorAll(".bar__fill").forEach(function(b,j){
+        setTimeout(function(){ b.style.width = b.dataset.w + "%"; }, 120 + j*140);
+      });
+    },
+
+    eq: function(n){
+      el.querySelectorAll('[data-e="'+n+'"]').forEach(function(x){
+        x.style.transition = "opacity .5s"; x.style.opacity = "1";
+      });
+    },
+
+    cascOn: function(n){
+      var c = el.querySelector('.casc[data-c="'+n+'"]'); if (c) c.classList.add("is-on");
+    }
+  };
+}
+
+function ramp(from, to, ms, write){
+  if (REDUCE){ write(to); return; }
+  var t0 = performance.now();
+  (function frame(now){
+    var p = Math.min(1, (now - t0)/ms);
+    var e = 1 - Math.pow(1-p, 3);
+    write(from + (to-from)*e);
+    if (p < 1) requestAnimationFrame(frame);
+  })(t0);
+}
+
+/* =============================================================
+   CASCADE — rebuilt for whichever path was chosen
+   ============================================================= */
+var CAVEAT = {
+  A:"It reaches 44.7 per cent of the roll. The 4.94 million households left out this year are not randomly distributed, and choosing between them is a political act, not a technical one. The model also assumes the mills and drums keep running: maintenance at 10 per cent of capital a year is a recurrent line that some department has to own by name.",
+  B:"It returns two and a half hours, not six. It does not touch childcare, eldercare, or the 10.1 hours a week in livestock work. This is the cheapest available floor under the problem — it is not a care system, and it should never be presented as one.",
+  C:"It reaches almost none of the rural BISP universe, and it carries a permanent wage bill this one-year capital envelope does not fund. Its strongest benefit — early childhood development — is real, well documented, and deliberately left unpriced here, which means this path is understated more than the others.",
+  D:"It returns no hours. Her day is exactly as long tomorrow. What it does buy is liquidity, in households where 68 per cent hold under PKR 500 in savings and one in three carries shopkeeper debt. That is worth something real. It is simply a relief instrument being asked to do an infrastructure job."
+};
+
+function buildCascade(id){
+  var p = PATHS.filter(function(x){ return x.id===id; })[0], r = R[id], cards;
+
+  if (r.kind === "infra"){
+    cards = [
+      { n:"STAGE 01", t:"Deployment", v:nf(r.reached), d:"households equipped at PKR "+nf(p.capex)+" each. "+pkrBig(r.spent)+" committed"+(r.residual>1e6?", "+pkrBig(r.residual)+" unspent":"")+" — "+r.coverage.toFixed(1)+"% of the BISP roll." },
+      { n:"STAGE 02", t:"Time returned", v:r.dh.toFixed(1)+" h", d:"per woman per week. Across the cohort that is "+hrsBig(r.hrsYear)+" hours a year taken off unpaid work." },
+      { n:"STAGE 03", t:"Labour conversion", v:"PKR "+nf(r.dYhh), d:"per household per year, at α = 0.35. Equivalent to roughly "+nf(Math.round(r.ptJobs/1000)*1000)+" part-time livelihoods at 25 hours a week." },
+      { n:"STAGE 04", t:"Macroeconomic result", v:pkrBig(r.outputAll), d:"a year in additional output. Capital payback "+r.payback.toFixed(1)+" months; five-year benefit–cost ratio "+r.bcr.toFixed(2)+"×."+(r.cobenefit?" Includes "+pkrBig(r.cobenefit)+" in avoided milling fees and health costs.":"") }
+    ];
+  } else if (r.kind === "creche"){
+    cards = [
+      { n:"STAGE 01", t:"Deployment", v:nf(r.centres), d:"purpose-built 40-place centres at PKR 2.5 m each, in industrial and urban clusters. "+nf(r.places)+" childcare places created." },
+      { n:"STAGE 02", t:"Time returned", v:"20 h", d:"per mother per week of guaranteed cover, for roughly "+nf(r.mothers)+" mothers — "+r.coverage.toFixed(2)+"% of the BISP roll." },
+      { n:"STAGE 03", t:"Jobs created", v:nf(Math.round(r.formal)), d:"formal, salaried care posts at ILO staffing ratios — the highest job quality of any path, and a recurrent wage bill of "+pkrBig(r.recurrent)+" a year." },
+      { n:"STAGE 04", t:"Macroeconomic result", v:pkrBig(r.output), d:"a year gross. Net of the recurrent wage bill, "+pkrBig(r.net)+". Payback "+r.payback.toFixed(1)+" months gross, "+r.paybackNet.toFixed(0)+" months net." }
+    ];
+  } else {
+    cards = [
+      { n:"STAGE 01", t:"Deployment", v:"PKR "+nf(Math.round(r.perHHMon)), d:"per household per month, to all "+nf(r.reached)+" housewives on the roll. No procurement, no construction, no delivery risk." },
+      { n:"STAGE 02", t:"Time returned", v:"0 h", d:"The pump is still broken. The mill is still four kilometres away. Nothing in her week changes." },
+      { n:"STAGE 03", t:"Labour conversion", v:"None", d:"There is no freed time to convert. The transfer raises consumption; it does not raise labour supply." },
+      { n:"STAGE 04", t:"Macroeconomic result", v:pkrBig(r.output), d:"of additional consumption at a 0.9 multiplier, with no asset at the end of the year and nothing to show in year two." }
+    ];
+  }
+
+  var html = ''+
+    '<div class="eyebrow">'+p.key+' · '+p.title+'</div>'+
+    '<h2 class="head" style="font-size:clamp(20px,3vw,36px)">'+p.blurb+'</h2>'+
+    '<div class="cascade">'+ cards.map(function(c,i){ return ''+
+      '<div class="casc" data-c="'+i+'">'+
+        '<span class="casc__n">'+c.n+'</span>'+
+        '<span class="casc__t">'+c.t+'</span>'+
+        '<span class="casc__v">'+c.v+'</span>'+
+        '<span class="casc__d">'+c.d+'</span>'+
+      '</div>'; }).join("") +'</div>'+
+    '<div class="caveat" id="cavBox" style="opacity:0;transition:opacity .7s">'+
+      '<div class="caveat__h">What this path does not fix</div>'+
+      '<div class="caveat__b">'+CAVEAT[id]+'</div>'+
+    '</div>'+
+    '<p class="fine" id="cascHint" style="opacity:0;transition:opacity .6s;color:var(--brass-dim)">Next returns you to the four paths.</p>';
+
+  var steps = [0,1,2,3].map(function(n){ return function(a){ a.cascOn(n); }; });
+  steps.push(function(a){ a.show("#cavBox"); a.show("#cascHint"); S.done[id] = true; });
+  return { html:html, steps:steps };
+}
+
+/* =============================================================
+   COMPARISON TABLE
+   ============================================================= */
+function buildCompare(){
+  var ids = ["A","B","C","D"];
+  function cell(id, fn){ return fn(R[id]); }
+  var rows = [
+    { h:"Households / women reached", f:function(r){ return nf(r.reached); },                                   v:function(r){ return r.reached; },       best:"max" },
+    { h:"Coverage of the BISP roll",  f:function(r){ return r.coverage.toFixed(r.coverage<1?2:1)+"%"; },        v:function(r){ return r.coverage; },      best:"max" },
+    { h:"Hours returned per week",    f:function(r){ return r.dh ? r.dh.toFixed(1)+" h" : "\u2014"; },           v:function(r){ return r.dh||null; },      best:"max" },
+    { h:"Aggregate hours per year",   f:function(r){ return r.hrsYear ? hrsBig(r.hrsYear) : "\u2014"; },         v:function(r){ return r.hrsYear||null; }, best:"max" },
+    { h:"Annual economic output",     f:function(r){ return pkrBig(r.outputAll); },                             v:function(r){ return r.outputAll; },     best:"max" },
+    { h:"Capital payback",            f:function(r){ return r.payback ? r.payback.toFixed(1)+" mo" : "\u2014"; }, v:function(r){ return r.payback||null; },  best:"min" },
+    { h:"Five-year benefit\u2013cost", f:function(r){ return r.bcr ? r.bcr.toFixed(2)+"\u00d7" : "not scored"; }, v:function(r){ return r.bcr||null; },     best:"max" },
+    { h:"Direct formal jobs",         f:function(r){ return r.formal ? nf(Math.round(r.formal)) : "\u2014"; },   v:function(r){ return r.formal||null; },   best:"max" }
+  ];
+  var lim = {
+    A:"Leaves 4.94 m households out, by a selection nobody wants to defend.",
+    B:"Cheapest floor available. Touches no childcare or eldercare at all.",
+    C:"Highest job quality, lowest reach, permanent recurrent liability.",
+    D:"Buys liquidity, returns no time, leaves no asset behind."
+  };
+
+  var h = '<table class="cmp"><thead><tr><th></th>'+
+    PATHS.map(function(p){ return '<th>'+p.key+'<br><span style="color:var(--paper-dim);letter-spacing:.04em">'+p.title+'</span></th>'; }).join("")+
+    '</tr></thead><tbody>';
+
+  rows.forEach(function(rw){
+    /* mark the leading value in each row; paths with no value stay neutral */
+    var vals = ids.map(function(id){ return rw.v(R[id]); });
+    var lead = -1;
+    vals.forEach(function(v,k){
+      if (v === null || v === undefined) return;
+      if (lead < 0){ lead = k; return; }
+      lead = (rw.best === "min" ? (v < vals[lead]) : (v > vals[lead])) ? k : lead;
+    });
+    h += '<tr><th>'+rw.h+'</th>';
+    ids.forEach(function(id,k){
+      var txt = cell(id, rw.f);
+      var cls = (vals[k] === null || vals[k] === undefined) ? "na" : (k === lead ? "best" : "");
+      h += '<td class="'+cls+'">'+txt+'</td>';
+    });
+    h += '</tr>';
+  });
+  h += '<tr><th>Principal limitation</th>'+ids.map(function(id){ return '<td class="txt">'+lim[id]+'</td>'; }).join("")+'</tr>';
+  h += '</tbody></table>';
+  return h;
+}
+
+/* =============================================================
+   NAVIGATION
+   ============================================================= */
+function enter(i, opts){
+  opts = opts || {};
+  if (i < 0) i = 0;
+  if (i > SCENES.length-1) i = SCENES.length-1;
+
+  els.forEach(function(e,k){
+    e.classList.toggle("is-live", k===i);
+    e.setAttribute("aria-hidden", k===i ? "false" : "true");
+  });
+
+  S.i = i; S.step = 0;
+  var sc = SCENES[i], el = els[i], a = api(el);
+
+  /* dynamic scenes */
+  if (sc.id === "cascade" && S.pick){
+    var c = buildCascade(S.pick);
+    el.querySelector("#cscWrap").innerHTML = c.html;
+    S.steps = c.steps;
+  } else if (sc.id === "compare"){
+    el.querySelector("#cmpWrap").innerHTML = buildCompare();
+    S.steps = [];
+  } else if (sc.id === "branch"){
+    el.querySelectorAll(".path").forEach(function(b){
+      b.classList.toggle("is-done", !!S.done[b.dataset.p]);
+      b.classList.toggle("is-picked", S.pick === b.dataset.p);
+    });
+    var n = Object.keys(S.done).length;
+    el.querySelector("#brHint").textContent = n === 0
+      ? "All four can be run. The comparison that follows fills in as you go."
+      : n + " of 4 reviewed · press Next to go straight to the side-by-side comparison.";
+    S.steps = [];
+  } else {
+    S.steps = (typeof sc.steps === "function") ? sc.steps() : (sc.steps || []);
+  }
+
+  /* rails */
+  rActNo.textContent = sc.act || "·";
+  rActNm.textContent = sc.actName || "";
+  rClock.textContent = sc.clock || "";
+  rSrc.textContent   = sc.src || "";
+  rNum.textContent   = String(i+1).padStart(2,"0") + " / " + String(SCENES.length).padStart(2,"0");
+  rProg.style.width  = ((i)/(SCENES.length-1)*100).toFixed(2) + "%";
+  highlightOv();
+
+  /* first step fires on arrival */
+  if (S.steps.length && !opts.noFirst){ S.steps[0](a); S.step = 1; }
+  queueAuto();
+}
+
+function next(){
+  var sc = SCENES[S.i], el = els[S.i];
+  if (S.step < S.steps.length){ S.steps[S.step](api(el)); S.step++; queueAuto(); return; }
+
+  if (sc.id === "cascade"){ S.pick = null; enter(I_BRANCH); return; }
+  if (sc.id === "branch"){  enter(I_CMP); return; }
+  enter(S.i + 1);
+}
+function prev(){
+  var sc = SCENES[S.i];
+  if (sc.id === "cascade"){ S.pick = null; enter(I_BRANCH); return; }
+  if (sc.id === "compare"){ enter(I_BRANCH); return; }
+  enter(S.i - 1);
+}
+
+/* path clicks */
+deck.addEventListener("click", function(e){
+  var b = e.target.closest(".path");
+  if (!b) return;
+  S.pick = b.dataset.p;
+  enter(I_CASC);
+});
+
+/* =============================================================
+   AUTO-ADVANCE
+   ============================================================= */
+function queueAuto(){
+  clearTimeout(S.timer);
+  if (!S.auto) return;
+  var sc = SCENES[S.i];
+  if (sc.id === "branch") return;               // never auto-skip a decision
+  S.timer = setTimeout(next, S.step === 0 ? 5200 : 4600);
+}
+var bAuto = document.getElementById("bAuto");
+bAuto.addEventListener("click", function(){
+  S.auto = !S.auto;
+  bAuto.setAttribute("aria-pressed", S.auto ? "true" : "false");
+  queueAuto();
+});
+
+/* =============================================================
+   OVERVIEW
+   ============================================================= */
+SCENES.forEach(function(sc,i){
+  var b = document.createElement("button");
+  b.className = "ov__i"; b.dataset.i = i;
+  b.innerHTML = '<span class="ov__n">'+String(i+1).padStart(2,"0")+'</span>'+
+                '<span class="ov__t">'+sc.title+'</span>'+
+                '<span class="ov__a">'+(sc.act ? sc.act+" · " : "")+sc.actName+'</span>';
+  ovGrid.appendChild(b);
+});
+function highlightOv(){
+  ovGrid.querySelectorAll(".ov__i").forEach(function(b,k){ b.classList.toggle("is-cur", k===S.i); });
+}
+ovGrid.addEventListener("click", function(e){
+  var b = e.target.closest(".ov__i"); if (!b) return;
+  ov.hidden = true; enter(+b.dataset.i);
+});
+function toggleOv(){ ov.hidden = !ov.hidden; if (!ov.hidden) highlightOv(); }
+
+/* =============================================================
+   CONTROLS
+   ============================================================= */
+document.getElementById("bNext").addEventListener("click", next);
+document.getElementById("bPrev").addEventListener("click", prev);
+document.getElementById("bMap").addEventListener("click", toggleOv);
+
+document.addEventListener("keydown", function(e){
+  if (e.target.closest("button") && (e.key === "Enter" || e.key === " ")) return;
+  if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown"){ e.preventDefault(); next(); }
+  else if (e.key === "ArrowLeft" || e.key === "PageUp"){ e.preventDefault(); prev(); }
+  else if (e.key === "m" || e.key === "M"){ toggleOv(); }
+  else if (e.key === "a" || e.key === "A"){ bAuto.click(); }
+  else if (e.key === "Escape"){ ov.hidden = true; }
+  else if (e.key === "Home"){ enter(0); }
+  else if (e.key === "End"){ enter(SCENES.length-1); }
+});
+
+enter(0);
+})();
+</script>
+
+</body>
+</html>
